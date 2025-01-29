@@ -55,6 +55,7 @@ export default class MirakData {
       return softwares ? softwares : null;
     }
   }
+
   public get hostIp() {
     let ip = null;
     if (this.isDataFileNull()) {
@@ -86,21 +87,23 @@ export default class MirakData {
   }
 
   /**
-   * Searches for the first occurrence of a software name, informing the port
+   * Searches for related ports, informing the software name
    *
-   * @param {number} port
-   * @returns  Returns the first occurrence of the software name corresponding to the query or returns empty string if there is no occurrence.
-   * @type {Software}
+   * @param {string} softwareName
+   * @returns  Returns the related ports matching the query or returns an empty array if there is no match.
+   * @type {number[]} port
    */
-  public softwareNameSearchByPort(port: number): string {
+  public searchesPortsForRelatedSoftware(softwareName: string): number[] {
     if (this.isDataFileNull()) {
       throw new Error("Mirak file was not previously loaded");
     } else {
       const softwares = this.dataFile?.redeExternal.portsUseBy;
       if (softwares) {
-        return softwares[port] ? softwares[port] : "";
+        return Object.entries(softwares)
+        .filter(([_, value]) => value === softwareName)
+        .map(([key, _]) => Number.parseInt(key));
       }
-      return "";
+      return [];
     }
   }
 
