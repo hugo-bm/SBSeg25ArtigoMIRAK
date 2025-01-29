@@ -1,0 +1,10 @@
+pytest
+psutil
+typer
+mock
+flake8
+black
+pylint
+wheel
+tqdm
+setuptools
