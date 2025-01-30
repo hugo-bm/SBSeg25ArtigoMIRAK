@@ -10,7 +10,7 @@ export default class JsonCache implements IJsonCache {
   private data: cachedCPEList;
 
   private constructor() {
-    this.directoryPath = resolve(process.cwd()+"/cache/");
+    this.directoryPath = resolve(__dirname, "../cache/");
     this.filePath = resolve(join(this.directoryPath, "db_cache.json"));
     this.data = [];
   }
