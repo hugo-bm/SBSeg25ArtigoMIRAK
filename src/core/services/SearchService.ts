@@ -21,7 +21,10 @@ export default class SearchService {
     if (cpes.length > 0) {
       const result: CVEsByCPE[] = [];
       const apiClient = nvdApiClient.instance;
+      let index = 0;
+      cli.startProgressBar(cpes.length)
       for (const cpe of cpes) {
+        cli.updateProgressBar(++index);
         if (
          
           new RegExp(
@@ -37,6 +40,7 @@ export default class SearchService {
           }
         }
       }
+      cli.stopProgressBar()
       return result;
     } else {
       return [];
