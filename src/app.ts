@@ -9,8 +9,14 @@ async function main(input: string, output:string) {
   cliInterface.writeSuccess("Application Started!\n");
   try {
     const report = await evaluation.evaluateServices(input, cliInterface);
-    const reportWriter = new ExportReport();
-    reportWriter.exportToCSV(report, output, cliInterface);
+    const softwareVulnerabilityQtd = report.map((software)=>software.cveAnalysis.length).reduce((pv, cv)=> pv + cv);
+    if (softwareVulnerabilityQtd > 0){
+      const reportWriter = new ExportReport();
+      reportWriter.exportToCSV(report, output, cliInterface);
+    }
+    else {
+      cliInterface.writeMessage("The vulnerability report was not exported because no vulnerabilities were found.")
+    }
   } catch (error) {
     cliInterface.writeError(String(error));
   }
