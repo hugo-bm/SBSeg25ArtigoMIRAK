@@ -1,7 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse, HttpStatusCode } from "axios";
 import { Vulnerabilities } from "../core/entities/Vulnerability";
-import JSONStream from "jsonstream";
-import { Readable } from "stream";
 import { VulnerabilityFactory } from "../core/factories/NvdFactory";
 import { wait } from "../shared/GenericTools";
 import CLI from "../cli/CLI";
@@ -51,7 +49,7 @@ export default class nvdApiClient {
     }};
 
     if (options.headers && this.apiKey){
-      options.headers['apiKEy'] = this.apiKey;
+      options.headers['apiKey'] = this.apiKey;
     }
 
     try{
@@ -60,7 +58,7 @@ export default class nvdApiClient {
         options
       );
   
-      
+
       return await this.handleAPICPE(response, cli);
     }
     finally{
@@ -99,18 +97,15 @@ export default class nvdApiClient {
       const vulnerabilities = new Vulnerabilities();
 
       if (response.status === HttpStatusCode.Ok) {
-        const totalOfVulnerabilities: number = response.data.totalResults | 1;
-        cli.startProgressBar(totalOfVulnerabilities);
+
         for (const dataCVE of response.data.vulnerabilities) {
-          cli.updateProgressBar(
-            Math.round((vulnerabilities.length * 100) / totalOfVulnerabilities)
-          );
+
           const cveItem = VulnerabilityFactory.create(dataCVE);
           if (cveItem !== null) {
             vulnerabilities.addVulnerability(cveItem);
           }
         }
-        cli.stopProgressBar();
+
         resolve(vulnerabilities);
       } else {
         reject(
