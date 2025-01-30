@@ -175,14 +175,14 @@ describe("MirakData class test suit", () => {
     });
 });
 
-describe("softwareNameSearchByPort",()=>{
-    it("should return an string with name of software",()=>{
+describe("searchesPortsForRelatedSoftware",()=>{
+    it("should return an array with numbers of ports related with software name",()=>{
         instance.mirakFile = inputData;
-        expect(instance.softwareNameSearchByPort(3323)).toEqual("routinator");
+        expect(instance.searchesPortsForRelatedSoftware("routinator")).toEqual([3323, 8323]);
     });
-    it("should return an empty string because an invalid port was passed",()=>{
+    it("should return an empty array because an invalid software name was passed",()=>{
         instance.mirakFile = inputData;
-        expect(instance.softwareNameSearchByPort(5555)).toEqual("");
+        expect(instance.searchesPortsForRelatedSoftware("curl")).toEqual([]);
     });
     it("should return an error because the data is not loaded before use",()=>{
         try {
