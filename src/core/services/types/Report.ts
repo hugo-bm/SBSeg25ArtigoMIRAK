@@ -12,8 +12,16 @@ export type evaluatedCVE = {
 
   export type evaluatedSoftware = {
     software: Software;
-    CVE: evaluatedCVE[];
+    cveAnalysis: evaluatedCVE[];
+    rpkiAnalyses: evaluatedSoftwareData;
   };
+
+  export type evaluatedSoftwareData = {
+    software_required: string;
+    related_port: boolean;
+    port_required: boolean;
+    notes: string;
+  }
 
   export enum typeOfSoftwareFull {
     a = "Aplication",
@@ -25,8 +33,12 @@ export type evaluatedCVE = {
     version: string,
     type: string,
     vendor: string,
-    cveId: string,
+    cve_id: string,
     description: string,
-    baseScore?: number | string,
-    baseSeverity?: string
+    base_score?: number | string,
+    base_severity?: string
+    software_required: string;
+    related_port: string;
+    port_required: string;
+    notes: string;
   }
