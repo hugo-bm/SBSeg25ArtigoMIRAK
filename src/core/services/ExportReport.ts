@@ -14,16 +14,20 @@ export default class ExportReport{
         const report: finalReportObject[] = [];
         try {
           data.map((item) =>{
-               item.CVE.forEach((vulnerability) =>{
+               item.cveAnalysis.forEach((vulnerability) =>{
                   report.push({
-                      product: item.software.product,
-                      vendor: item.software.vendor,
-                      type: typeOfSoftwareFull[item.software.type],
-                      version: item.software.version,
-                      cveId: vulnerability.cveId,
-                      description: vulnerability.description.replace(/[\r\n]+/g, ' '),
-                      baseScore: vulnerability.baseScore ? vulnerability.baseScore: "N/A",
-                      baseSeverity: vulnerability.baseSeverity ? vulnerability.baseSeverity : "N/A" 
+                    product: item.software.product,
+                    vendor: item.software.vendor,
+                    type: typeOfSoftwareFull[item.software.type],
+                    version: item.software.version,
+                    cve_id: vulnerability.cveId,
+                    description: vulnerability.description.replace(/[\r\n]+/g, ' '),
+                    base_score: vulnerability.baseScore ? vulnerability.baseScore : "N/A",
+                    base_severity: vulnerability.baseSeverity ? vulnerability.baseSeverity : "N/A",
+                    software_required: item.rpkiAnalyses.software_required,
+                    related_port: item.rpkiAnalyses.related_port ? "yes": "no",
+                    port_required: item.rpkiAnalyses.port_required? "yes" : "no",
+                    notes: item.rpkiAnalyses.notes
                   });
                });
           });
