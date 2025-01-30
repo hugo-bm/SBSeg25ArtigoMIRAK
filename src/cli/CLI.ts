@@ -101,7 +101,7 @@ export default class CLI {
 
   public writeWarning(message: string): void {
     if (this.isVerbose()) {
-      console.log(kleur.yellow(`⚠️ Warning: ${message}`));
+      console.log(kleur.yellow(`⚠️  Warning: ${message}`));
       console.log("\n");
     }
   }
