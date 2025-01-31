@@ -1,5 +1,5 @@
 # Base da imagem
-FROM node:latest
+FROM ubuntu:20.04
 
 # Atualiza pacotes e instala ferramentas essenciais
 RUN apt-get update && apt-get install -y \
@@ -17,8 +17,8 @@ RUN mkdir -p /app/output
 # Declarar a pasta output como volume
 VOLUME /app/output
 
-# Copia um arquivo para a imagem (opcional)
-COPY ./dist/* /app/
+
+COPY ./dist/* /app/dist/
 
 # Comando padrão ao iniciar o container
 CMD ["bash"]
