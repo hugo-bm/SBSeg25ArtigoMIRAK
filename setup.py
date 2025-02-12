@@ -31,12 +31,17 @@ setup(
     # Package version
     version="1.0.0",
     # Author name
-    author="Hugo Batalha Moreno",
+    author="Hugo Batalha Moreno, Yuri de Abreu de Melo, \
+    Ronaldo Moreira Salles and Frederico Sauer Guimarães Oliveira.",
     # Author e-mail
-    author_email="hugomb123@hotmail.com",
+    author_email="hugomb123@hotmail.com, abreumelo@ime.eb.br, \
+    salles@ime.eb.br, fredsauer@uezo.edu.br.",
     # Project Description
-    description="Este software extrai informações relevantes sobre o ambiente \
-          de execução e da Solução RPKI (Foco no Routinator)",
+    description="Mirak-extractor is a simple tool for extracting information \
+    from an RPKI solution execution environment. It aims to be a solution to\
+    help IT or Cybersecurity operations professionals to obtain a file, in an\
+    automated way, with characteristics and information that\
+    allow future analysis.",
     # Long description (usually the README)
     long_description=open("./README.md", encoding="utf8").read(),
     # Long Description Content Type
