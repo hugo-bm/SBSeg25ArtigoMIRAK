@@ -1,0 +1,65 @@
+FROM ubuntu:20.04
+
+# Atualizando o sistema operacional
+RUN apt update && apt upgrade -y
+
+ENV DEBIAN_FRONTEND=noninteractive
+# Instalando dependecias necessárias para o processo de instalação
+RUN apt-get update && apt install -y --no-install-recommends \
+    curl gpg ca-certificates build-essential make \
+    libssl-dev \
+    zlib1g-dev \
+    libncurses5-dev \
+    libnss3-dev \
+    libsqlite3-dev \
+    libreadline-dev \
+    libffi-dev \
+    libbz2-dev \
+    wget
+
+RUN cd /usr/src \
+&& wget https://www.python.org/ftp/python/3.8.16/Python-3.8.16.tgz \
+&& tar xzf Python-3.8.16.tgz \
+&& cd Python-3.8.16 \
+&& ./configure --enable-optimizations \
+&& make altinstall
+
+RUN  ln -sf /usr/local/bin/python3.8 /usr/bin/python3.8 && \
+/usr/local/bin/python3.8 -m ensurepip --upgrade && \
+/usr/local/bin/python3.8 -m pip install --upgrade pip
+
+
+# Configurando e instalando o routinator 
+RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/ubuntu \
+    $(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release)-proposed main" | tee /etc/apt/sources.list.d/nlnetlabs-proposed.list > /dev/null || echo "Falha ao obter a chave e adicionar o novo repositório"  && \
+    apt update || echo "Falha ao aplicar atualização com o repositório do routinator aplicado" && \
+    apt policy routinator || echo "As politcas para o routinator não foram aplicadas" && \
+    apt install -y routinator=0.14.0~rc3-1$(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release ) && echo "Instalação não ocorreu com sucesso"
+
+# Adicionar Routinator ao PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Criar usuário para o teste
+RUN useradd -ms /bin/bash user_exemple
+
+# Configurar diretório de trabalho
+WORKDIR /workspaces/project
+
+# copiar arquivos do projeto
+COPY ./mirak-extractor/app ./app
+
+COPY ./mirak-extractor/scripts ./scripts
+
+COPY ["./mirak-extractor/setup.py", "./mirak-extractor/README.md", "./mirak-extractor/start.py", "./"]
+
+# Declarar diretório de saída
+VOLUME /output /workspaces/project/output
+
+# Expor as portas para o routinator
+EXPOSE 8323 3323
+
+COPY ./experiments/B/start_extractor.sh /
+
+# Configurar o container para iniciar com o shell
+CMD ["/bin/bash", "-c", "source /start_extractor.sh"]
