@@ -1,0 +1,34 @@
+# version: "3.8"
+
+services:
+  extraction:
+    build:
+      context: ../../
+      dockerfile: ./experiments/A/dockerfile.extractor
+    volumes:
+      - ./mirak_data:/workspaces/project/output
+    command: ["/bin/bash", "-c", "source /start_extractor.sh"]
+    ports:
+      - "8081:80"
+      - "8323:8323"
+      - "3323:3323"
+    networks:
+      - isolated_network
+
+  evaluation:
+    build:
+      context: ../../
+      dockerfile: ./experiments/A/dockerfile.app
+    volumes:
+      - ./mirak_data:/workspaces/project/input
+      - ./report_data:/workspaces/project/output
+    command: ["tail", "-f", "/dev/null"]
+    networks:
+      - isolated_network
+
+volumes:
+  shared_data:
+  evaluation_data:
+
+networks:
+  isolated_network:
