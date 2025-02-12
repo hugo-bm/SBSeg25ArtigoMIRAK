@@ -11,13 +11,13 @@
       "args": [
         "evaluate",
         "-v",
-        "src/assets/output_new_test_debian_10.json",
+        "src/assets/output_for_debug.json",
         "outputFinal"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
         "NODE_ENV": "development",
-        
+        "API_NVD_KEY": "33e43699-ce1a-4aca-9d03-54b32b77f3e1"
       },
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
