@@ -15,12 +15,29 @@
   },
   "keywords": [
     "cve",
-    "cve",
     "search",
+    "RPKI",
     "NVD",
     "MIRAK"
   ],
-  "author": "Hugo Batalha Moreno",
+  "contributors": [
+    {
+      "name": "Hugo Batalha Moreno",
+      "email": "hugomb123@hotmail.com"
+    },
+    {
+      "name": "Yuri de Abreu de Melo",
+      "email": "abreumelo@ime.eb.br"
+    },
+    {
+      "name": "Frederico Sauer Guimarães Oliveira",
+      "email": "fredsauer@uezo.edu.br"
+    },
+    {
+      "name": "Ronaldo Moreira Salles",
+      "email": "salles@ime.eb.br"
+    }
+  ],
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.11.1",
