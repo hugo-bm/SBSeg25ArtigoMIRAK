@@ -1,6 +1,0 @@
-[submodule "mirak-app"]
-	path = mirak-app
-	url = /home/hdev/project_mirak
-[submodule "mirak-extractor"]
-	path = mirak-extractor
-	url = /home/hdev/project_mirak
