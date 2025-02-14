@@ -1,10 +1,12 @@
 # MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI
 
-Resumo do artigo: O RPKI vem sendo discutido na literatura como principal forma de robustecimento do roteamento BGP. No entanto alguns trabalhos evidenciaram oportunidades de ataques ao próprio sistema de validação de rotas, justificando o esforço na resiliência desse ambiente. Este artigo apresenta o artefato MIRAK, que realiza de forma automatizada a identificação de vulnerabilidades conhecidas, contribuindo para reduzir o risco de ataques. Os resultados mostraram números animadores, motivando o investimento para aprimorar a sua eficiência. 
+Este repositório está vinculado ao artigo "MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI", de Melo, Y., Oliveira, F., Salles, R., Santos, A. e Moreno, H. O artigo foi enviado para publicação no Salão de Ferramentas do SBRC 2025.
+
+Resumo do artigo: "O RPKI vem sendo discutido na literatura como principal forma de robustecimento do roteamento BGP. No entanto alguns trabalhos evidenciaram oportunidades de ataques ao próprio sistema de validação de rotas, justificando o esforço na resiliência desse ambiente. Este artigo apresenta o artefato MIRAK, que realiza de forma automatizada a identificação de vulnerabilidades conhecidas, contribuindo para reduzir o risco de ataques. Os resultados mostraram números animadores, motivando o investimento para aprimorar a sua eficiência". 
 
 ## Resumo
 
-Resumo descrevendo o objetivo do artefato
+Resumo descrevendo o objetivo do artefato {Fala Yuri! Tem que completar este requisito.}
 
 
 # Estrutura do Repositório
@@ -20,6 +22,7 @@ Resumo descrevendo o objetivo do artefato
         - [Tecnologias utilizadas](#tecnologias-utilizadas-1)
         - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software-1)
         - [Descrição dos campos do relatório em CSV](#descrição-dos-campos-do-relatório-em-csv)
+  - [Acessar o código-fonte](#download-do-código-fonte)
 - [Dependências](#dependências)
     - [Mirak-extractor](#mirak-extractor-1)
         - [Dependências Gerais](#dependências-gerais)
@@ -32,29 +35,28 @@ Resumo descrevendo o objetivo do artefato
 - [Preocupações com segurança](#preocupações-com-segurança)
 - [Instalação](#instalação)
     - [Mirak-extractor](#mirak-extractor-2)
-        - [Acessar o código-fonte](#download-do-código-fonte)
         - [Construção do pacote](#construção-do-pacote)
         - [Instalação do pacote](#instalação-do-pacote)
         - [Processo automatizado de construção e instalação](#processo-automatizado-de-construção-e-instalação)
         - [Remoção do pacote](#remoção-do-pacote)
     - [Mirak-app](#mirak-app-2)
-        - [Acessar o código-fonte](#download-do-código-fonte)
-        - [Construção do pacote](#construção-do-pacote)
+        - [Construção do pacote](#construção-do-pacote-1)
             - [Tanspilação](#transpilação-typescript--javascript)
             - [Empacotamento](#construção-do-pacote-deb)
-        - [Instalação do pacote](#instalação-do-pacote)
+        - [Instalação do pacote](#instalação-do-pacote-1)
+        - [Remoção do pacote](#remoção-do-pacote-1)
 - [Teste mínimo](#teste-mínimo)
 - [Uso individual das aplicações](#uso-individual-das-aplicações)
     - [Mirak-extractor](#mirak-extractor-3)
         - [Testando com Docker](#testando-com-docker)
-        - [Cuidados antes de começar](#cuidados-antes-de-começar)
-        - [Usando o Mirak-extractor no Docker](#usando-o-mirak-extractor-no-docker)
-        - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados)
+          - [Cuidados antes de começar](#cuidados-antes-de-começar)
+          - [Usando o Mirak-extractor no Docker](#usando-o-mirak-extractor-no-docker)
+          - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados)
     - [Mirak-app](#mirak-app-3)
         - [Testando com Docker](#testando-com-docker-1)
-        - [Cuidados antes de começar](#cuidados-antes-de-começar-1)
-        - [Usando o Mirak-extractor no Docker](#-usando-o-mirak-app-no-docker-1)
-        - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados-1)
+          - [Cuidados antes de começar](#cuidados-antes-de-começar-1)
+          - [Usando o Mirak-extractor no Docker](#-usando-o-mirak-app-no-docker-1)
+          - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados-1)
 - [Experimentos](#experimentos)
     - [Objetivo do experimento A](#objetivo-do-experimento-a)
     - [Objetivo do experimento B](#objetivo-do-experimento-b)
@@ -66,12 +68,14 @@ Resumo descrevendo o objetivo do artefato
 
 # Selos Considerados
 
-Os autores consideram, para fins de avaliação, os seguintes selos: o selo D - Artefatos Disponíveis; o selo F - Artefatos Funcionais; e o selo R - Artefatos Reprodutíveis. Para isso, foi fornecido um documento presente neste repositório, bem como códigos e scripts para obter os resultados em um ambiente simulado usando o Docker e o Docker Compose.
+Os autores consideram, para fins de avaliação, os seguintes selos: o selo D - Artefatos Disponíveis; o selo F - Artefatos Funcionais; e o selo R - Artefatos Reprodutíveis.  Para esse fim, este repositório disponibiliza códigos e scripts essenciais para a obtenção dos resultados em um ambiente simulado com Docker e Docker Compose.
 
 </br>
 
 ---
 # Informações básicas
+
+Esta seção fornece informações fundamentais sobre todos os componentes necessários para a execução e replicação dos experimentos, incluindo a descrição completa do ambiente de execução, bem como os requisitos de hardware e software.
 
 </br>
 
@@ -84,7 +88,7 @@ O Mirak-extractor é uma ferramenta prática e rápida que tem como objetivo dia
 
 ### Funcionalidades
 
-**Extração de informações**: Em suma, o usuário informa um caminho junto com o nome do arquivo, as informações do sistema operacional são obtidas de arquivos do sistema ou do usuário, inicia-se a busca por aplicativos instalados, as principais características e identificador para cada software são armazenados, são obtidas as informações de portas de rede e executa-se a transformação e exportação do arquivo. O processo tem como base as informações que definem o sistema operacional de forma que o permita selecionar qual algoritmo de extração de informações para a identificação de aplicações será utilizado. Os seguintes arquivos são utilizados, sendo apenas um destes necessário:
+**Extração de informações**: De forma geral, o usuário fornece um caminho e o nome do arquivo, a partir do qual as informações do sistema operacional são extraídas de arquivos do sistema ou do usuário. Em seguida, inicia-se a identificação dos aplicativos instalados, armazenando suas principais características e identificadores. O processo também inclui a obtenção de informações sobre portas de rede, seguido pela exportação dos dados. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção do algoritmo adequado para a identificação das aplicações. Para esse procedimento, são utilizados os seguintes arquivos, sendo necessário apenas um deles:
 
 - os-release;
 - lsb-release;
@@ -101,35 +105,35 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 
 #### **Linguagens e Runtime**
 
-- **Python** – Linguagem de programação de alto nível, focada em legibilidade e produtividade.
+- **Python** – Linguagem de programação de alto nível, projetada para promover legibilidade e aumentar a produtividade.
 
 #### **Frameworks e Bibliotecas**
 
-- **Typer** – Framework para criação de CLIs em Python com base em Type Hints.
+- **Typer** – Framework para desenvolvimento de interfaces de linha de comando (CLI) em Python, baseado em Type Hints.
 
-- **TQDM** – Biblioteca para exibir barras de progresso em loops e processos iterativos.
+- **TQDM** – Biblioteca para exibição de barras de progresso em loops e processos iterativos.
 
-- **Psutil** – Fornece informações sobre processos e uso de recursos do sistema, como CPU e memória.
+- **Psutil** – Biblioteca que fornece informações sobre processos e o uso de recursos do sistema, como CPU e memória.
 
 #### **Testes e Cobertura**
 
-- **Pytest** – Estrutura de testes para Python que facilita a criação de testes unitários e funcionais.
+- **Pytest** – Framework de testes para Python, que simplifica a criação de testes unitários e funcionais.
 
-- **Mock** – Ferramenta para criação de mocks em testes, permitindo simular objetos e comportamentos.
+- **Mock** – Ferramenta para a criação de mocks em testes, permitindo a simulação de objetos e comportamentos.
 
 #### **Ferramentas de Qualidade e Formatação**
 
-- **Flake8** – Ferramenta para análise de código Python, combinando PEP 8, Pyflakes e McCabe.
+- **Flake8** – Ferramenta de análise estática para código Python que integra verificações de conformidade com a PEP 8, detecção de erros por meio do Pyflakes e avaliação da complexidade do código utilizando McCabe.
 
-- **Black** – Formatador de código opinativo para Python, garantindo estilo consistente.
+- **Black** – Formatador de código opinativo para Python, projetado para garantir um estilo consistente e padronizado, priorizando a legibilidade e a uniformidade do código.
 
-- **Pylint** – Ferramenta para análise estática de código Python, verificando erros e boas práticas.
+- **Pylint** – Ferramenta de análise estática para código Python que identifica erros, avalia a conformidade com boas práticas de programação e sugere melhorias para a qualidade do código.
 
 #### **Gerenciamento e Empacotamento**
 
-- **Setuptools** – Ferramenta para empacotamento e distribuição de projetos Python.
+- **Setuptools** – Ferramenta utilizada para o empacotamento e a distribuição de projetos em Python, fornecendo suporte para a gestão de dependências e a criação de pacotes instaláveis.
 
-- **Wheel** – Formato de distribuição binária para pacotes Python, acelerando a instalação.
+- **Wheel** – Formato de distribuição binária para pacotes Python, projetado para otimizar e agilizar o processo de instalação, reduzindo a necessidade de compilação durante a implementação.
 
 </br>
 
@@ -154,7 +158,7 @@ Este software integra o projeto MIRAK, e tem como objetivo auxiliar os profissio
 
 ### Funcionalidades
 
-**Avaliação do ambiente de execução RPKI**: as informações contidas no arquivo MIRAK são utilizadas para identificar se o ambiente que executa o RPKI está vulnerável ou não. Em primeiro lugar, é verificado se os dados dos identificadores estão corretos e, caso necessário, são aplicadas correções. Em seguida, são encontradas vulnerabilidades conhecidas para cada software, inclusive o sistema operacional. Com base nos resultados, analisa-se se essas vulnerabilidades se aplicam aos softwares encontrados. Em seguida, é identificada a importância desses softwares no contexto do RPKI e se eles possuem configurações de rede como portas abertas. Por fim, é apresentado o resultado em tela e, caso sejam encontradas vulnerabilidades, um relatório é exportado.
+**Avaliação do ambiente de execução RPKI**: as informações contidas no arquivo MIRAK são utilizadas para analisar a segurança do ambiente onde o software validador RPKI está sendo executado. Inicialmente, realiza-se a verificação da integridade e correção dos identificadores CPE presentes no sistema. Em seguida, são identificadas vulnerabilidades conhecidas associadas ao software validador e ao sistema operacional. Com base nessa análise, avalia-se a aplicabilidade dessas vulnerabilidades ao ambiente identificado. Posteriormente, determina-se a relevância dos softwares detectados no contexto do RPKI, verificando também configurações de rede, como a presença de portas abertas. Por fim, os resultados da avaliação são exibidos e, caso vulnerabilidades sejam detectadas, um relatório detalhado é gerado para documentação e futuras ações corretivas.
 
 </br>
 
@@ -164,56 +168,57 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 
 #### **Linguagens e Runtime**
 
-- **Node.js**: 12.0.0 ou superior - O Node.js se trata de um runtime JavaScript assíncrono e orientado a eventos baseado no motor V8 do Chrome.
+- **Node.js**: (versão 12.0.0 ou superior) - Ambiente de execução assíncrono e orientado a eventos para JavaScript, baseado no motor V8 do Chrome, permitindo a construção de aplicações escaláveis e de alto desempenho.
 
-- **TypeScript**: 5.6.2 ou superior - O TypeScript é um superset Javascript para prover maior qualidade no desenvolvimento da aplicação.
+- **TypeScript**: (versão 5.6.2 ou superior) - Superset do JavaScript que adiciona tipagem estática e recursos avançados, proporcionando maior robustez, manutenção e qualidade no desenvolvimento da aplicação.
 
 #### **Frameworks e Bibliotecas**
 
-- **Commander**: 12.1.0 – Biblioteca para criação de interfaces CLI em Node.js.
+- **Commander**: (versão 12.1.0) – Biblioteca para desenvolvimento de interfaces de linha de comando (CLI) em Node.js, facilitando a criação e o gerenciamento de comandos e argumentos.
 
-- **Axios**: 1.7.7 – Cliente HTTP baseado em Promises (assíncrono) para fazer requisições web.
+- **Axios**: (versão 1.7.7) – Cliente HTTP baseado em Promises, projetado para a realização de requisições web assíncronas de forma eficiente e simplificada.
 
 #### **Ferramentas de Qualidade e Produtividade**
 
-- **ESLint**: 9.11.1 – Ferramenta de linting para JavaScript que analisa e impõe padrões de código.
+- **ESLint**: (versão 9.11.1) – Ferramenta de linting para JavaScript que realiza a análise estática do código, garantindo conformidade com boas práticas e padrões estabelecidos.
 
-- **Prettier**: 3.3.3 – Formatador de código opinativo para JavaScript e outras linguagens.
+- **Prettier**: (versão 3.3.3) – Formatador de código opinativo para JavaScript e outras linguagens, promovendo um estilo consistente e padronizado.
 
-- **Husky**: 9.1.6 – Gerencia hooks de Git para executar verificações automáticas antes de commits e push.
+- **Husky**: (versão 9.1.6) – Ferramenta para gerenciamento de hooks do Git, permitindo a execução automática de verificações e validações antes da realização de commits e push.
 
-- **Lint-staged**: 15.2.10 – Executa verificações de código apenas nos arquivos alterados no commit.
+- **Lint-staged**: (versão 15.2.10) – Executa verificações de código exclusivamente nos arquivos modificados no commit, otimizando o processo de linting e formatação.
 
 #### **Ferramentas de Desenvolvimento**
-- **Nodemon**: 3.1.4 – Monitora arquivos e reinicia automaticamente aplicações Node.js durante o desenvolvimento.
 
-- **Dotenv**: 16.4.7 – Carrega variáveis de ambiente de um arquivo `.env` para a aplicação.
+- **Nodemon**: (versão 3.1.4) – Ferramenta para monitoramento de arquivos em projetos Node.js, permitindo a reinicialização automática da aplicação sempre que alterações são detectadas durante o desenvolvimento.
+
+- **Dotenv**: (versão 16.4.7) – Biblioteca responsável por carregar variáveis de ambiente a partir de um arquivo .env, facilitando a configuração e o gerenciamento de credenciais e parâmetros da aplicação.
 
 #### **Manipulação de Dados**
 
-- **CSV-Writer**: 1.6.0 – Biblioteca para escrita de arquivos CSV.
+- **CSV-Writer**: (versão 1.6.0) – Biblioteca para a geração e escrita de arquivos no formato CSV, facilitando a exportação de dados estruturados.
 
-- **JSONStream**: 1.0.3 – Biblioteca para manipulação eficiente de grandes arquivos JSON como streams.
+- **JSONStream**: (versão 1.0.3) – Biblioteca otimizada para o processamento eficiente de grandes arquivos JSON por meio de streams, reduzindo o consumo de memória e melhorando o desempenho.
 
 #### **Interface de Linha de Comando (CLI)**
 
-- **CLI-Progress**: 3.12.0 – Biblioteca para exibir barras de progresso em terminais.
+- **CLI-Progress**: (versão 3.12.0) – Biblioteca para a exibição de barras de progresso em terminais, proporcionando um acompanhamento visual do progresso de operações em linha de comando.
 
-- **Kleur**: 4.1.5 – Biblioteca para adicionar cores e estilos ao terminal.
+- **Kleur**: (versão 4.1.5) – Biblioteca para estilização de saídas no terminal, permitindo a adição de cores e realces para melhor visualização das informações.
 
 #### **Testes e Cobertura**
 
-- **Jest**: 29.7.0 ou superior – Framework de testes em JavaScript com suporte a mocks, spies e snapshots.
+- **Jest**: (versão 29.7.0 ou superior) – Framework de testes para JavaScript, oferecendo suporte a mocks, spies e snapshots, permitindo a criação de testes automatizados eficientes e abrangentes.
 
-- **Coverage**: 6.1.1 – Mede a cobertura de código dos testes, indicando quais partes foram executadas.
+- **Coverage**: (versão 6.1.1) – Ferramenta para análise da cobertura de código em testes, identificando quais trechos foram executados e auxiliando na validação da qualidade dos testes.
 
 #### **Gerenciamento de Pacotes**
 
-- **npm**: 10.7.0 ou superior – Gerenciador de pacotes padrão do Node.js.
+- **npm**: (versão 10.7.0 ou superior) – Gerenciador de pacotes oficial do Node.js, responsável pelo controle de dependências e automação de scripts de desenvolvimento.
 
 #### **Ambiente virtualizado por contêiner**
 
-- **Docker**: 27.2.0 ou superior – Plataforma para criação e gerenciamento de containers.
+- **Docker**: (versão 27.2.0 ou superior) – Plataforma para a criação, gerenciamento e execução de containers, facilitando a implantação e escalabilidade de aplicações em ambientes isolados.
 
 </br>
 
@@ -228,24 +233,23 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 
 </br>
 
-### Descrição dos campos do relatório em CSV:
+### Descrição dos campos do relatório CSV:
 
+- **product** -> Define a nomenclatura atribuída ao software vulnerável conforme registrado na NVD (National Vulnerability Database);
 
-- **product** -> Apresenta a forma como o software vulnerável é nomeado junto a NVD;
+- **vendor** -> Identifica o fabricante ou distribuidor responsável pelo software vulnerável;
 
-- **vendor** -> Representa qual o produtor ou distribuidor do software vulnerável;
+- **type** -> Especifica se o software vulnerável corresponde a uma aplicação instalada ou a um componente integrante do sistema operacional;
 
-- **type** -> Informa se o software vulnerável é uma aplicação instalável ou se faz parte do sistema operacional;
+- **version** -> Indica a versão específica do software que apresenta vulnerabilidades conhecidas;
 
-- **version** -> Informa qual a versão do software com vulnerabilidades;
+- **cve_id** -> Código identificador da vulnerabilidade atribuído pela Mitre, servindo como referência oficial em sites, manuais e documentos técnicos;
 
-- **cve_id** -> Informa o código identificador da vulnerabilidade junto à Mitre. Sendo assim, pode ser utilizada como referência específica a vulnerabilidade em sites, manuais e documentos.
+- **description** -> Fornece uma descrição resumida da vulnerabilidade, destacando seus principais aspectos;
 
-- **description** -> Apresenta a descrição simplificada da vulnerabilidade;
+- **base_score** -> Valor numérico de 0 a 10 que representa a severidade da vulnerabilidade, conforme os critérios estabelecidos pelo padrão CVSS 3.1;
 
-- **base_score** -> Valor de 0 até 10 que reflete o impacto potencial de uma vulnerabilidade seguindo o padrão CSSV 3.1;
-
-- **base_severity** -> Representação escrita do valor base score, utilizando como base a seguinte tabela:
+- **base_severity** -> Classificação textual correspondente ao base_score, conforme a seguinte tabela:
 
 </br>
 
@@ -265,15 +269,30 @@ Fonte: [NVD - CVSS](https://nvd.nist.gov/vuln-metrics/cvss)
 
 </br>
 
-- **software_required**  ->  Informa se o software vulnerável é considerado essencial para o RPKI. Com exceção do sistema operacional.
+- **software_required**  ->  Indica se o software vulnerável é considerado essencial para o funcionamento do validador RPKI, excluindo o sistema operacional;
 
-- **related_port** -> Informa se uma porta de rede em estado de escuta está relacionada ao software;
+- **related_port** -> Identifica se uma porta de rede em estado de escuta está associada ao software vulnerável;
 
-- **port_required** -> Descreve se o software deve ter portas relacionadas para o correto funcionamento da solução RPKI;
+- **port_required** -> Especifica se funcionamento da solução RPKI depende da existência de portas de rede relacionadas ao software;
 
-- **notes** -> Apresenta informações relativas às portas de rede e seu possível impacto no funcionamento do RPKI.
+- **notes** -> Fornece informações adicionais sobre as portas de rede e seu possível impacto no desempenho e na segurança do validador RPKI.
 
 </br>
+
+### Acessar o código-fonte  
+
+</br>
+
+Faça o download do código-fonte acessando o repositório manualmente e selecionando as opções **Code** e, posteriormente, **Download ZIP**.
+
+Após o download, extraia os arquivos para um diretório de sua preferência. Como alternativa, o download também pode ser realizado via wget ou curl. Certifique-se de que as ferramentas wget, curl e unzip estão previamente instaladas no sistema.
+
+```bash
+$ wget https://github.com/hugo-bm/SF25ArtigoMIRAK/archive/refs/heads/master.zip -O master.zip && unzip master.zip && cd SF25ArtigoMIRAK-master
+```
+
+</br>
+
 
 ---
 # Dependências
@@ -282,7 +301,7 @@ Neste projeto, as dependências são divididas em dependências gerais, dependê
 
 ## Mirak-extractor
 
-As dependências de produção são satisfeitas pelo processo de empacotamento, não sendo necessário o uso do comando para instalação. As dependências de desenvolvimento podem ser satisfeitas ao utilizar o script automático de instalação. Mais informações podem ser encontradas em [Processo automatizado de construção e instalação](#processo-automatizado-de-construção-e-instalação).
+As dependências de produção são incorporadas durante o processo de empacotamento, eliminando a necessidade de instalação manual. Já as dependências de desenvolvimento são configuradas automaticamente por meio do script de instalação. Mais informações podem ser encontradas em [Processo automatizado de construção e instalação](#processo-automatizado-de-construção-e-instalação).
 
 ### Dependências gerais
 
@@ -293,21 +312,21 @@ As dependências de produção são satisfeitas pelo processo de empacotamento, 
 ### Dependências de desenvolvimento e construção:
 
 ```bash
-pytest>=8.3.4
-psutil>=5.9.5
-typer>=0.15.1
-mock>=5.1.0
-flake8>=7.1.1
-black>=24.8.0
-pylint>=3.2.7
-wheel>=0.34.2
-tqdm>=4.67.1
-setuptools>=45.2.0
+pytest >= 8.3.4
+psutil >= 5.9.5
+typer >= 0.15.1
+mock >= 5.1.0
+flake8 >= 7.1.1
+black >= 24.8.0
+pylint >= 3.2.7
+wheel >= 0.34.2
+tqdm >= 4.67.1
+setuptools >= 45.2.0
 ```
 
 </br>
 
-O comando para instalar estas dependências é apresentado a seguir.
+O comando necessário para a instalação dessas dependências está apresentado a seguir.
 
 ```bash
 $ pip install -r ./app/requirements_dev.txt
@@ -318,14 +337,14 @@ $ pip install -r ./app/requirements_dev.txt
 ### Dependências de produção:
 
 ```bash
-typer>=0.15.1
-psutil>=5.9.5
-tqdm>=4.67.1
+typer >= 0.15.1
+psutil >= 5.9.5
+tqdm >= 4.67.1
 ```
 
 </br>
 
-Para fazer a instalação, é utilizado o comando abaixo.
+Para realizar a instalação, utilize o seguinte comando.
 
 ```bash
 $ pip install -r ./app/requirements_prod.txt
@@ -340,7 +359,7 @@ $ pip install -r ./app/requirements_prod.txt
 - Node.js 12.0.0 ou superior;
 - Npm 10.7.0 ou superior;
 
-A instalação destas dependências pode ser encontrada na documentação oficial do Node.js através do link: [Node.js — Download Node.js®](https://nodejs.org/pt/download)
+A instalação dessas dependências está detalhada na documentação oficial do Node.js, disponível no seguinte link: [Node.js — Download Node.js®](https://nodejs.org/pt/download)
 
 </br>
 
@@ -348,21 +367,21 @@ A instalação destas dependências pode ser encontrada na documentação oficia
 
 ```json
 {
-    "ajv": "^8.17.1",
-    "ajv-formats": "^3.0.1",
-    "axios": "^1.7.7",
-    "cli-progress": "^3.12.0",
-    "commander": "^12.1.0",
-    "csv-writer": "^1.6.0",
-    "dotenv": "^16.4.7",
-    "jsonstream": "^1.0.3",
-    "kleur": "^4.1.5"
+  "ajv": "^8.17.1",
+  "ajv-formats": "^3.0.1",
+  "axios": "^1.7.7",
+  "cli-progress": "^3.12.0",
+  "commander": "^12.1.0",
+  "csv-writer": "^1.6.0",
+  "dotenv": "^16.4.7",
+  "jsonstream": "^1.0.3",
+  "kleur": "^4.1.5"
   }
 ```
 
 </br>
 
-A instalação é feita a partir do comando:
+A instalação pode ser efetuada utilizando o seguinte comando:
 
 ```bash
 $ npm i --omit=dev
@@ -399,7 +418,7 @@ $ npm i --omit=dev
 
 </br>
 
-A instalação pode ser realizada com o uso do comando:
+A instalação pode ser efetuada utilizando o seguinte comando:
 
 ```bash
 $ npm install --include=dev
@@ -410,7 +429,7 @@ $ npm install --include=dev
 ---
 # Preocupações com segurança
 
-O artefato MIRAK foi criado visando ser minimamente invasivo, apenas extraindo as informações e as processando, sem modificar os arquivos do sistema. Sendo assim, não há riscos para aqueles que o examinarem.
+O artefato MIRAK foi desenvolvido com o objetivo de ser minimamente invasivo, limitando-se à extração e processamento de informações sem realizar qualquer modificação nos arquivos do sistema. Dessa forma, sua utilização não representa riscos para os usuários que o analisarem.
 
 </br>
 
@@ -421,33 +440,27 @@ O artefato MIRAK foi criado visando ser minimamente invasivo, apenas extraindo a
 
 Este processo envolve o **download do repositório**, **construção do pacote** e **instalação do pacote** gerado.
 
-### Acessar o código-fonte  
-
-</br>
-
-Baixe o código-fonte acessando manualmente o repositório e clicando em **Code** e depois em **Download ZIP**.  
-
-Após baixar, extraia os arquivos para um diretório de sua escolha. Ou, alternativamente, faça o download via wget ou curl (substitua <URL> pela URL do arquivo ZIP). Tenha atenção para ter wget  ou curl e unzip instalados previamente.
+Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-extractor, execute o comando a seguir.
 
 ```bash
-$ wget <URL> -O projeto.zip && unzip projeto.zip
+cd mirak-extractor
 ```
 
 ### Construção do pacote
 
 </br>
 
-> **⚠️ Importante** Todas as dependências de desenvolvimento e gerais devem estar instaladas antes de continuar!
+> **⚠️ Importante** Certifique-se de que todas as dependências de desenvolvimento e gerais estejam devidamente instaladas antes de prosseguir.
 
 </br>
 
-O processo de construção foi feito utilizando o "``setuptools``" para gerar um pacote com a extensão "``tar.gz``", que será usado pelo gerenciador de pacotes "``PIP``". O gerenciador PIP foi escolhido por ser o mais utilizado e ser o padrão para Python. A seguir, é apresentado o comando para a criação do pacote:
+O processo de construção foi realizado utilizando "``setuptools``" para gerar um pacote no formato "``tar.gz``", destinado ao gerenciamento pelo "``PIP``". O PIP foi escolhido por ser o gerenciador de pacotes mais amplamente adotado e o padrão oficial para Python. A seguir, apresenta-se o comando utilizado para a criação do pacote:
 
 ```bash
 $ python3 raiz_do_projeto/setup.py sdist
 ```
 
-O pacote final será criado na pasta "``dist``".
+O pacote final será criado na diretório "``dist``".
 
 </br>
 
@@ -463,11 +476,11 @@ O pacote final será criado na pasta "``dist``".
 
 </br>
 
-Para realizar a instalação do Mirak-extractor, é necessário ter uma versão compatível do Python instalada. O processo de instalação será descrito a seguir:
+Para instalar o Mirak-extractor, é essencial que uma versão compatível do Python esteja previamente instalada. O procedimento de instalação é descrito a seguir:
 
 </br>
 
-> **⚠️ Importante** O procedimento foi realizado em um ambiente Ubuntu, utilizando o Python na versão 3.8. Dessa forma, os comandos apresentados utilizam ``python3.8``. Caso esteja utilizando uma versão diferente, substitua pelo comando correspondente à sua versão do Python.
+> **⚠️ Importante** O procedimento foi executado em um ambiente Ubuntu, utilizando ``python3.8``. Caso esteja utilizando uma versão diferente, substitua pelo comando correspondente à versão do Python instalada em seu ambiente.
 
 </br>
 
@@ -481,17 +494,17 @@ $ apt-get upgrade
 
 </br>
 
-2.	Em seguida, deve realizar a instalação seguindo o comando abaixo:
+2.	Posteriormente, a instalação deve ser realizada utilizando o seguinte comando:
 
 ```bash
 $ python3.8 -m pip install ./dist/mirak-extractor-1.0.0.tar.gz
 ```
 
-- Caso não tenha instalado previamente as dependências gerais, deve instalar o Python seguindo este [tutorial](https://python.org.br/instalacao-linux/)
+- Caso as dependências gerais não tenham sido previamente instaladas, a instalação do Python deve ser realizada conforme as instruções disponíveis neste [tutorial](https://python.org.br/instalacao-linux/)
 
 </br>
 
-3.	Para verificar se a instalação foi concluída com sucesso, execute o seguinte comando.
+3.	Para confirmar a conclusão bem-sucedida da instalação, execute o seguinte comando:
 
 ```bash
 $ mirak-extractor --help
@@ -511,7 +524,7 @@ $ mirak-extractor --help
 
 </br>
 
-Na pasta “scripts” contém códigos automatizados para realizar os processos de instalação de dependências, construção do pacote e a instalação do mesmo. Existem scripts para cada sistema nos quais o Mirak-extractor fornece suporte.
+A pasta “``scripts``” contém códigos automatizados destinados à execução dos processos de instalação de dependências, construção do pacote e sua respectiva instalação. Estão disponíveis scripts específicos para cada sistema operacional compatível com o Mirak-extractor.
 
 Para Debian ou Ubuntu:
 
@@ -527,7 +540,7 @@ $ ./scripts/install_rhel.sh
 
 </br>
 
-Os scripts realizam uma verificação por versões do Python instaladas, depois apresenta as versões compatíveis. O usuário deverá selecionar qual versão será utilizada para o restante do processo. Se não houver uma versão compatível, será perguntado se o usuário deseja instalar o Python na versão 3.8, que é a mais adequada para a compatibilidade.
+Os scripts executam uma verificação das versões do **Python** instaladas no sistema e exibem as opções compatíveis. O usuário deverá selecionar a versão que será utilizada para o restante do processo. Caso nenhuma versão compatível seja encontrada, será solicitada a confirmação para a instalação do **Python 3.8**, considerado pelos autores o mais adequado para garantir a compatibilidade.
 
 Desta forma, o usuário pode executar automaticamente os passos descritos nos itens **Construção do pacote** e **Instalação do pacote**.
 
@@ -545,7 +558,7 @@ Desta forma, o usuário pode executar automaticamente os passos descritos nos it
 
 </br>
 
-Para realizar a remoção, deve apenas executar o comando a seguir:
+Para remover o software, execute o seguinte comando:
 
 ```bash
 $ pip uninstall mirak-extractor
@@ -553,7 +566,7 @@ $ pip uninstall mirak-extractor
 
 Por fim, deve inserir o caractere "**Y**" para confirmar a exclusão.
 
-Para realizar a remoção da dependência ``Python`` quando instalada em conjunto, deve-se utilizar o comando para remoção apropriado da sua plataforma.
+Para remover a dependência ``Python``, caso tenha sido instalada juntamente com o software, utilize o comando de remoção apropriado para sua plataforma.
 
 </br>
 
@@ -569,23 +582,10 @@ Para realizar a remoção da dependência ``Python`` quando instalada em conjunt
 
 Este processo envolve o **download do repositório**, **construção do pacote** e **instalação do pacote** gerado.
 
-
-### Acessar o código-fonte 
-
-</br>
-
-
-
-
-Baixe o código-fonte manualmente acessando o repositório e clicando em **Código** e depois em **Download ZIP**.  
-
-Após baixar, extraia os arquivos para um diretório de sua escolha.  
-
-Ou, alternativamente, faça o download via wget ou curl (substitua <URL> pela URL do arquivo ZIP). Tenha atenção para ter wget ou curl e unzip instalados previamente.
-
+Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-extractor, execute o comando a seguir.
 
 ```bash
-$ wget <URL> -O projeto.zip && unzip projeto.zip
+cd mirak-extractor
 ```
 
 </br>
@@ -594,17 +594,17 @@ $ wget <URL> -O projeto.zip && unzip projeto.zip
 
 </br>
 
-> **⚠️ Importante:** Certifique-se de ter instalado o Node.js e o NPM
+> **⚠️ Importante:** Certifique-se de que o Node.js e o NPM estão devidamente instalados.
 
 </br>
 
-Antes de iniciar, deve ter todas as dependências de desenvolvimento instaladas. Para isso, insira o comando a seguir, caso ainda não tenha feito:
+Antes de iniciar, é necessário garantir que todas as dependências de desenvolvimento estejam instaladas. Para isso, utilize o seguinte comando, caso ainda não tenha realizado a instalação:
 
 ```bash
 $ npm install --include=dev
 ```
 
-O processo de construção possui duas etapas principais: transpilação e empacotamento.
+O processo de construção é composto por duas etapas principais: transpilação e empacotamento.
 
 </br>
 
@@ -612,7 +612,7 @@ O processo de construção possui duas etapas principais: transpilação e empac
 
 </br>
 
-Realizar o processo de transpilação utilizando o script automatizado nomeado como ``build``.
+Executar o processo de transpilação por meio do script automatizado denominado ``build``.
 
 Exemplo: 
 
@@ -620,7 +620,7 @@ Exemplo:
 $ npm run build
 ```
 
-Será criada uma pasta chamada "``build``", contendo o código para execução em um ambiente de produção;
+Uma pasta denominada "``build``" será gerada, contendo o código preparado para execução em um ambiente de produção.
 
 
 </br>
@@ -630,13 +630,13 @@ Será criada uma pasta chamada "``build``", contendo o código para execução e
 
 </br>
 
-É necessário executar o processo de empacotamento utilizando o script automatizado "``packaging.sh``", disponível na pasta "``script``".
+O processo de empacotamento deve ser executado por meio do script automatizado "``packaging.sh``", localizado no diretório "``script``".
 
 ```bash
 $ source ./packaging.sh
 ```
 
-O pacote será criado na pasta "dist".
+O pacote será gerado no diretório "dist".
 
 </br>
 
@@ -652,7 +652,7 @@ O pacote será criado na pasta "dist".
 
 </br>
 
-Atualmente, a solução só foi portada para distribuições Debian, como o Ubuntu. É necessário ter uma conexão com a internet para continuar. O processo será descrito a seguir:
+Atualmente, a solução foi portada exclusivamente para distribuições baseadas em Debian, como o Ubuntu. Para prosseguir, é indispensável uma conexão com a internet. O procedimento está detalhado a seguir:
 
 </br>
 
@@ -660,7 +660,7 @@ Atualmente, a solução só foi portada para distribuições Debian, como o Ubun
 
 </br>
 
-1.  Primeiramente, é necessário aplicar a atualização do repositório e a atualização dos pacotes instalados.
+1.  Inicialmente, deve-se realizar a atualização do repositório e dos pacotes instalados.
 
 ```bash
 $ apt update
@@ -670,7 +670,7 @@ $ apt upgrade
 
 </br>
 
-2.  Em seguida, deve executar a instalação seguindo o comando indicado abaixo:
+2.  Posteriormente, a instalação deve ser realizada utilizando o comando indicado a seguir.
 
 ```bash
 
@@ -678,11 +678,11 @@ $ apt install ./dist/mirak-app.deb
 
 ```
 
- - Caso não tenha instalado previamente as dependências, será perguntado se gostaria de fazer essa instalação. Digite "**Y**" para confirmar a ação.
+ - Caso as dependências não tenham sido previamente instaladas, será solicitada a confirmação para proceder com a instalação. Para confirmar, insira "**Y**".
 
  </br>
 
-3.  Para verificar se a instalação ocorreu corretamente, execute o comando abaixo:
+3.  Para confirmar se a instalação foi concluída corretamente, execute o seguinte comando:
 
 ```bash
 $ mirak-app -V
@@ -700,13 +700,11 @@ $ mirak-app -V
 
 </br>
 
-4. Todas as configurações do aplicativo são feitas em variáveis de ambiente ou em um arquivo “.env”. Para facilitar o processo de configuração, pode ser utilizado o comando a seguir:
+4. Todas as configurações do aplicativo são feitas em variáveis de ambiente ou em um arquivo “``.env``”. Para facilitar o processo de configuração, pode ser utilizado o comando a seguir:
 
 </br>
 
->  **❗ Aviso:** Para o melhor funcionamento, é necessário o uso de uma ``Chave de API`` da NVD.
-
-Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
+>  **❗ Aviso:** Para garantir o funcionamento adequado, é necessário o uso de uma ``Chave de API`` da NVD. A utilização da chave viabiliza um fluxo mais robusto de requisições, contribuindo para a redução do tempo de execução do Mirak-app. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
 
 </br>
 
@@ -750,7 +748,7 @@ Por fim, deve inserir o caractere "**Y**" para confirmar a exclusão.
 
 </br>
 
-No caso de instalar as dependências NodeJS e NPM junto à instalação do aplicativo, o processo de remoção não remove estas dependências. Para removê-las, deve executar este comando:
+Caso as dependências Node.js e NPM tenham sido instaladas juntamente com o aplicativo, o processo de remoção não as excluirá automaticamente. Para removê-las, execute o seguinte comando:
 
 ```bash
 $ apt autoremove
@@ -760,24 +758,24 @@ Por fim, deve inserir o caractere "**Y**" para confirmar a exclusão.
 
 </br>
 
-> **⚠️ Importante:** O comando "`apt autoremove`" desinstala qualquer dependência órfã, caso esteja sendo utilizado por outra aplicação não será removido.
+> **⚠️ Importante:** O comando "`apt autoremove`" desinstala qualquer dependência órfãs. No entanto, caso uma dependência esteja em uso por outra aplicação, ela não será desinstalada.
 
 </br>
 
 ---
 # Teste mínimo
 
-Um teste básico de execução possibilita que os revisores verifiquem as funcionalidades do artefato e confirmem seu correto funcionamento. Esse teste é essencial para a identificação de problemas durante o processo de instalação, assegurando a correta instalação do artefato. Para verificar se o Mirak-app está instalado corretamente e se seu binário está funcionando adequadamente, basta executar o seguinte comando.
+A realização de um teste básico de execução permite que os revisores avaliem as funcionalidades do artefato e confirmem seu correto funcionamento. Esse procedimento é fundamental para a identificação de eventuais problemas durante a instalação, garantindo que o artefato tenha sido corretamente instalado. Para verificar se o Mirak-app foi instalado corretamente e se seu binário está operando adequadamente, utilize o seguinte comando:
 
 ```bash
 $ mirak-app --help
 ```
 
-A opção "--help" que imprime uma explicação sucinta do funcionamento.
+A opção "``--help``" exibe uma descrição sucinta sobre o funcionamento do aplicativo.
 
 </br>
 
-Para verificar a instalação e o funcionamento do Mirak-extractor, basta executar o comando apresentado abaixo.
+Da mesma forma, para verificar a instalação e o funcionamento do Mirak-extractor, execute o seguinte comando:
 
 ```bash
 $ mirak-extractor --help
@@ -792,9 +790,9 @@ $ mirak-extractor --help
 
 </br>
 
-Após a instalação da aplicação, o mesmo pode ser invocado digitando "``mirak-extractor``". 
+Após a instalação, a aplicação pode ser executada digitando "``mirak-extractor``". 
 
-A aplicação possui apenas um propósito, desta forma, não possui comandos CLI. Deve ser chamado passando a opção "--output" com o caminho relativo ao destino do arquivo, acrescido do nome e da extensão “.json”. Como ilustrado no exemplo abaixo:
+Como a aplicação possui um único propósito, não há suporte para comandos CLI adicionais. Para utilizá-la, é necessário especificar a opção "--output", indicando o caminho relativo para o destino do arquivo, incluindo seu nome e a extensão “.json”, conforme ilustrado no exemplo abaixo:
 
 ```bash
 $ mirak-extractor --output caminho_arquivo_mira/nome_do_arquivo.json
@@ -806,7 +804,7 @@ $ mirak-extractor --output caminho_arquivo_mira/nome_do_arquivo.json
 
 </br>
 
-Caso não seja informada nenhuma opção, será exportado o arquivo dentro do diretório ao qual o aplicativo foi chamado.
+Se nenhuma opção for especificada, o arquivo será exportado para o diretório a partir do qual a aplicação foi executada.
 
 </br>
 
@@ -823,11 +821,11 @@ Caso não seja informada nenhuma opção, será exportado o arquivo dentro do di
 
 </br>
 
-É possível utilizar um ambiente Docker para testar o ``mirak-extractor`` sem precisar instalá-lo diretamente no sistema. Essa abordagem permite configurar de forma ágil um ambiente isolado, garantindo que todos os requisitos sejam atendidos.
+O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua utilização sem a necessidade de instalação direta no sistema. Essa abordagem facilita a configuração de um ambiente isolado de maneira eficiente, garantindo que todos os requisitos sejam atendidos.
 
 </br>
 
-> **⚠️ Importante:** Os exemplos a seguir foram elaborados com base no Ubuntu, porém, podem ser necessárias pequenas adaptações para outras distribuições suportadas.
+> **⚠️ Importante:** Os exemplos apresentados a seguir foram elaborados com base no Ubuntu. No entanto, podem ser necessárias pequenas adaptações para outras distribuições compatíveis.
 
 </br>
 
@@ -839,7 +837,7 @@ Caso não seja informada nenhuma opção, será exportado o arquivo dentro do di
 
 </br>
 
-Antes de começar, deve ter certeza de que o Docker daemon esteja em execução. O comando a seguir pode ser utilizado para este fim.
+Antes de iniciar, é necessário garantir que o **Docker daemon** esteja em execução. Para verificar seu status, utilize o seguinte comando:
 
 ```bash
 $ sudo service docker status
@@ -851,7 +849,7 @@ ou
 $ sudo systemctl status docker
 ```
 
-Caso o serviço se encontre desabilitado, pode utilizar os seguintes comandos:
+Se o serviço estiver desativado, utilize os seguintes comandos para iniciá-lo:
 
 ```bash
 $ sudo service docker start
@@ -864,9 +862,7 @@ $ sudo systemctl enable docker.service
 $ sudo systemctl enable containerd.service
 ```
 
-Para mais informações, acesse a documentação oficial através do link: 
-
-[Documentação oficial do Docker](https://docs.docker.com/engine/install/)
+Para mais informações, acesse a documentação oficial através do link: [Documentação oficial do Docker](https://docs.docker.com/engine/install/)
 
 </br>
 
@@ -874,11 +870,11 @@ Para mais informações, acesse a documentação oficial através do link:
 
 </br>
 
-> **⚠️ Importante**  O tutorial a seguir foi feito no Ubuntu. Alguns passos devem ser minimamente alterados para compatibilidade com o RHEL.
+> **⚠️ Importante**  O tutorial a seguir foi desenvolvido com base no Ubuntu. Para garantir a compatibilidade com o RHEL, algumas etapas podem necessitar de ajustes mínimos.
 
 </br>
 
-Inicialmente, vamos criar uma pasta no host chamada "``output``". Na pasta output será onde vamos obter o arquivo MIRAK em formato JSON. Para realizar este passo, execute o comando a seguir:
+Primeiramente, é necessário criar um diretório no host denominado "``output``", que será utilizado para armazenar o arquivo MIRAK no formato JSON. Para realizar essa etapa, execute o seguinte comando:
 
 ```bash
 $ mkdir output
@@ -886,7 +882,7 @@ $ mkdir output
 
 </br>
 
-Na próxima etapa, vamos construir a imagem, então tenha certeza de estar na raiz do projeto onde contém o arquivo "**``dockerfile.example``**". Em seguida, é necessário executar o comando de construção da imagem, conforme demonstrado abaixo:
+Na etapa seguinte, será realizada a construção da imagem. Certifique-se de que está no diretório raiz do projeto, onde está localizado o arquivo "**``dockerfile.example``**". Em seguida, execute o comando abaixo para iniciar o processo de construção da imagem:
 
 ```bash
 $ docker build -f 'dockerfile.example' -t mirak-extractor-image .
@@ -894,7 +890,7 @@ $ docker build -f 'dockerfile.example' -t mirak-extractor-image .
 
 </br>
 
-Nesta etapa, será construído e executado um contêiner contendo o nosso ambiente de execução para este exemplo.
+Nesta etapa, será realizada a construção e a execução de um contêiner contendo o ambiente de execução necessário para este exemplo.
 
 ```bash
 $ docker run -dit --name mirak-extractor-container -v $(pwd)/output:/workspaces/project/output  mirak-extractor-image
@@ -902,7 +898,7 @@ $ docker run -dit --name mirak-extractor-container -v $(pwd)/output:/workspaces/
 
 </br>
 
-Essa etapa é muito importante, pois iremos nos conectar ao terminal do contêiner. Execute o seguinte comando:
+Essa etapa é essencial, pois será estabelecida a conexão com o terminal do contêiner. Para isso, execute o seguinte comando:
 
 ```bash
 $ docker exec -it mirak-extractor-container bash
@@ -910,7 +906,7 @@ $ docker exec -it mirak-extractor-container bash
 
 </br>
 
-Agora, você deve estar conectado ao terminal do contêiner. O próximo passo é executar os seguintes comandos para inicializar o routinator:
+Neste momento, a conexão com o terminal do contêiner deve estar estabelecida. O próximo passo consiste na execução dos seguintes comandos para inicializar o **Routinator**:
 
 ```bash
 $ routinator init --accept-arin-rpa -f 
@@ -920,7 +916,7 @@ $ routinator server --http 0.0.0.0:8323 --rtr 0.0.0.0:3323 --http 0.0.0.0:9556 -
 
 </br>
 
-No próximo passo, serão aplicadas as etapas descritas em **Construção do pacote** e **Instalação do pacote** para finalizar a instalação. Neste exemplo, iremos ilustrar o uso do script para instalação automatizada de dependências e do mirak-extractor. Execute o script abaixo:
+Na próxima etapa, serão aplicados os procedimentos descritos em **Construção do Pacote** e **Instalação do Pacote** para concluir o processo de instalação. Neste exemplo, será demonstrado o uso do script para a instalação automatizada das dependências e do Mirak-extractor. Para isso, execute o seguinte script:
 
 ```bash
 $ source ./scripts/install_ubuntu_debian.sh
@@ -928,19 +924,17 @@ $ source ./scripts/install_ubuntu_debian.sh
 
 </br>
 
-Neste exemplo, não há uma instalação prévia do Python, portanto, será perguntado se deseja instalar o Python.
-
-Responda digitando no console o caractere "``y``". Vale ressaltar que o mesmo deve estar em minúsculo.
+Neste exemplo, não há uma instalação prévia do Python, portanto, será solicitada a confirmação para proceder com a instalação. Responda digitando no console o caractere "``y``". Vale ressaltar que o mesmo deve estar em minúsculo.
 
 </br>
 
-Após o Python ser instalado, será perguntado qual versão do software você deseja utilizar para construir e instalar o aplicativo. 
+Após a instalação do Python, será solicitada a seleção da versão do software a ser utilizada para a construção e instalação do aplicativo.  
 
-Responda digitando no console o numeral "``1``" para selecionar a versão instalada compatível.
+Para prosseguir, insira o numeral "``1``" no console, selecionando a versão instalada compatível.
 
 </br>
 
-Após finalizar, o aplicativo estará disponível para uso digitando “mirak-extractor” no console. Por fim, vamos executar o comando passando como opção o caminho até a pasta ``output``. A pasta é importante por estar "espelhada" com a pasta output no host. Dessa forma, o arquivo criado na pasta output do contêiner será copiado para a pasta output do host, permitindo que seja utilizado posteriormente. Para continuar, insira o seguinte comando no console:
+Após a conclusão do processo, o aplicativo estará disponível para uso ao executar “mirak-extractor” no console. Por fim, será necessário executar o comando especificando o caminho para o diretório ``output``. Esse diretório é essencial, pois está "espelhado" com a pasta output no host. Dessa forma, o arquivo gerado no contêiner será automaticamente copiado para o diretório correspondente no host, permitindo seu uso posterior. Para prosseguir, execute o seguinte comando no console:
 
 ```bash
 $ mirak-extractor --output output/mirak.json
@@ -948,7 +942,7 @@ $ mirak-extractor --output output/mirak.json
 
 </br>
 
-Após concluir o processo, você será notificado da localização do arquivo. Para verificar, insira o próximo comando:
+Após a conclusão do processo, uma notificação informará a localização do arquivo gerado. Para verificar, execute o seguinte comando:
 
 ```bash
 $ ls output
@@ -956,7 +950,7 @@ $ ls output
 
 </br>
 
-Agora você verá que um arquivo com a extensão "``.json``" foi criado. Para finalizar a conexão com o contêiner, digite "``exit``" no console. Agora, estando no ``host``, execute o seguinte comando:
+Agora, será possível visualizar um arquivo com a extensão "``.json``" criado no diretório especificado. Para encerrar a conexão com o contêiner, digite "``exit``" no console. Em seguida, estando no ``host``, execute o seguinte comando:
 
 ```bash
 $ cat output/mirak.json
@@ -964,7 +958,7 @@ $ cat output/mirak.json
 
 </br>
 
-**Será escrito o conteúdo do arquivo em tela! Parabéns, você executou o processo deste exemplo com sucesso!**
+**O conteúdo do arquivo será exibido na tela! Parabéns, você executou o processo deste exemplo com sucesso!**
 
 </br>
 
@@ -972,7 +966,7 @@ $ cat output/mirak.json
 
 </br>
 
-Se for de interesse remover a imagem e o contêiner Docker criados no exemplo, digite os seguintes comandos:
+Caso seja necessário remover a imagem e o contêiner Docker gerados neste exemplo, execute os seguintes comandos:
 
 ```bash
 # Parar a execução do contêiner
@@ -994,7 +988,7 @@ $ docker image rm mirak-extractor-image
 
 </br>
 
-Após a instalação do aplicativo, o mesmo pode ser invocado digitando “mirak-app”. A aplicação possui dois comandos principais: evaluate e help. O comando help apresenta em tela uma explicação do funcionamento da aplicação.
+Após a instalação, o aplicativo pode ser executado digitando “mirak-app” no console.  A aplicação dispõe de dois comandos principais: "``evaluate``" e "``help``". O comando "``help``" exibe uma descrição detalhada sobre o funcionamento da aplicação.
 
 ```bash
 $ mirak-app help
@@ -1002,7 +996,7 @@ $ mirak-app help
 
 </br>
 
-O comando ``evaluate`` executa a funcionalidade principal e pode ser executado utilizando a opção de escrita em tela ou não. É fortemente recomendado utilizar a opção "**-v**" para a aplicação apresentar as informações do processo em tela. A seguir, um exemplo de como utilizar:
+O comando ``evaluate`` executa a funcionalidade principal da aplicação e pode ser utilizado com ou sem exibição de informações na tela. Recomenda-se fortemente o uso da opção "**-v**", permitindo que o processo apresente detalhes sobre sua execução. A seguir, é apresentado um exemplo de utilização:
 
 ```bash
 $ mirak-app evaluate -v ./caminho_até_o_arquivo_mirak/mirak.json ./pasta_de_saída
@@ -1022,11 +1016,11 @@ $ mirak-app evaluate -v ./caminho_até_o_arquivo_mirak/mirak.json ./pasta_de_sa�
 
 </br>
 
-É possível utilizar um ambiente Docker para testar o `mirak-app` sem a necessidade de instalá-lo diretamente no sistema. Essa abordagem permite configurar rapidamente um ambiente isolado, garantindo que todos os requisitos estejam atendidos.
+O `Mirak-app` pode ser executado em um ambiente Docker, eliminando a necessidade de instalação direta no sistema. Essa abordagem possibilita a configuração rápida de um ambiente isolado, assegurando o cumprimento de todos os requisitos necessários.
 
 </br>
 
-> **⚠️ Importante:** Os exemplos apresentados a seguir foram elaborados com base no Ubuntu, mas é possível que sejam necessárias pequenas alterações para outras distribuições suportadas.
+> **⚠️ Importante:** Os exemplos a seguir foram desenvolvidos com base no Ubuntu. No entanto, podem ser necessárias pequenas adaptações para outras distribuições compatíveis.
 
 </br>
 
@@ -1038,7 +1032,7 @@ $ mirak-app evaluate -v ./caminho_até_o_arquivo_mirak/mirak.json ./pasta_de_sa�
 
 </br>
 
-Antes de começar, deve ter certeza de que o Docker daemon esteja em execução. O comando a seguir pode ser utilizado para este fim.
+Antes de iniciar, é necessário garantir que o **Docker daemon** esteja em execução. Para verificar seu status, utilize o seguinte comando:
 
 ```bash
 $ sudo service docker status
@@ -1052,7 +1046,7 @@ $ sudo systemctl status docker
 
 </br>
 
-Caso o serviço se encontre desabilitado, pode utilizar os seguintes comandos:
+Se o serviço estiver desativado, utilize os seguintes comandos para iniciá-lo:
 
 ```bash
 $ sudo service docker start
@@ -1067,9 +1061,7 @@ $ sudo systemctl enable containerd.service
 
 </br>
 
-Para mais informações, acesse a documentação oficial através do link: 
-
-[Documentação oficial do Docker](https://docs.docker.com/engine/install/)
+Para obter mais informações, consulte a documentação oficial no seguinte link: [Documentação oficial do Docker](https://docs.docker.com/engine/install/)
 
 </br>
 
@@ -1077,7 +1069,7 @@ Para mais informações, acesse a documentação oficial através do link:
 
 </br>
 
-Inicialmente, vamos criar duas pastas no host chamadas "``input``" e "``output``". Na pasta input será colocado o arquivo **``mirak.json``** e a pasta output será onde vamos obter o relatório final em formato csv. Para realizar este passo, execute o comando a seguir:
+Primeiramente, é necessário criar dois diretórios no host: "``input``" e "``output``". O diretório"``input``" será utilizado para armazenar o arquivomirak.json, enquanto o diretório "``output``" conterá o relatório final no formato CSV. Para executar essa etapa, utilize o seguinte comando:
 
 ```bash
 $ mkdir input output
@@ -1085,7 +1077,7 @@ $ mkdir input output
 
 </br>
 
-O arquivo mirak.json deve ser inserido na pasta input, conforme demonstrado na imagem a seguir.
+O arquivo mirak.json deve ser colocado no diretório input, conforme ilustrado na imagem a seguir.
 
 <div align="center">
   <img src="./assets/mirak-app/input_folder_ex_docker.png" width="360">
@@ -1093,7 +1085,7 @@ O arquivo mirak.json deve ser inserido na pasta input, conforme demonstrado na i
 
 </br>
 
-A seguir, vamos construir o pacote com o mirak-app. Para realizar o processo, insira os seguintes comandos:
+Em seguida, será realizada a construção do pacote contendo o Mirak-app. Para executar esse processo, utilize os seguintes comandos:
 
 ```bash
 $ npm run build # Para realizar a transpilação
@@ -1102,7 +1094,7 @@ $ source ./packaging.sh # Para realizar  o processo de empacotamento
 
 </br>
 
-Na próxima etapa, vamos construir a imagem, então tenha certeza de estar na raiz do projeto onde contém o arquivo "``Dockerfile``". Depois, é necessário executar o comando de construção da imagem, como demonstrado abaixo:
+Na etapa seguinte, será realizada a construção da imagem. Certifique-se de que está no diretório raiz do projeto, onde o arquivo "``Dockerfile``" está localizado. Em seguida, execute o comando abaixo para iniciar o processo de construção da imagem:
 
 ```bash
 $ docker build -t mirak-app-image .
@@ -1110,7 +1102,7 @@ $ docker build -t mirak-app-image .
 
 </br>
 
-Nesta etapa, será construído e executado um contêiner contendo o nosso ambiente de execução para este exemplo.
+Nesta etapa, será realizada a construção e a execução de um contêiner contendo o ambiente de execução necessário para este exemplo.
 
 ```bash
 $ docker run -dit \
@@ -1122,7 +1114,7 @@ $ docker run -dit \
 
 </br>
 
-Esta etapa é crucial, uma vez que nos conectaremos ao terminal do contêiner. Execute o seguinte comando:
+Esta etapa é fundamental, pois será estabelecida a conexão com o terminal do contêiner. Para isso, execute o seguinte comando:
 
 ```bash
 $ docker exec -it mirak-app-container bash
@@ -1130,11 +1122,11 @@ $ docker exec -it mirak-app-container bash
 
 </br>
 
-Agora, estando no console conectado ao contêiner, é necessário seguir com os passos abaixo para finalizar a instalação e a configuração da ferramenta.
+Agora, com o console conectado ao contêiner, prossiga com as etapas a seguir para concluir a instalação e a configuração da ferramenta.
 
 </br>
 
-> **❗ Aviso:** Para o melhor funcionamento, é necessário o uso de uma ``Chave de API`` da NVD. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
+> **❗ Aviso:** Para garantir o funcionamento adequado, é necessário o uso de uma ``Chave de API`` da NVD. A utilização da chave viabiliza um fluxo mais robusto de requisições, contribuindo para a redução do tempo de execução do Mirak-app. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
 
 </br>
 
@@ -1158,7 +1150,7 @@ EOL
 
 </br>
 
-Para finalmente executar a aplicação, utilize o comando abaixo: 
+Para executar a aplicação, utilize o seguinte comando: 
 
 ```bash
 $ mirak-app evaluate -v ./input/mirak.json ./output
@@ -1166,7 +1158,7 @@ $ mirak-app evaluate -v ./input/mirak.json ./output
 
 </br>
 
-Por último, é possível retornar ao host utilizando o comando "exit" e obter o relatório em formato CSV na pasta "output".
+Por fim, para retornar ao host, utilize o comando "exit". O relatório em formato CSV estará disponível no diretório "output".
 
 
 <div align="center">
@@ -1179,7 +1171,7 @@ Por último, é possível retornar ao host utilizando o comando "exit" e obter o
 
 </br>
 
-Se for de interesse remover a imagem e o contêiner Docker criados no exemplo, digite os seguintes comandos:
+Caso seja necessário remover a imagem e o contêiner **Docker** criados neste exemplo, execute os seguintes comandos:
 
 ```bash
 # Parar a execução do contêiner
@@ -1199,11 +1191,11 @@ $ docker image rm mirak-app-image
 
 </br>
 
-> **⚠️ Importante** Para estes experiementos sera utilizado o Ubuntu em sua versão 20.04! Não serão feitas correções nestes sistemas visando manter homigeniedade do ambiente para ser possivel uma melhor comparação.
+> **⚠️ Importante** Para esses experimentos, será utilizada a versão 20.04 do Ubuntu. Nenhuma modificação será realizada no sistema, garantindo a homogeneidade do ambiente e permitindo uma comparação mais precisa.
 
 </br>
 
-Para ser possível observar o potencial do projeto, foram estabelecidos dois experimentos simples de serem executados por meio de uma infraestrutura virtualizada. Nesses experimentos, é esperado que se tenham conhecimentos de operação de terminais CLI, conhecimentos em Docker básicos, conhecimentos em comandos Linux básicos e conexão com a internet.
+Esta seção apresenta um passo a passo detalhado para a execução do procedimento e a obtenção dos resultados descritos no artigo, permitindo que os revisores validem as afirmações apresentadas. Para demonstrar o potencial do projeto, foram definidos dois experimentos a serem conduzidos em uma infraestrutura virtualizada.
 
 ### Requisitos mínimos para executar o experimento
 
@@ -1221,36 +1213,32 @@ Para ser possível observar o potencial do projeto, foram estabelecidos dois exp
 
 ### Descrição
 
-Os experimentos têm como objetivo apresentar o processo do projeto em diferentes aspectos. O processo do projeto Mirak é dividido em duas etapas: ``extração de dados`` e ``avaliação dos dados``. Para cada etapa, é fornecido um contêiner que proporciona um ambiente único e isolado. Para obter os resultados de cada etapa, são disponibilizadas duas pastas nas quais será copiado o resultado obtido do ambiente isolado para o ``host``. Dessa maneira, os artefatos podem ser utilizados em um ambiente controlado e seus resultados são obtidos de forma simplificada.
+O projeto Mirak é estruturado em duas etapas principais: extração de dados e avaliação dos dados. Para cada etapa, um contêiner específico é disponibilizado, proporcionando um ambiente isolado e controlado. Os resultados de cada etapa são armazenados em diretórios dedicados, permitindo a transferência dos artefatos do ambiente isolado para o host. Esse processo garante a execução segura e controlada, facilitando a análise dos dados e a obtenção dos resultados de maneira eficiente.
 
 #### Objetivo do Experimento A
 
-É considerada boa prática no ramo da Cibersegurança manter apenas soluções vinculadas ao serviço executado e estas soluções sempre atualizadas. Portanto, no experimento A, o objetivo será avaliar a presença de inseguranças em um ambiente RPKI no qual estas boas práticas não foram seguidas.
-
-O ambiente a ser avaliado tem o objetivo de fornecer as validações de rotas utilizando a solução RPKI da NLnet Labs o Routinator em versão desatualizada. Também está presente o NGINX da f5, como um servidor http.
+Para testar o funcionamento desta versão do artefato, foram criadas imagens em Docker para recriar um mesmo ambiente operacional em duas situações distintas. No experimento “A”, um validadorRoutinator 0.9.0-rc3 desatualizado foi introduzido em uma máquina virtual hospedeira. O objetivo é avaliar se o artefato consegue listar as vulnerabilidades específicas conhecidas dessa versão do Relying Party Routinator.
 
 #### Objetido Experimentonto B
 
-É uma situação comum aplicar as boas práticas de forma errônea, atuando apenas na solução principal de um ambiente. Este caso leva uma falsa sensação de segurança, pois outros softwares contidos e utilizados pelo sistema operacional ou pela solução podem conter inseguranças. Dessa maneira, o experimento B terá o propósito de avaliar um ambiente RPKI com a solução devidamente atualizada e sem soluções terceiras executadas em conjunto. Este ambiente a ser avaliado tem o objetivo de fornecer as validações de rotas utilizando a solução RPKI da NLnet Labs o Routinator em versão atualizada.
+No experimento “B”, outra versão do validador Routinator 0.14.0-rc3, sem vulnerabilidades CVEs relatadas na NVD, foi introduzido no mesmo ambiente hospedeiro do experimento “A”.
 
 ### Procedimentos para os experimentos
 
 Os comandos serão descritos por etapas. Iniciando com a etapa de "extração de dados" e finalizando com a etapa de "avaliação de dados". Os comandos que se diferem entre os experimentos serão apresentados ambos e os mesmos sinalizados para melhor compreensão.
 
 
-### Começando os trabalhos
-
 </br>
 
-> **⚠️ Importante** Antes de começar tenha certeza de o docker estar instalado e em execução. Caso não tenha instalado acesse o tutorial [aqui](https://docs.docker.com/engine/install/).
-
-</br>
-
-O primeiro passo é executar o comando para início do docker compose como apresentado a seguir:
+> **⚠️ Importante** Antes de iniciar, certifique-se de que o Docker está instalado e em execução. Caso ainda não tenha realizado a instalação, consulte o seguinte tutorial: [Install | Docker Docs](https://docs.docker.com/engine/install/).
 
 </br>
 
 > **💡Dica** Algumas versões mais antigas do Docker Compose apresentam o inicio do comando utilizando hífen no lugar de espaço em branco ("``docker-compose``").
+
+</br>
+
+O primeiro passo consiste na execução do comando para iniciar o Docker Compose, conforme apresentado abaixo:
 
 </br>
 
@@ -1259,8 +1247,6 @@ Para o experimento **A**
 ```bash
 $ docker compose -f 'experiments/A/docker-compose.yaml' up -d --build
 ```
-
-
 
 
 Para o experimento **B**
@@ -1284,7 +1270,7 @@ $ docker compose -f 'experiments/B/docker-compose.yaml' up -d --build
 
 </br>
 
-Agora vamos entrar na etapa de extração dos dados. Para isso, será necessário conectar-se ao terminal do contêiner que contém nosso ambiente de execução da solução RPKI, utilizando o comando abaixo:
+Agora iniciaremos a etapa de extração de dados. Para isso, é necessário estabelecer a conexão com o terminal do contêiner que executa o ambiente da solução RPKI, utilizando o seguinte comando:
 
 
 Para o experimento **A**
@@ -1312,7 +1298,7 @@ $ docker exec -it b-extraction-1 bash
 
 </br>
 
-Nesse momento, estamos no ambiente da solução RPKI, e agora é necessário fazer a instalação do software ``Mirak-extractor`` utilizando o seguinte comando:
+Neste estágio, já estamos no ambiente da solução RPKI. Agora, é necessário proceder com a instalação do software ``Mirak-extractor`` por meio do seguinte comando:
 
 ```bash
 $ source ./scripts/install_ubuntu_debian.sh
@@ -1320,7 +1306,7 @@ $ source ./scripts/install_ubuntu_debian.sh
 
 </br>
 
-Você deve inserir a opção "``1``" para instalar corretamente o artefato.
+Para garantir a instalação correta do artefato, selecione a opção "``1``".
 
 </br>
 
@@ -1334,7 +1320,7 @@ Você deve inserir a opção "``1``" para instalar corretamente o artefato.
 
 </br>
 
-Com o artefato instalado, podemos executá-lo inserindo "``mirak-extractor``" no terminal. Como demonstrado a seguir:
+Com o artefato devidamente instalado, sua execução pode ser realizada digitando "``mirak-extractor``" no terminal, conforme ilustrado abaixo:
 
 ```bash
 $ mirak-extractor --output ./output/mirak.json
@@ -1342,7 +1328,7 @@ $ mirak-extractor --output ./output/mirak.json
 
 </br>
 
-> **💡 Dica** Existe também a opção "**``--help``**" que imprime uma explicação sucinta do funcionamento.
+> **💡 Dica** A opção "**``--help``**" pode ser utilizada para exibir uma descrição resumida do funcionamento da aplicação.
 
 </br>
 
@@ -1356,7 +1342,7 @@ $ mirak-extractor --output ./output/mirak.json
 
 </br>
 
-O resultado foi colocado na pasta ``output`` dentro do ambiente que, por sua vez, foi automaticamente copiado para a pasta ``mirak_data`` no host.
+O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automaticamente, copiado para a pasta ``mirak_data`` no host.
 
 
 Demonstração da saída para o experimento A:
@@ -1367,7 +1353,7 @@ Demonstração da saída para o experimento A:
 
 </br>
 
-Neste ponto, já finalizamos o uso deste contêiner. Utilize o comando ``exit`` para voltar ao host.
+Neste estágio, o uso deste contêiner está concluído. Para retornar ao host, execute o comando ``exit``.
 
 </br>
 
@@ -1375,7 +1361,7 @@ Neste ponto, já finalizamos o uso deste contêiner. Utilize o comando ``exit`` 
 
 </br>
 
-Vamos começar a etapa de "avaliação de dados", para isso é necessário conectar ao terminal do contêiner que possui o ambiente propício para realizar a avaliação.
+Inicia-se agora a etapa de avaliação de dados. Para isso, é necessário estabelecer a conexão com o terminal do contêiner que contém o ambiente adequado para a execução da avaliação.
 
 
 Para o experimento **A**
@@ -1405,7 +1391,7 @@ $ docker exec -it b-evaluation-1 bash
 
 </br>
 
-Agora iremos fazer a preparação para construir e empacotar o Mirak-app, fazendo o uso deste comando:
+Nesta etapa, será realizada a preparação para a construção e o empacotamento do **Mirak-app**, utilizando o seguinte comando:
 
 
 </br>
@@ -1427,9 +1413,9 @@ $ npm install --include=dev
 
 </br>
 
-Neste ponto, será feito o processo de construção do pacote para instalação do artefato. São feitos dois procedimentos automatizados pelo uso de dois scripts descritos a seguir:
+Neste estágio, será realizado o processo de construção do pacote para a instalação do artefato. Esse processo ocorre de forma automatizada por meio de dois scripts, conforme descrito a seguir:
 
-- Script build: este script está atrelado ao processo de transpilação de TypeScript para Javascript. Também faz parte do processo a aplicação de um conjunto de testes unitários para garantir a confiabilidade do artefato.
+- Script build: Responsável pela transpilação do código TypeScript para JavaScript. Além disso, executa um conjunto de testes unitários para assegurar a confiabilidade e a integridade do artefato.
 
     Comando a ser utilizado: 
 
@@ -1437,7 +1423,7 @@ Neste ponto, será feito o processo de construção do pacote para instalação 
     $ npm run build
     ```
 
-- Script packaging.sh: este script está relacionado ao processo de formação de pacote para distribuições Debian, como o Ubuntu. Essa etapa visa simplificar o uso, instalação e remoção do artefato. Ao final, o pacote de instalação será exportado na pasta ``dist``.
+- Script packaging.sh: Responsável pela criação do pacote para distribuições baseadas em Debian, como o Ubuntu. Essa etapa tem como objetivo facilitar o uso, a instalação e a remoção do artefato. Ao término do processo, o pacote de instalação será gerado no diretório ``dist``.
 
     Comando a ser utilizado:
 
@@ -1457,9 +1443,9 @@ Neste ponto, será feito o processo de construção do pacote para instalação 
 
 </br>
 
-Agora, será feita a instalação do Mirak-app e sua configuração. Ao final, o software estará disponível ao inserir ``mirak-app`` no terminal.
+Agora, será realizada a instalação e configuração do ``mirak-app``. Ao concluir o processo, o software estará disponível para execução por meio do comando **`mirak-app`** no terminal.
 
-Comandos para atualizar os repositórios e softwares do ambiente:
+A seguir, são apresentados os comandos para atualização dos repositórios e dos pacotes do ambiente:
 
 ```bash
 $ apt update
@@ -1488,7 +1474,7 @@ Comando para configurar:
 
 </br>
 
-> **❗ Aviso:** Para o melhor funcionamento, é necessário o uso de uma ``Chave de API`` da NVD. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
+> **❗ Aviso:** Para garantir o funcionamento adequado, é necessário o uso de uma ``Chave de API`` da NVD. A utilização da chave viabiliza um fluxo mais robusto de requisições, contribuindo para a redução do tempo de execução do Mirak-app. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
 
 </br>
 
@@ -1500,7 +1486,7 @@ EOL
 
 </br>
 
-Por fim, vamos iniciar a avaliação utilizando o comando ``evaluate`` do mirak-app. Para isso, digite os comandos abaixo:
+Por fim, a avaliação será iniciada utilizando o comando ``evaluate`` do Mirak-app. Para isso, execute os seguintes comandos:
 
 ```bash
 $ mirak-app evaluate -v ./input/mirak.json ./output
@@ -1518,7 +1504,7 @@ $ mirak-app evaluate -v ./input/mirak.json ./output
 
 </br>
 
-O tempo de duração do processo pode variar em torno de 28 minutos, dependendo da velocidade de internet. Ao final, deve-se obter uma saída similar a esta:
+A duração do processo pode variar, estimando-se aproximadamente 28 minutos. Ao término da execução, a saída esperada será semelhante à seguinte:
 
 <div align="center">
   <img src="./assets/mirak-app/sainda_experiment_app_cli.png" width="280">
