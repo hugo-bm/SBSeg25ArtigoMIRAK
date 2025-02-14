@@ -376,7 +376,7 @@ A instalação dessas dependências está detalhada na documentação oficial do
   "dotenv": "^16.4.7",
   "jsonstream": "^1.0.3",
   "kleur": "^4.1.5"
-  }
+}
 ```
 
 </br>
@@ -413,7 +413,7 @@ $ npm i --omit=dev
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.8.0"
-  }
+}
 ```
 
 </br>
@@ -582,10 +582,10 @@ Para remover a dependência ``Python``, caso tenha sido instalada juntamente com
 
 Este processo envolve o **download do repositório**, **construção do pacote** e **instalação do pacote** gerado.
 
-Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-extractor, execute o comando a seguir.
+Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-app, execute o comando a seguir.
 
 ```bash
-cd mirak-extractor
+cd mirak-app
 ```
 
 </br>
