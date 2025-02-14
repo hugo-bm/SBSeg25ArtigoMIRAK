@@ -47,7 +47,7 @@ setup(
     # Long Description Content Type
     long_description_content_type="text/markdown",
     # Project URL
-    # url="https://github.com/seuusuario/myproject",
+    url="https://github.com/hugo-bm/SF25ArtigoMIRAK.git",
     include_package_data=True,
     py_modules=["start", "app"],
     # Automates discovery of Python packages in the project
