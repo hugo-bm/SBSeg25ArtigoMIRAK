@@ -2,11 +2,9 @@
 
 Este repositório está vinculado ao artigo "MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI", de Melo, Y., Oliveira, F., Salles, R., Santos, A. e Moreno, H. O artigo foi enviado para publicação no Salão de Ferramentas do SBRC 2025.
 
-Resumo do artigo: "O RPKI vem sendo discutido na literatura como principal forma de robustecimento do roteamento BGP. No entanto alguns trabalhos evidenciaram oportunidades de ataques ao próprio sistema de validação de rotas, justificando o esforço na resiliência desse ambiente. Este artigo apresenta o artefato MIRAK, que realiza de forma automatizada a identificação de vulnerabilidades conhecidas, contribuindo para reduzir o risco de ataques. Os resultados mostraram números animadores, motivando o investimento para aprimorar a sua eficiência". 
+# Resumo
 
-## Resumo
-
-Resumo descrevendo o objetivo do artefato {Fala Yuri! Tem que completar este requisito.}
+O RPKI vem sendo discutido na literatura como principal forma de robustecimento do roteamento BGP. No entanto, alguns trabalhos evidenciaram oportunidades de ataques ao próprio sistema de validação de rotas, justificando o esforço na resiliência desse ambiente. Este artigo apresenta o artefato MIRAK, que realiza de forma automatizada a identificação de vulnerabilidades conhecidas, contribuindo para reduzir o risco de ataques. Os resultados mostraram números animadores, motivando o investimento para aprimorar a sua eficiência.
 
 
 # Estrutura do Repositório
@@ -82,7 +80,7 @@ Esta seção fornece informações fundamentais sobre todos os componentes neces
 ---
 ## Mirak-extractor
 
-O Mirak-extractor é uma ferramenta prática e rápida que tem como objetivo diagnosticar as características do ecossistema hospedeiro Relying Party RPKI. É um sistema automatizado, que consegue avaliar uma grande quantidade de aplicações instaladas e configurações do ambiente em pouco tempo, gerando, ao final, um arquivo estruturado que permite análises futuras por outras aplicações, como o Mirak-app. Essa solução tem um pequeno impacto no ambiente de execução, uma vez que sua instalação e execução foram planejadas para consumir poucos recursos computacionais. Após a sua execução, o MIRAK-Extractor gera um arquivo estruturado denominado MIRAK, que contém as características do ambiente hospedeiro adequadas para a pesquisa de CVEs correspondentes.
+O Mirak-extractor é uma ferramenta que diagnostica as características do ambiente hospedeiro Relying Party RPKI. É um sistema automatizado, identificando as aplicações instaladas e detalhes operacionais do ambiente em pouco tempo, gerando o arquivo MIRAK, que permite análises por outras aplicações, como o Mirak-app. Foi desenvolvido em Python com o uso do padrão Singleton, com baixo impacto em requisitos para instalação e execução. O arquivo MIRAK contém ao final da execução do Mirak-extractor todas as características do ambiente hospedeiro necessárias para a pesquisa de CVEs correspondentes. Em sua versão atual, oferece suporte aos principais sistemas operacionais utilizados pelo Routinator, como versões Ubuntu 16.04, Debian 10 e Red Hat Enterprise Linux 9.5, ou superiores.
 
 </br>
 
@@ -91,7 +89,7 @@ O Mirak-extractor é uma ferramenta prática e rápida que tem como objetivo dia
 **Extração de informações**: De forma geral, o usuário fornece um caminho e o nome do arquivo, a partir do qual as informações do sistema operacional são extraídas de arquivos do sistema ou do usuário. Em seguida, inicia-se a identificação dos aplicativos instalados, armazenando suas principais características e identificadores. O processo também inclui a obtenção de informações sobre portas de rede, seguido pela exportação dos dados. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção do algoritmo adequado para a identificação das aplicações. Para esse procedimento, são utilizados os seguintes arquivos, sendo necessário apenas um deles:
 
 - os-release;
-- lsb-release;
+- lsb-release; e
 - issue.
 
 Caso não sejam encontrados, o usuário é convidado a fornecer as informações necessárias para continuar com os procedimentos.
@@ -141,10 +139,10 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 
 - Sistema operacional: 
   - Ubuntu 16.04 ou superior;
-  - Debian 10 ou superior;
-  - Red Hat Enterprise Linux 9.5 ou superior;
+  - Debian 10 ou superior; e
+  - Red Hat Enterprise Linux 9.5 ou superior.
 - Processador: 1 núcleo;
-- Memória: 60 MB;
+- Memória: 60 MB; e
 - Armazenamento: 1 MB.
 
 </br>
@@ -225,10 +223,10 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 ### Requisitos mínimos de Hardware e Software
 
 - Sistema operacional:
-  - Ubuntu 20.04 ou superior;
+  - Ubuntu 20.04 ou superio.
 - Processador: 1 núcleo;
 - Memória: 140 MB;
-- Rede: conexão de 10 Mbps;
+- Rede: conexão de 10 Mbps; e
 - Armazenamento: 15 MB.
 
 </br>
@@ -305,7 +303,7 @@ As dependências de produção são incorporadas durante o processo de empacotam
 
 ### Dependências gerais
 
-- Python 3.8 ou superior
+- Python 3.8 ou superior.
 
 </br>
 
@@ -356,8 +354,8 @@ $ pip install -r ./app/requirements_prod.txt
 
 ### Dependências gerais
 
-- Node.js 12.0.0 ou superior;
-- Npm 10.7.0 ou superior;
+- Node.js 12.0.0 ou superior; e
+- Npm 10.7.0 ou superior.
 
 A instalação dessas dependências está detalhada na documentação oficial do Node.js, disponível no seguinte link: [Node.js — Download Node.js®](https://nodejs.org/pt/download)
 
@@ -1134,7 +1132,7 @@ Agora, com o console conectado ao contêiner, prossiga com as etapas a seguir pa
 # Atualizar os repositórios do Sistema Operacional
 $ apt update 
 
-# Instalar o pacote e dependencias
+# Instalar o pacote e dependências
 $ apt install ./dist/mirak-app.deb 
 
 # Digite Y para instalar as dependências
@@ -1205,10 +1203,10 @@ Esta seção apresenta um passo a passo detalhado para a execução do procedime
 
 </br>
 
-- CPU: 3 vCPUs
-- RAM: 3 GB
-- Armazenamento: 20 GB
-- Rede: 100 Mbps+
+- CPU: 3 vCPUs;
+- RAM: 3 GB; e
+- Armazenamento: 20 GB.
+
 
 
 ### Descrição
@@ -1217,9 +1215,9 @@ O projeto Mirak é estruturado em duas etapas principais: extração de dados e 
 
 #### Objetivo do Experimento A
 
-Para testar o funcionamento desta versão do artefato, foram criadas imagens em Docker para recriar um mesmo ambiente operacional em duas situações distintas. No experimento “A”, um validadorRoutinator 0.9.0-rc3 desatualizado foi introduzido em uma máquina virtual hospedeira. O objetivo é avaliar se o artefato consegue listar as vulnerabilidades específicas conhecidas dessa versão do Relying Party Routinator.
+Para testar o funcionamento desta versão do artefato, foram criadas imagens em Docker para recriar um mesmo ambiente operacional em duas situações distintas. No experimento “A”, um validador Routinator 0.9.0-rc3 desatualizado foi introduzido em uma máquina virtual hospedeira. O objetivo é avaliar se o artefato consegue listar as vulnerabilidades específicas conhecidas dessa versão do Relying Party Routinator.
 
-#### Objetido Experimentonto B
+#### Objetivo do Experimento B
 
 No experimento “B”, outra versão do validador Routinator 0.14.0-rc3, sem vulnerabilidades CVEs relatadas na NVD, foi introduzido no mesmo ambiente hospedeiro do experimento “A”.
 
