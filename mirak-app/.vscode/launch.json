@@ -17,7 +17,7 @@
       "cwd": "${workspaceFolder}",
       "env": {
         "NODE_ENV": "development",
-        "API_NVD_KEY": "33e43699-ce1a-4aca-9d03-54b32b77f3e1"
+        "API_NVD_KEY": "coloque_aqui_sua_chave_da_nvd"
       },
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
