@@ -34,7 +34,7 @@ RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/ubuntu \
     $(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release)-proposed main" | tee /etc/apt/sources.list.d/nlnetlabs-proposed.list > /dev/null || echo "Falha ao obter a chave e adicionar o novo repositório"  && \
     apt update || echo "Falha ao aplicar atualização com o repositório do routinator aplicado" && \
-    apt policy routinator || echo "As politcas para o routinator não foram aplicadas" && \
+    apt policy routinator || echo "As políticas para o Routinator não foram aplicadas" && \
     apt install -y routinator=0.9.0~rc3-1$(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release ) && echo "Instalação não ocorreu com sucesso"
 
 
@@ -76,7 +76,7 @@ COPY ["./mirak-extractor/setup.py", "./mirak-extractor/README.md", "./mirak-extr
 # Declarar diretório de saída
 VOLUME /output /workspaces/project/output
 
-# Expor as portas para o routinator
+# Expor as portas para o Routinator
 EXPOSE 8323 3323 80
 
 COPY ./experiments/A/start_extractor.sh /

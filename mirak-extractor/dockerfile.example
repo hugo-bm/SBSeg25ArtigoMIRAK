@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 # Atualizando o sistema operacional
 RUN apt update && apt upgrade -y
 
-# Instalando dependecias necessárias para o processo de instalação
+# Instalando dependêcias necessárias para o processo de instalação
 RUN apt-get update && apt-get install -y --no-install-recommends \
      curl gpg ca-certificates 
 
