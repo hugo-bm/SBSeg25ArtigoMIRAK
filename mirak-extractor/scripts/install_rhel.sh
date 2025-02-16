@@ -47,7 +47,7 @@ install_python_3_8() {
     ./configure --enable-optimizations
     make altinstall
 
-    # Verificar instalação e ajustar PATH
+    # Verificar instalação e ajustar o PATH
     PYTHON_BIN="/usr/local/bin/python3.8"
     if [[ -f "$PYTHON_BIN" ]]; then
         echo "Python $($PYTHON_BIN --version | awk '{print $2}') instalado com sucesso."
