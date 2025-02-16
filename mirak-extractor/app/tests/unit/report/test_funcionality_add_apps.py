@@ -25,7 +25,7 @@ def teste_caso_adicionar_softwares():
             software.get("type"),
             software.get("vendor"),
             software.get("product"),
-            software.get("versio"),
+            software.get("version"),
             software.get("cpeName"),
         )
 
@@ -55,7 +55,7 @@ def teste_caso_adicionar_softwares_com_correcao_estatica():
             software.get("type"),
             software.get("vendor"),
             software.get("product"),
-            software.get("versio"),
+            software.get("version"),
             software.get("cpeName"),
         )
 

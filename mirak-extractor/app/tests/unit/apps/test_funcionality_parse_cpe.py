@@ -10,7 +10,7 @@ def teste_caso_converter_para_cpe():
     )
 
 def teste_caso_converter_para_cpe_com_erro():
-    # Forá removido informações essencias
+
     assert (
         Apps.parse_cpe("a", ["curl", "haxx"])
         == ""
