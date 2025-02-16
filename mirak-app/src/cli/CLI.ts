@@ -25,20 +25,20 @@ export default class CLI {
     this.program
       .name("mirak-app")
       .description(
-        "########### ⚠️  ALERT! #############\nThis software is in a prototype state. Fixes will be released as issues are detected.\n##################################\nThis application evaluates whether there are vulnerabilities in the execution environment of an RPKI solution. Using the data exported by mirak-extractor."
+        "########### ⚠️  ALERT! #############\nThis software has been submitted to SBRC2025.\n##################################\nThis application assesses the presence of vulnerabilities in the execution environment of an RPKI Relying Party solution using data exported by mirak-extractor."
       )
       .version("1.0.0");
 
     this.program
       .command("help")
-      .description("Displays help information")
+      .description("displays help information")
       .action(() => {
         this.program.outputHelp();
       });
 
     this.program.option(
       "-v, --verbose",
-      "Displays information issued in the execution process"
+      "displays information issued in the execution process"
     );
   }
 
@@ -57,19 +57,19 @@ export default class CLI {
   public startCommand(command: Function) {
     this.program
       .command("evaluate")
-      .description("Start evaluating the environment for vulnerabilities")
+      .description("start evaluating the environment for vulnerabilities")
       .argument(
         "<input-file>",
-        'Relative path to the MIRAK file, exported via the mirak-extractor software.\n\nExample: "/home/anyfolder//output_mirak.json"'
+        'relative path to the MIRAK file, exported via the mirak-extractor software.\n\nExample: "/home/anyfolder//output_mirak.json"'
       )
       .argument(
         "[output-directory]",
-        'Relative path of the folder for the report output. Please note that the directory must exist for the file to be written.\n\nExample: "/home/anyfolder/output"',
+        'relative path of the folder for the report output. Please note that the directory must exist for the file to be written.\n\nExample: "/home/anyfolder/output"',
         ""
       )
       .option(
         "--pdf",
-        "This option should be used to export a report in PDF format in order to be human readable."
+        "this option should be used to export a report in PDF format in order to be human readable."
       )
       .action(async (input, output) => {
         await command(this.parsePath(input), this.parsePath(output));
