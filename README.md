@@ -67,14 +67,14 @@ O RPKI vem sendo discutido na literatura como principal forma de robustecimento 
 
 # Selos Considerados
 
-Os autores consideram, para fins de avaliação, os seguintes selos: o selo D - Artefatos Disponíveis; o selo F - Artefatos Funcionais; e o selo R - Artefatos Reprodutíveis.  Para esse fim, este repositório disponibiliza códigos e scripts essenciais para a obtenção dos resultados em um ambiente simulado com Docker e Docker Compose.
+Para a avaliação do artefato, os autores adotam os seguintes critérios, representados por selos específicos no processo de análise: Selo D – Artefatos Disponíveis; Selo F – Artefatos Funcionais; Selo S - Artefatos Sustentáveis e Selo R – Experimentos Reprodutíveis.
 
 </br>
 
 ---
 # Informações básicas
 
-Esta seção fornece informações fundamentais sobre todos os componentes necessários para a execução e replicação dos experimentos, incluindo a descrição completa do ambiente de execução, bem como os requisitos de hardware e software.
+Esse repositório contém o artefato MIRAK, que inclui duas aplicações – Mirak-extractor e Mirak-app – além de um script automatizado para a criação de ambientes virtuais, visando a facilitar a reprodução dos experimentos. Adicionalmente, o repositório detalha os requisitos mínimos necessários para a execução de cada aplicação, bem como os requisitos exigidos para a realização dos experimentos.
 
 </br>
 
@@ -93,13 +93,12 @@ O Mirak-extractor é uma ferramenta que diagnostica as características do ambie
 - lsb-release; e
 - issue.
 
-Caso não sejam encontrados, o usuário é convidado a fornecer as informações necessárias para continuar com os procedimentos.
 
 </br>
 
 ### Tecnologias utilizadas
 
-O projeto utiliza as seguintes tecnologias e ferramentas:
+O Mirak-extractor utiliza as seguintes tecnologias e ferramentas:
 
 
 #### **Linguagens e Runtime**
@@ -139,9 +138,9 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 ### Requisitos mínimos de Hardware e Software
 
 - Sistema operacional: 
-  - Ubuntu 16.04 ou superior;
-  - Debian 10 ou superior; e
-  - Red Hat Enterprise Linux 9.5 ou superior.
+  - Ubuntu 16.04 ou superior
+  - Debian 10 ou superior
+  - Red Hat Enterprise Linux 9.5 ou superior
 - Processador: 1 núcleo;
 - Memória: 60 MB; e
 - Armazenamento: 1 MB.
@@ -163,7 +162,7 @@ Este software integra o projeto MIRAK, e tem como objetivo auxiliar os profissio
 
 ### Tecnologias utilizadas
 
-O projeto utiliza as seguintes tecnologias e ferramentas:
+O Mirak-app utiliza as seguintes tecnologias e ferramentas:
 
 #### **Linguagens e Runtime**
 
@@ -224,7 +223,7 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 ### Requisitos mínimos de Hardware e Software
 
 - Sistema operacional:
-  - Ubuntu 20.04 ou superio.
+  - Ubuntu 20.04 ou superior
 - Processador: 1 núcleo;
 - Memória: 140 MB;
 - Rede: conexão de 10 Mbps; e
@@ -296,7 +295,7 @@ $ wget https://github.com/hugo-bm/SF25ArtigoMIRAK/archive/refs/heads/master.zip 
 ---
 # Dependências
 
-Neste projeto, as dependências são divididas em dependências gerais, dependências de execução e dependências de desenvolvimento ou construção. As dependências de desenvolvimento ou construção são aquelas necessárias no contexto de desenvolvimento e construção. As dependências de execução, também conhecidas como dependências de produção, são as utilizadas pela aplicação em tempo de execução, ou seja, durante o seu funcionamento. As dependências gerais são aquelas essenciais para o funcionamento em todos os contextos apresentados anteriormente.
+Neste projeto, as dependências são classificadas em três categorias principais: dependências gerais, dependências de execução e dependências de desenvolvimento ou construção. As dependências de desenvolvimento ou construção são necessárias exclusivamente para o desenvolvimento e a construção da aplicação. Já as dependências de execução (ou dependências de produção) são utilizadas pela aplicação durante sua execução, garantindo seu funcionamento em ambiente de produção. Por fim, as dependências gerais regem o funcionamento da aplicação em qualquer um dos contextos mencionados.
 
 ## Mirak-extractor
 
@@ -437,7 +436,7 @@ O artefato MIRAK foi desenvolvido com o objetivo de ser minimamente invasivo, li
 
 ## Mirak-extractor
 
-Este processo envolve o **download do repositório**, **construção do pacote** e **instalação do pacote** gerado.
+O processo de instalação consiste em três etapas principais: download do repositório, construção do pacote e instalação do pacote gerado. Para facilitar esse procedimento, a pasta scripts contém códigos automatizados que executam a instalação das dependências, a construção do pacote e sua subsequente instalação.
 
 Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-extractor, execute o comando a seguir.
 
@@ -523,7 +522,7 @@ $ mirak-extractor --help
 
 </br>
 
-A pasta “``scripts``” contém códigos automatizados destinados à execução dos processos de instalação de dependências, construção do pacote e sua respectiva instalação. Estão disponíveis scripts específicos para cada sistema operacional compatível com o Mirak-extractor.
+A pasta “``scripts``” contém códigos automatizados destinados à execução dos processos de instalação. Na versão atual, o repositório disponibiliza códigos específicos para cada sistema operacional compatível com o artefato, garantindo a adequação do processo de instalação às particularidades de cada ambiente.
 
 Para Debian ou Ubuntu:
 
@@ -579,7 +578,6 @@ Para remover a dependência ``Python``, caso tenha sido instalada juntamente com
 
 ## Mirak-app
 
-Este processo envolve o **download do repositório**, **construção do pacote** e **instalação do pacote** gerado.
 
 Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-app, execute o comando a seguir.
 
@@ -703,7 +701,7 @@ $ mirak-app -V
 
 </br>
 
->  **❗ Aviso:** Para garantir o funcionamento adequado, é necessário o uso de uma ``Chave de API`` da NVD. A utilização da chave viabiliza um fluxo mais robusto de requisições, contribuindo para a redução do tempo de execução do Mirak-app. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
+>  **❗ Aviso:** Para otimizar o desempenho das requisições HTTP feitas à (NVD) pelo Mirak-app, os autores disponibilizam no apêndice uma Chave de API da NVD para a realização dos testes. Seu uso possibilita um aumento no número de consultas por acesso, reduzindo, assim, o tempo de execução. Por razões de segurança, a chave não foi adicionada ao repositório. Durante a instalação, é necessário inseri-la manualmente. Os usuários podem solicitar gratuitamente uma Chave de API da NVD por meio do site oficial da (NVD), acessível pelo link: [NVD - API Key Request](https://nvd.nist.gov/developers/request-an-api-key).
 
 </br>
 
@@ -764,13 +762,13 @@ Por fim, deve inserir o caractere "**Y**" para confirmar a exclusão.
 ---
 # Teste mínimo
 
-A realização de um teste básico de execução permite que os revisores avaliem as funcionalidades do artefato e confirmem seu correto funcionamento. Esse procedimento é fundamental para a identificação de eventuais problemas durante a instalação, garantindo que o artefato tenha sido corretamente instalado. Para verificar se o Mirak-app foi instalado corretamente e se seu binário está operando adequadamente, utilize o seguinte comando:
+A execução de um teste mínimo permite que os revisores avaliem as funcionalidades do artefato e confirmem seu correto funcionamento. Esse procedimento é essencial para identificar possíveis falhas no processo de instalação, assegurando que o artefato tenha sido instalado corretamente. Para verificar se o Mirak-app foi instalado corretamente e se seu binário está operando adequadamente, utilize o seguinte comando:
 
 ```bash
 $ mirak-app --help
 ```
 
-A opção "``--help``" exibe uma descrição sucinta sobre o funcionamento do aplicativo.
+A opção "``--help``" exibe uma descrição sucinta sobre o funcionamento das aplicações.
 
 </br>
 
@@ -923,13 +921,7 @@ $ source ./scripts/install_ubuntu_debian.sh
 
 </br>
 
-Neste exemplo, não há uma instalação prévia do Python, portanto, será solicitada a confirmação para proceder com a instalação. Responda digitando no console o caractere "``y``". Vale ressaltar que o mesmo deve estar em minúsculo.
-
-</br>
-
-Após a instalação do Python, será solicitada a seleção da versão do software a ser utilizada para a construção e instalação do aplicativo.  
-
-Para prosseguir, insira o numeral "``1``" no console, selecionando a versão instalada compatível.
+Neste caso, o Python não está previamente instalado, então será necessário confirmar a instalação. Para isso, digite o caractere "``y``" no console, garantindo que esteja em minúsculo. Após a instalação, será solicitado que você escolha a versão do software para a construção e instalação do aplicativo.
 
 </br>
 
@@ -1019,7 +1011,7 @@ O `Mirak-app` pode ser executado em um ambiente Docker, eliminando a necessidade
 
 </br>
 
-> **⚠️ Importante:** Os exemplos a seguir foram desenvolvidos com base no Ubuntu. No entanto, podem ser necessárias pequenas adaptações para outras distribuições compatíveis.
+> **⚠️ Importante:** Os exemplos apresentados a seguir foram elaborados com base no Ubuntu. No entanto, podem ser necessárias pequenas adaptações para outras distribuições compatíveis.
 
 </br>
 
@@ -1125,7 +1117,7 @@ Agora, com o console conectado ao contêiner, prossiga com as etapas a seguir pa
 
 </br>
 
-> **❗ Aviso:** Para garantir o funcionamento adequado, é necessário o uso de uma ``Chave de API`` da NVD. A utilização da chave viabiliza um fluxo mais robusto de requisições, contribuindo para a redução do tempo de execução do Mirak-app. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
+> **❗ Aviso:** As informações para obter a Chave API da NVD pode ser encontrada na seção [Instalação do pacote](#instalação-do-pacote-1)
 
 </br>
 
@@ -1194,13 +1186,12 @@ $ docker image rm mirak-app-image
 
 </br>
 
-Esta seção apresenta um passo a passo detalhado para a execução do procedimento e a obtenção dos resultados descritos no artigo, permitindo que os revisores validem as afirmações apresentadas. Para demonstrar o potencial do projeto, foram definidos dois experimentos a serem conduzidos em uma infraestrutura virtualizada.
+Esta seção apresenta um passo a passo detalhado para a execução e obtenção dos resultados descritos no artigo, permitindo que os revisores validem as afirmações apresentadas. Para a realização dos testes, foram definidos dois experimentos, os quais são executados em um ambiente virtualizado, garantindo a reprodutibilidade e a confiabilidade dos resultados obtidos.
 
 ### Requisitos mínimos para executar o experimento
 
 </br>
 
-> **💡Dica** É recomendado executar um experimento de cada vez para um melhor desempenho.
 
 </br>
 
@@ -1473,7 +1464,8 @@ Comando para configurar:
 
 </br>
 
-> **❗ Aviso:** Para garantir o funcionamento adequado, é necessário o uso de uma ``Chave de API`` da NVD. A utilização da chave viabiliza um fluxo mais robusto de requisições, contribuindo para a redução do tempo de execução do Mirak-app. Esta chave pode ser adquirida [clicando aqui](https://nvd.nist.gov/developers/request-an-api-key).
+> **❗ Aviso:** As informações para obter a Chave API da NVD pode ser encontrada na seção [Instalação do pacote](#instalação-do-pacote-1)
+
 
 </br>
 
@@ -1525,4 +1517,4 @@ A principal reivindicação do artigo é a viabilidade do uso do artefato MIRAK 
 
 </br>
 
-Leia as informações escritas no arquivo [LICENSE](./LICENSE)
+Este projeto é licenciado sob a BSD 3-Clause. Para mais informações, veja o arquivo [LICENSE](./LICENSE)
