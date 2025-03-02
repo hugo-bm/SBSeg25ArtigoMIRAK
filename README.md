@@ -60,7 +60,7 @@ O RPKI vem sendo discutido na literatura como principal forma de robustecimento 
     - [Objetivo do experimento B](#objetivo-do-experimento-b)
     - [Requisitos mínimos para executar o experimento](#requisitos-mínimos-para-executar-o-experimento)
     - [Procedimentos para os experimentos](#procedimentos-para-os-experimentos)
-- [Reivindicações](#reividicações)
+- [Reivindicações](#reivindicações)
 - [Licence](#license)
 
 </br>
