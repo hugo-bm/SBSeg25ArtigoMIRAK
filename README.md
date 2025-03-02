@@ -60,6 +60,7 @@ O RPKI vem sendo discutido na literatura como principal forma de robustecimento 
     - [Objetivo do experimento B](#objetivo-do-experimento-b)
     - [Requisitos mínimos para executar o experimento](#requisitos-mínimos-para-executar-o-experimento)
     - [Procedimentos para os experimentos](#procedimentos-para-os-experimentos)
+- [Reivindicações](#reividicações)
 - [Licence](#license)
 
 </br>
@@ -1511,6 +1512,15 @@ A duração do processo pode variar, estimando-se aproximadamente 28 minutos. Ao
 </br>
 
 ---
+
+# Reivindicações
+
+A principal reivindicação do artigo é a viabilidade do uso do artefato MIRAK para identificação de vulnerabilidades de forma automatizada, possibilitando a aplicação de correções. Assim, reduz-se a componente humana na fase de hardening do ambiente Relying Party, reduzindo assim o nível de risco de ataques ao BGP. A comparação entre os resultados dos experimentos A e B comprova isso, e estes testes podem ser reproduzidos seguindo as instruções contidas no GitHub do projeto MIRAK.
+
+</br>
+
+---
+
 # LICENSE
 
 </br>
