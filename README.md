@@ -826,7 +826,7 @@ O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua u
 
 </br>
 
-### Cuidados antes de começar
+### Verificações iniciais
 
 </br>
 
@@ -1015,7 +1015,7 @@ O `Mirak-app` pode ser executado em um ambiente Docker, eliminando a necessidade
 
 </br>
 
-### Cuidados antes de começar
+### Verificações iniciais
 
 </br>
 
