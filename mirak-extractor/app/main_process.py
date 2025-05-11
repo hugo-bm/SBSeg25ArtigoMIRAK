@@ -25,14 +25,18 @@ structured information during the process steps.
 import sys
 import json
 import re
+from typing import List
 import typer
 from tqdm import tqdm
 from app.apps_found import AppsFound
 from app.apps import Apps
+from app.extract_files_direct_info import ExtractFilesDirectoriesInfo
 from app.result import Result
 from app.report import Report
 from app.extract_os_info import ExtractOsInfo
 from app.extract_rede_info import ExtractRedeInfo
+from app.routinator_config_reader import RoutinatorConfigReader
+from app.routinator_validator import validate_config
 
 
 def progress_bar(total: float):
@@ -170,6 +174,28 @@ class Process:
                 app.get("cpe_name"),
             )
 
+        #  Strategic Files or Directories information is extracted ###################
+
+        reader = RoutinatorConfigReader()
+        errors: List[str] = []
+        files = ExtractFilesDirectoriesInfo()
+        print("\nStarting to extract relevant RPKI information")
+        status_bar_1 = progress_bar(100)
+        files_info = files.get_important_files_or_directories(["/etc/routinator/routinator.conf","/etc/routinator/"])
+        status_bar_1.update(45)
+        # routinator config file
+        if len(files_info) >= 2:
+            config = reader.get_config("/etc/routinator/routinator.conf", errors)
+            if config is not None:
+                errors.extend(validate_config(config)) 
+            # routinator exception file
+                exception_paths = config.get("exceptions")
+                if exception_paths:
+                    files_info.extend(files.get_important_files_or_directories(exception_paths))
+            if errors:
+                    files_info[0]["errors"] = errors
+        report.add_strategic_files(files_info)
+        status_bar_1.update(55)
         #  external network information is extracted #################################
         rede = ExtractRedeInfo()
         result.set_host_ip(rede.extract_ip())
