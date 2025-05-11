@@ -22,6 +22,7 @@ class Report:
     def __init__(self) -> None:
         self.apps_found: "list[dict]" = []
         self.rede_external: "dict" = {}
+        self.strategic_files: "list[dict]" = []
 
     def get_os_product(self) -> str:
         """
@@ -54,6 +55,11 @@ class Report:
                 "cpeName": cpe_name,
             }
         )
+    def add_strategic_files(self, files: "list[dict]"):
+        """
+        Allows you to store information related to important RPKI files or directories.
+        """
+        self.strategic_files = files
 
     def add_rede_external(
         self, host_ip: str,
@@ -77,6 +83,8 @@ class Report:
             + self.apps_found.__str__()
             + ", 'redeExternal': "
             + self.rede_external.__str__()
+            + ", 'strategicFiles': "
+            + self.strategic_files.__str__()
             + "}"
         )
 
@@ -89,4 +97,5 @@ class Report:
         return {
             "appsFound": self.apps_found,
             "redeExternal": self.rede_external,
+            "strategicFiles": self.strategic_files
         }
