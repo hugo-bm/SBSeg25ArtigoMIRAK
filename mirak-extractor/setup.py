@@ -52,7 +52,7 @@ setup(
     py_modules=["start", "app"],
     # Automates discovery of Python packages in the project
     packages=find_packages(),
-    install_requires=["typer", "psutil", "tqdm"],
+    install_requires=["typer", "psutil", "tqdm","tomli"],
     entry_points={
         "console_scripts": [
             "mirak-extractor=start:main",  # Run 'main' in 'my_package.cli'
