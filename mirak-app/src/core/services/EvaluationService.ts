@@ -1,7 +1,12 @@
 import CLI from "../../cli/CLI";
 import MirakData from "../entities/MirakData";
 import Scenarios from "../entities/Scenarios";
-import { MirakFile, Software } from "../entities/types/MirakFile";
+import {
+  MirakFile,
+  Permission,
+  Software,
+  strategicfile,
+} from "../entities/types/MirakFile";
 import SearchService from "./SearchService";
 import {
   evaluatedCVE,
@@ -14,7 +19,13 @@ import ValidationCPEService from "./ValidationCPEService";
 import { HttpError } from "../../api/errs";
 import { dataForRpkiAnalysis } from "../shared/DataForAnalysis";
 import ExtractTools from "../../shared/ExtractTools";
-
+import { octalForText } from "../../shared/GenericTools";
+import {
+  resultStrategicFile,
+  rpkiFilesForAnalysis,
+  status,
+} from "./types/StrategicFiles";
+import path from "node:path";
 
 export default class EvaluationService {
   static #instance: EvaluationService;
@@ -40,6 +51,14 @@ export default class EvaluationService {
     const inputFile = MirakData.instance;
     inputFile.mirakFile = await this.MirakFile(path, cli);
     cli.writeSuccess("Read of Mirak file is complete");
+
+    cli.writeTitle("Starting the evaluation of strategic files for RPKI");
+    const rpkiStrategicFiles: strategicfile[] | null =
+      inputFile.getStrategicFiles();
+    const rpkiResultStrategicFiles: resultStrategicFile[] = rpkiStrategicFiles
+      ? this.strategicFilesAnalysis(rpkiStrategicFiles)
+      : [];
+    cli.writeMessage("Evaluation of strategic files has processed");
 
     cli.writeTitle(
       "Starting search for each cpe valid in CPE Dictionary Database API (NVD)"
@@ -167,9 +186,16 @@ export default class EvaluationService {
                 }`;
             }
           }
+          // Add notes of strategic files
+          const routinatorNotes =
+            rpkiResultStrategicFiles
+              .find((item) => item.name === "routinator.conf")
+              ?.status.map((item) => item.note)
+              .join("\n") ?? "";
+          rpkiAnalyses.notes = rpkiAnalyses.notes + routinatorNotes;
         } else if (resultEvaluateCVE) {
           // software analysis stage required for rpki
-          
+
           const dependenciesData = routinator.dependencies.filter(
             (value) => value.os == inputFile.osData.product
           );
@@ -205,9 +231,8 @@ export default class EvaluationService {
                   cpeDependenceVersion.reduce((pv, cv) => pv + cv)
               ) {
                 rpkiAnalyses.software_required = "yes";
-              }
-              else {
-                rpkiAnalyses.software_required = "no"
+              } else {
+                rpkiAnalyses.software_required = "no";
               }
             }
           }
@@ -238,33 +263,270 @@ export default class EvaluationService {
         evaluationResult.push({
           software,
           cveAnalysis: resultEvaluateCVE,
-          rpkiAnalyses: rpkiAnalyses
+          rpkiAnalyses: rpkiAnalyses,
         });
       }
+
       cli.writeSuccess("Vulnerability assessment has end!");
       // Print simplified report (summary)
-      cli.writeTitle("📑 The results of the evaluation of the runtime environment");
-      const softwareVulnerabilityQtd = evaluationResult.map((software)=>software.cveAnalysis.length).reduce((pv, cv)=> pv + cv);
-      if(softwareVulnerabilityQtd > 0) {
-        const rpkiVulnerabilitysQtd = evaluationResult.filter((value) => value.software.product == "routinator")[0].cveAnalysis.length;
-        
-        cli.writeWarning(`The host environment with IP ${inputFile.hostIp} contains vulnerabilities that may affect correct operation.\n A total of ${softwareVulnerabilityQtd} vulnerabilities were discovered`);
-        cli.writeMessage("Number of RPKI-related vulnerabilities found: "+ rpkiVulnerabilitysQtd);
-        cli.writeMessage("Number of other vulnerabilities found: " + String(softwareVulnerabilityQtd - rpkiVulnerabilitysQtd));
-      }
-      else {
-        cli.writeSuccess(`No vulnerabilities were found at the end of the analysis on the host with IP ${inputFile.hostIp}`);
+      cli.writeTitle(
+        "📑 The results of the evaluation of the runtime environment"
+      );
+      const softwareVulnerabilityQtd = evaluationResult
+        .map((software) => software.cveAnalysis.length)
+        .reduce((pv, cv) => pv + cv);
+      if (softwareVulnerabilityQtd > 0) {
+        const rpkiVulnerabilitysQtd = evaluationResult.filter(
+          (value) => value.software.product == "routinator"
+        )[0].cveAnalysis.length;
+
+        cli.writeWarning(
+          `The host environment with IP ${inputFile.hostIp} contains vulnerabilities that may affect correct operation.\n A total of ${softwareVulnerabilityQtd} vulnerabilities were discovered`
+        );
+        cli.writeMessage(
+          "Number of RPKI-related vulnerabilities found: " +
+            rpkiVulnerabilitysQtd
+        );
+        cli.writeMessage(
+          "Number of other vulnerabilities found: " +
+            String(softwareVulnerabilityQtd - rpkiVulnerabilitysQtd)
+        );
+      } else {
+        cli.writeSuccess(
+          `No vulnerabilities were found at the end of the analysis on the host with IP ${inputFile.hostIp}`
+        );
       }
       const routinator = dataForRpkiAnalysis;
-      const defaultPorts = Object.keys(routinator.ports.incoming).map(
-        Number
+      const defaultPorts = Object.keys(routinator.ports.incoming).map(Number);
+      const portNotRelatedWithRpki = inputFile.openPorts.filter(
+        (port) => !defaultPorts.includes(port)
       );
-      const portNotRelatedWithRpki = inputFile.openPorts.filter((port)=> !defaultPorts.includes(port));
-      cli.writeMessage("Number of ports not used by the RPKI solution discovered: " + portNotRelatedWithRpki.length)
-      console.log("\n") // add whtite space for new information
+      cli.writeMessage(
+        "Number of ports not used by the RPKI solution discovered: " +
+          portNotRelatedWithRpki.length
+      );
+      const slurmFile = rpkiResultStrategicFiles.find(
+        (item) => item.name === "slurm.json"
+      );
+      const routinatorConfigFile = rpkiResultStrategicFiles.find(
+        (item) => item.name === "routinator.conf"
+      );
+      const routinatorDirectory = rpkiResultStrategicFiles.find(
+        (item) => item.name === "routinator" && item.type == "directory"
+      );
+      // Directory of configurations
+      if (routinatorDirectory !== undefined) {
+        this.writeNotesOnConsole(routinatorDirectory.status, cli);
+      }
+
+      // Configurations of RPKI
+      if (routinatorConfigFile !== undefined) {
+        this.writeNotesOnConsole(routinatorConfigFile.status, cli);
+      }
+
+      // Exceptions of RPKI
+
+      if (slurmFile !== undefined) {
+        cli.writeWarning(
+          `The exceptions file "${slurmFile.name}" is present in the Routinator settings. Be careful when using this feature!`
+        );
+        this.writeNotesOnConsole(slurmFile.status, cli);
+      }
+      console.log("\n"); // add whtite space for new information
     }
-    
     return evaluationResult;
+  }
+
+  private writeNotesOnConsole(data: status[], cli: CLI): void {
+    const success: string[] = [];
+    const fail: string[] = [];
+    for (const item of data) {
+      if (item.status) {
+        success.push(item.note);
+      } else {
+        fail.push(item.note);
+      }
+    }
+    if (success.length > 0){
+      cli.writeSuccess(success.join("\n"));
+    }
+    if (fail.length > 0){
+      cli.writeError(fail.join("\n"));
+    }
+  }
+
+  private strategicFilesAnalysis(data: strategicfile[]): resultStrategicFile[] {
+    const index = new Map<string, number>();
+    const routinatorStrategicFileOrDirectories: rpkiFilesForAnalysis[] =
+      dataForRpkiAnalysis.essentialFilesOrDirectories.map((item) => {
+        return {
+          name: item.name,
+          type: item.type as "file" | "directory",
+          user: item.user,
+          group: item.group,
+          permissions: item.permissions,
+        };
+      });
+
+    const result: resultStrategicFile[] = [];
+
+    for (let i = 0; i < routinatorStrategicFileOrDirectories.length; i++) {
+      index.set(
+        `${routinatorStrategicFileOrDirectories[i].name}|${routinatorStrategicFileOrDirectories[i].type}`,
+        i
+      );
+    }
+
+    for (const item of data) {
+      if (!MirakData.isValidStrategicFileType(item.type)) {
+        throw new Error(
+          'Invalid value of property "type" detected in strategic file object'
+        );
+      }
+
+      const extractedName = path.basename(item.fileName);
+      const foundIndex = index.get(`${extractedName}|${item.type}`);
+
+      if (foundIndex != undefined) {
+        const ExpectedData = routinatorStrategicFileOrDirectories[foundIndex];
+
+        const ownerNotes = this.compareOwnerAndGroup(
+          ExpectedData,
+          item,
+          extractedName
+        );
+
+        const permissionNotes = this.comperePermissions(
+          ExpectedData,
+          item,
+          extractedName
+        );
+
+        const status: status[] = [
+          {
+            statusFor: "permission",
+            status: permissionNotes.status,
+            note: permissionNotes.notes,
+          },
+          {
+            statusFor: "owner",
+            status: ownerNotes.status,
+            note: ownerNotes.notes,
+          },
+        ];
+
+        if (extractedName === "routinator.conf") {
+          const configNotes = this.analysisRoutinatorConfig(item);
+          status.push({
+            statusFor: "config",
+            status: configNotes.status,
+            note: configNotes.notes,
+          });
+        }
+
+        result.push({
+          name: extractedName,
+          path: item.fileName,
+          type: item.type,
+          permission: this.mountFullPermission(item.permission),
+          status: status,
+        });
+      }
+    }
+    return result;
+  }
+
+  private analysisRoutinatorConfig(data: strategicfile): {
+    status: boolean;
+    notes: string;
+  } {
+    const errorsFoundInFile = data.errors ?? [];
+    const header =
+      errorsFoundInFile.length == 0
+        ? "The basic evaluation of the configurations present in the routinator.conf file did not identify any discrepancies, with all analyzed definitions found to be in compliance with the established standards."
+        : "During the basic evaluation of the configurations contained in the routinator.conf file, discrepancies were identified in relation to the expected standards, as detailed below:";
+
+    return {
+      status: errorsFoundInFile.length > 0 ? false : true,
+      notes: `${header}\n${errorsFoundInFile.map((item) => `- ${item}`).join("\n")}`,
+    };
+  }
+
+  private compareOwnerAndGroup(
+    expected: rpkiFilesForAnalysis,
+    observed: strategicfile,
+    name: string
+  ): { status: boolean; notes: string } {
+    const notes: string[] = [];
+    let divergences: number = 0;
+
+    if (expected.user !== observed.owner.user) {
+      notes.push(
+        `- User: expected is "${expected.user}", however, the user "${observed.owner.user}" was found.`
+      );
+      divergences++;
+    } else {
+      notes.push(
+        `- User: the expected user "${observed.owner.user}" was correctly found.`
+      );
+    }
+
+    if (expected.group !== observed.owner.group) {
+      notes.push(
+        `- Group: expected is "${expected.group}", however, the group "${observed.owner.group}" was found.`
+      );
+      divergences++;
+    } else {
+      notes.push(
+        `- Group: the expected group "${observed.owner.group}" was correctly found.`
+      );
+    }
+
+    const header =
+      divergences > 0
+        ? `When evaluating the ${observed.type} "${name}", inconsistencies were found in ownership settings:`
+        : `When evaluating the ${observed.type} "${name}", ownership settings are consistent with the recommendations:`;
+
+    return {
+      status: divergences > 0 ? false : true,
+      notes: `${header}\n${notes.join("\n")}`,
+    };
+  }
+
+  private comperePermissions(
+    expected: rpkiFilesForAnalysis,
+    observed: strategicfile,
+    name: string
+  ): { status: boolean; notes: string } {
+    const properties: Array<keyof Permission> = ["owner", "group", "others"];
+    const notes: string[] = [];
+    let divergences: number = 0;
+    for (const property of properties) {
+      if (expected.permissions[property] !== observed.permission[property]) {
+        notes.push(
+          `- ${property}: expected "${octalForText(expected.permissions[property])}", but found "${octalForText(observed.permission[property])}".`
+        );
+        divergences++;
+      }
+    }
+    const header =
+      divergences === 0
+        ? `Upon evaluation of the permissions of the ${observed.type} "${name}", it was found that the permission settings fully comply with the recommended standards.`
+        : `During the evaluation of the permissions of the ${observed.type} "${name}", discrepancies were identified in the permission settings compared to the recommended standards, as detailed below:`;
+
+    //return comparisonReport.length > 0 ? comparisonReport : [];
+    return {
+      status: divergences > 0 ? false : true,
+      notes: `${header}\n${notes.join("\n")}`,
+    };
+  }
+
+  private mountFullPermission(permission: Permission): string {
+    return (
+      octalForText(permission.owner) +
+      octalForText(permission.group) +
+      octalForText(permission.owner)
+    );
   }
 
   private async MirakFile(
