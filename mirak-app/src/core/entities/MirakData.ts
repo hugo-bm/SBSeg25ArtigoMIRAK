@@ -1,5 +1,5 @@
 import { CheckTools } from "../../shared/CheckTools";
-import { MirakFile, Software, SoftwareType } from "./types/MirakFile";
+import { MirakFile, Software, SoftwareType, strategicfile, type as filetype } from "./types/MirakFile";
 
 export default class MirakData {
   static #instance: MirakData;
@@ -144,6 +144,20 @@ export default class MirakData {
       CheckTools.checkObjProperty(value,"type") &&
       MirakData.isValidSoftwareType(value.type)
     );
+  }
+
+  public static isValidStrategicFileType(value: string): value is filetype {
+    return value === "file" || value === "directory";
+  }
+
+  public getStrategicFiles(): strategicfile[] | null{
+    if (this.isDataFileNull()){
+      throw new Error("Mirak file was not previously loaded");
+    }
+    else {
+      const files = this.dataFile?.strategicFiles;
+      return files ?? null
+    }
   }
 
   public clearData() {

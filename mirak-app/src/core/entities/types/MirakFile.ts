@@ -1,6 +1,7 @@
 export type MirakFile = {
   appsFound: Software[];
   redeExternal: MainNetwork;
+  strategicFiles: strategicfile[]
 };
 
 export type Software = {
@@ -18,3 +19,24 @@ export type MainNetwork = {
   openPorts: number[];
   portsUseBy: Record<number, string>;
 };
+
+export type type = "file" | "directory";
+
+export type Permission = {
+  owner: number; // exemplo: 7
+  group: number; // exemplo: 5
+  others: number; // exemplo: 5
+};
+
+export type Owner = {
+  user: string,
+  group: string
+}
+
+export type strategicfile = {
+type: type,
+fileName: string,
+permission: Permission,
+owner: Owner,
+errors?: string[]
+}

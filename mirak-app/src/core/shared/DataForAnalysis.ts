@@ -107,4 +107,39 @@ export const dataForRpkiAnalysis = {
       ],
     },
   ],
+  essentialFilesOrDirectories: [
+    {
+      name: "routinator.conf",
+      user: "routinator",
+      group: "routinator",
+      type: "file",
+      permissions: {
+        owner: 4,
+        group: 4,
+        others: 0
+      },
+    },
+    {
+      name: "routinator",
+      user: "routinator",
+      group: "routinator",
+      type: "directory",
+      permissions: {
+        owner: 5,
+        group: 5,
+        others: 0
+      },
+    },
+    {
+      name: "slurm.json",
+      user: "routinator",
+      group: "routinator",
+      type: "file",
+      permissions: {
+        owner: 4,
+        group: 0,
+        others: 0
+      },
+    },
+  ],
 };
