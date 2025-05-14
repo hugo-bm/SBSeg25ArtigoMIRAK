@@ -1301,5 +1301,49 @@
             "3323": "routinator",
             "42875": "node"
         }
-    }
+    },
+    "strategicFiles": [
+        {
+            "type": "file",
+            "fileName": "/etc/routinator/routinator.conf",
+            "permission": {
+                "group": 4,
+                "owner": 6,
+                "others": 4
+            },
+            "owner": {
+                "user": "root",
+                "group": "root"
+            },
+            "errors": [
+                "Invalid value for 'rtr-listen': ['127.00.1:3323']"
+            ]
+        },
+        {
+            "type": "directory",
+            "fileName": "/etc/routinator",
+            "permission": {
+                "group": 5,
+                "owner": 7,
+                "others": 5
+            },
+            "owner": {
+                "user": "root",
+                "group": "root"
+            }
+        },
+        {
+            "type": "file",
+            "fileName": "/var/lib/routinator/slurm.json",
+            "permission": {
+                "group": 4,
+                "owner": 6,
+                "others": 4
+            },
+            "owner": {
+                "user": "root",
+                "group": "root"
+            }
+        }
+    ]
 }
