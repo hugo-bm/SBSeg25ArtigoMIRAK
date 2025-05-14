@@ -132,7 +132,7 @@ describe("Scenarios class test suit", () => {
     });
     it("must return an array with numeric values of the version, this one having numbers and caracters", ()=>{
         const result = instance?.extractVersionProduct("cpe:2.3:a:gnu:bash:5.1.8-fire1:*:*:*:*:*:*:*");
-        expect(result).toStrictEqual([5,1,9]);
+        expect(result).toStrictEqual([5,1,8,1]);
     });
     it("should return an array with the possible greater value", ()=>{
         const result = instance?.extractVersionProduct("cpe:2.3:a:gnu:bash:*:*:*:*:*:*:*:*");

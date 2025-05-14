@@ -164,25 +164,20 @@ export default class Scenarios implements IScenarios {
 
   public extractVersionProduct(cpe: string): number[] {
     const versionField = cpe.split(":")[5];
-    if (new RegExp("^d+(.d+)*$").test(versionField)) {
-      return versionField.split(".").map((num) => parseInt(num));
-    } else {
-      if (versionField === "*") {
-        return [Number.MAX_SAFE_INTEGER];
-      }
-      return versionField.split(".").map((part) => {
-        if (isNaN(parseInt(part))) {
-          return parseInt(part);
-        } else {
-          const numbers = ExtractTools.extractNumbersFromString(part);
-          if (numbers == null) {
-            return 0;
-          } else {
-            return numbers.reduce((prev, curr) => prev + curr);
-          }
-        }
-      });
+    
+    // All versions path
+    if (versionField === "*") {
+      return [Number.MAX_SAFE_INTEGER];
     }
+  
+    // Desirable path: only numbers separated by periods
+    if (/^\d+(\.\d+)*$/.test(versionField)) {
+      return versionField.split(".").map(Number);
+    }
+  
+    // General path: extracts all numbers found in the string
+    const numbers = ExtractTools.extractNumbersFromString(versionField);
+    return numbers ?? [0]; // Em caso de falha, retorna [0] por segurança
   }
 
   private compareProductVersions(
