@@ -40,6 +40,13 @@ RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/
 # Adicionar Routinator ao PATH
 ENV PATH="/root/.cargo/bin:${PATH}"
 
+# Corrigir permissões e acesso
+
+RUN chmod 550 /etc/routinator/ && chmod 440 /etc/routinator/routinator.conf &&\ 
+chown routinator /etc/routinator/ && chgrp routinator /etc/routinator  &&\
+chown routinator /etc/routinator/routinator.conf && chgrp routinator /etc/routinator/routinator.conf
+
+
 # Criar usuário para o teste
 RUN useradd -ms /bin/bash user_exemple
 
