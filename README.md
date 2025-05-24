@@ -1,6 +1,6 @@
 # MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI
 
-Este repositório está vinculado ao artigo "MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI", de Melo, Y., Oliveira, F., Salles, R., Santos, A. e Moreno, H. O artigo foi enviado para publicação no Salão de Ferramentas do SBRC 2025.
+Este repositório está vinculado ao artigo "MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI", de Melo, Y., Oliveira, F., Salles, R., Santos, A. e Moreno, H. O artigo foi enviado para revisão no Simpósio Brasileiro de Cibersegurança (SBSeg) 2025.
 
 # Resumo
 
@@ -9,59 +9,81 @@ O RPKI vem sendo discutido na literatura como principal forma de robustecimento 
 
 # Estrutura do Repositório
 
-- [Selos considerados](#selos-considerados)
+- [MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI](#mirak-um-artefato-para-robustecimento-do-ambiente-relying-party-rpki)
+- [Resumo](#resumo)
+- [Estrutura do Repositório](#estrutura-do-repositório)
+- [Selos Considerados](#selos-considerados)
 - [Informações básicas](#informações-básicas)
-    - [Mirak-extractor](#mirak-extractor)
-        - [Funcionalidades](#funcionalidades)
-        - [Tecnologias utilizadas](#tecnologias-utilizadas)
-        - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software)
-    - [Mirak-app](#mirak-app)
-        - [Funcionalidades](#funcionalidades-1)
-        - [Tecnologias utilizadas](#tecnologias-utilizadas-1)
-        - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software-1)
-        - [Descrição dos campos do relatório em CSV](#descrição-dos-campos-do-relatório-em-csv)
-  - [Acessar o código-fonte](#download-do-código-fonte)
+  - [Mirak-extractor](#mirak-extractor)
+    - [Funcionalidades](#funcionalidades)
+    - [Tecnologias utilizadas](#tecnologias-utilizadas)
+      - [**Linguagens e Runtime**](#linguagens-e-runtime)
+      - [**Frameworks e Bibliotecas**](#frameworks-e-bibliotecas)
+      - [**Testes e Cobertura**](#testes-e-cobertura)
+      - [**Ferramentas de Qualidade e Formatação**](#ferramentas-de-qualidade-e-formatação)
+      - [**Gerenciamento e Empacotamento**](#gerenciamento-e-empacotamento)
+    - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software)
+  - [Mirak-app](#mirak-app)
+    - [Funcionalidades](#funcionalidades-1)
+    - [Tecnologias utilizadas](#tecnologias-utilizadas-1)
+      - [**Linguagens e Runtime**](#linguagens-e-runtime-1)
+      - [**Frameworks e Bibliotecas**](#frameworks-e-bibliotecas-1)
+      - [**Ferramentas de Qualidade e Produtividade**](#ferramentas-de-qualidade-e-produtividade)
+      - [**Ferramentas de Desenvolvimento**](#ferramentas-de-desenvolvimento)
+      - [**Manipulação de Dados**](#manipulação-de-dados)
+      - [**Interface de Linha de Comando (CLI)**](#interface-de-linha-de-comando-cli)
+      - [**Testes e Cobertura**](#testes-e-cobertura-1)
+      - [**Gerenciamento de Pacotes**](#gerenciamento-de-pacotes)
+      - [**Ambiente virtualizado por contêiner**](#ambiente-virtualizado-por-contêiner)
+    - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software-1)
+    - [Descrição dos campos do relatório CSV:](#descrição-dos-campos-do-relatório-csv)
+    - [Acessar o código-fonte  ](#acessar-o-código-fonte-)
 - [Dependências](#dependências)
-    - [Mirak-extractor](#mirak-extractor-1)
-        - [Dependências Gerais](#dependências-gerais)
-        - [Dependências para execução](#dependências-de-produção)
-        - [Dependências de desenvolvimento e construção](#dependências-de-desenvolvimento-e-construção)
-    - [Mirak-app](#mirak-app-1)
-        - [Dependências Gerais](#dependências-gerais-1)
-        - [Dependências para execução](#dependências-de-produção-1)
-        - [Dependências de desenvolvimento e construção](#dependências-de-desenvolvimento-e-construção-1)
+  - [Mirak-extractor](#mirak-extractor-1)
+    - [Dependências gerais](#dependências-gerais)
+    - [Dependências de desenvolvimento e construção:](#dependências-de-desenvolvimento-e-construção)
+    - [Dependências de produção:](#dependências-de-produção)
+  - [Mirak-app](#mirak-app-1)
+    - [Dependências gerais](#dependências-gerais-1)
+    - [Dependências para produção:](#dependências-para-produção)
+    - [Dependências de desenvolvimento e construção](#dependências-de-desenvolvimento-e-construção-1)
 - [Preocupações com segurança](#preocupações-com-segurança)
 - [Instalação](#instalação)
-    - [Mirak-extractor](#mirak-extractor-2)
-        - [Construção do pacote](#construção-do-pacote)
-        - [Instalação do pacote](#instalação-do-pacote)
-        - [Processo automatizado de construção e instalação](#processo-automatizado-de-construção-e-instalação)
-        - [Remoção do pacote](#remoção-do-pacote)
-    - [Mirak-app](#mirak-app-2)
-        - [Construção do pacote](#construção-do-pacote-1)
-            - [Tanspilação](#transpilação-typescript--javascript)
-            - [Empacotamento](#construção-do-pacote-deb)
-        - [Instalação do pacote](#instalação-do-pacote-1)
-        - [Remoção do pacote](#remoção-do-pacote-1)
+  - [Mirak-extractor](#mirak-extractor-2)
+    - [Construção do pacote](#construção-do-pacote)
+    - [Instalação do pacote](#instalação-do-pacote)
+    - [Processo automatizado de construção e instalação](#processo-automatizado-de-construção-e-instalação)
+    - [Remoção do pacote](#remoção-do-pacote)
+  - [Mirak-app](#mirak-app-2)
+    - [Construção do pacote](#construção-do-pacote-1)
+      - [Transpilação (TypeScript → JavaScript)](#transpilação-typescript--javascript)
+      - [Empacotamento (.deb)](#empacotamento-deb)
+    - [Instalação do pacote](#instalação-do-pacote-1)
+    - [Remoção do pacote](#remoção-do-pacote-1)
 - [Teste mínimo](#teste-mínimo)
 - [Uso individual das aplicações](#uso-individual-das-aplicações)
-    - [Mirak-extractor](#mirak-extractor-3)
-        - [Testando com Docker](#testando-com-docker)
-          - [Cuidados antes de começar](#cuidados-antes-de-começar)
-          - [Usando o Mirak-extractor no Docker](#usando-o-mirak-extractor-no-docker)
-          - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados)
-    - [Mirak-app](#mirak-app-3)
-        - [Testando com Docker](#testando-com-docker-1)
-          - [Cuidados antes de começar](#cuidados-antes-de-começar-1)
-          - [Usando o Mirak-extractor no Docker](#-usando-o-mirak-app-no-docker-1)
-          - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados-1)
+  - [Mirak-extractor](#mirak-extractor-3)
+  - [Testando com Docker](#testando-com-docker)
+    - [Verificações iniciais](#verificações-iniciais)
+    - [Usando o Mirak-extractor no Docker](#usando-o-mirak-extractor-no-docker)
+    - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados)
+  - [Mirak-app](#mirak-app-3)
+  - [Testando com Docker](#testando-com-docker-1)
+    - [Verificações iniciais](#verificações-iniciais-1)
+    - [Usando o Mirak-app no Docker](#usando-o-mirak-app-no-docker)
+    - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados-1)
 - [Experimentos](#experimentos)
-    - [Objetivo do experimento A](#objetivo-do-experimento-a)
-    - [Objetivo do experimento B](#objetivo-do-experimento-b)
-    - [Requisitos mínimos para executar o experimento](#requisitos-mínimos-para-executar-o-experimento)
-    - [Procedimentos para os experimentos](#procedimentos-para-os-experimentos)
+  - [Requisitos mínimos para executar o experimento](#requisitos-mínimos-para-executar-o-experimento)
+  - [Descrição](#descrição)
+    - [Versões dos Softwares utilizados no experimento](#versões-dos-softwares-utilizados-no-experimento)
+    - [Versões do routinator suportadas pelo ambiente virtual](#versões-do-routinator-suportadas-pelo-ambiente-virtual)
+  - [Iniciando e finalizando o ambiente virtual](#iniciando-e-finalizando-o-ambiente-virtual)
+  - [Grype](#grype)
+  - [Trivy](#trivy)
+  - [Vuls](#vuls)
+  - [Mirak](#mirak)
 - [Reivindicações](#reivindicações)
-- [Licence](#license)
+- [LICENSE](#license)
 
 </br>
 
@@ -286,7 +308,7 @@ Faça o download do código-fonte acessando o repositório manualmente e selecio
 Após o download, extraia os arquivos para um diretório de sua preferência. Como alternativa, o download também pode ser realizado via wget ou curl. Certifique-se de que as ferramentas wget, curl e unzip estão previamente instaladas no sistema.
 
 ```bash
-$ wget https://github.com/hugo-bm/SF25ArtigoMIRAK/archive/refs/heads/master.zip -O master.zip && unzip master.zip && cd SF25ArtigoMIRAK-master
+$ wget https://github.com/hugo-bm/SBSeg25ArtigoMIRAK/archive/refs/heads/master.zip -O master.zip && unzip master.zip && cd SBSeg25ArtigoMIRAK-master
 ```
 
 </br>
@@ -806,7 +828,7 @@ Se nenhuma opção for especificada, o arquivo será exportado para o diretório
 </br>
 
 **Demonstração:**
-
+<!-- trocar -->
 <div align="center">
   <img src="./assets/mirak-extractor/uso_total.gif" width="640">
 </div>
@@ -1182,41 +1204,64 @@ $ docker image rm mirak-app-image
 
 </br>
 
-> **⚠️ Importante** Para esses experimentos, será utilizada a versão 20.04 do Ubuntu. Nenhuma modificação será realizada no sistema, garantindo a homogeneidade do ambiente e permitindo uma comparação mais precisa.
+> **⚠️ Importante** Esta seção apresenta um passo a passo detalhado para a execução dos experimentos e a obtenção dos resultados descritos ao longo do artigo, de modo a permitir que os revisores validem as afirmações aqui propostas. Para a realização dos testes, será utilizada a distribuição Ubuntu, versão 20.04, mantida em sua configuração padrão. Essa abordagem visa garantir a homogeneidade do ambiente operacional, favorecendo a reprodutibilidade dos experimentos e a precisão na comparação dos resultados obtidos.
 
 </br>
 
-Esta seção apresenta um passo a passo detalhado para a execução e obtenção dos resultados descritos no artigo, permitindo que os revisores validem as afirmações apresentadas. Para a realização dos testes, foram definidos dois experimentos, os quais são executados em um ambiente virtualizado, garantindo a reprodutibilidade e a confiabilidade dos resultados obtidos.
-
-### Requisitos mínimos para executar o experimento
+## Requisitos mínimos para executar o experimento
 
 </br>
 
-
-</br>
-
-- CPU: 3 vCPUs;
-- RAM: 3 GB; e
+- CPU: 4 vCPUs;
+- RAM: 8 GB; e
 - Armazenamento: 20 GB.
 
 
 
-### Descrição
+## Descrição
 
-O projeto Mirak é estruturado em duas etapas principais: extração de dados e avaliação dos dados. Para cada etapa, um contêiner específico é disponibilizado, proporcionando um ambiente isolado e controlado. Os resultados de cada etapa são armazenados em diretórios dedicados, permitindo a transferência dos artefatos do ambiente isolado para o host. Esse processo garante a execução segura e controlada, facilitando a análise dos dados e a obtenção dos resultados de maneira eficiente.
+Para a avaliação do MIRAK, foram construídas imagens Docker simulando diferentes versões do Routinator, executadas em um ambiente Ubuntu 20.04 típico. Nessas imagens, foram executadas as aplicações MIRAK, Vuls, Trivy e Grype. Para viabilizar esse processo, foi desenvolvida uma infraestrutura automatizada para a criação de máquinas virtuais (VMs), contendo os seguintes componentes:
 
-#### Objetivo do Experimento A
+- Routinator na versão especificada pelo usuário;
+- Conjunto de softwares nativos do sistema operacional; e
+- Conectividade com a internet estabelecida via rede Docker;
 
-Para testar o funcionamento desta versão do artefato, foram criadas imagens em Docker para recriar um mesmo ambiente operacional em duas situações distintas. No experimento “A”, um validador Routinator 0.9.0-rc3 desatualizado foi introduzido em uma máquina virtual hospedeira. O objetivo é avaliar se o artefato consegue listar as vulnerabilidades específicas conhecidas dessa versão do Relying Party Routinator.
+Os resultados gerados por cada máquina virtual (VM) são armazenados em diretórios isolados, o que possibilita a extração dos artefatos do ambiente virtualizado para o sistema host. Essa abordagem assegura uma execução segura e controlada, além de favorecer a eficiência na análise dos dados e na consolidação dos resultados obtidos.
 
-#### Objetivo do Experimento B
+A execução dos comandos será apresentada conforme o software a ser analisado, com exceção das instruções referentes à inicialização e finalização dos contêineres, que são comuns e realizadas por meio do Docker Compose.
 
-No experimento “B”, outra versão do validador Routinator 0.14.0-rc3, sem vulnerabilidades CVEs relatadas na NVD, foi introduzido no mesmo ambiente hospedeiro do experimento “A”.
 
-### Procedimentos para os experimentos
+### Versões dos Softwares utilizados no experimento
 
-Os comandos serão descritos por etapas. Iniciando com a etapa de "extração de dados" e finalizando com a etapa de "avaliação de dados". Os comandos que se diferem entre os experimentos serão apresentados ambos e os mesmos sinalizados para melhor compreensão.
+- Grype 0.91.2;
+- Trivy 0.61.0;
+- Vuls 0.31.1;
+- mirak-app 1.0.0;
+- mirak-extractor 1.0.0.
 
+
+### Versões do routinator suportadas pelo ambiente virtual
+
+</br>
+
+
+| **Software**| **Versão**            | **Utilizado no Experimento** |
+|------------|------------------------|---------------------------|
+| routinator | 0.8.3                  | ✅                        |
+| routinator | 0.9.0                  | ✅                        |
+| routinator | 0.10.0                 | ✅                        |
+| routinator | 0.10.1                 |                           |
+| routinator | 0.11.0                 |                           |
+| routinator | 0.11.1                 | ✅                        |
+| routinator | 0.12.0                 |                           |
+| routinator | 0.12.1                 | ✅                        |
+| routinator | 0.13.0                 |                           |
+| routinator | 0.13.1                 | ✅                        |
+| routinator | 0.14.0                 |                           |
+| routinator | 0.14.2                 |                           |
+
+
+## Iniciando e finalizando o ambiente virtual
 
 </br>
 
@@ -1228,21 +1273,37 @@ Os comandos serão descritos por etapas. Iniciando com a etapa de "extração de
 
 </br>
 
-O primeiro passo consiste na execução do comando para iniciar o Docker Compose, conforme apresentado abaixo:
+O procedimento inicial consiste na execução do comando responsável por iniciar o Docker Compose, juntamente com a especificação da versão do Routinator a ser utilizada, conforme ilustrado a seguir:
 
 </br>
 
-Para o experimento **A**
+</br>
+
+> **⚠️ Importante** A versão do routinator deve ser especificada no formato numérico e separados pelo caractere ".".
+
+</br>
 
 ```bash
-$ docker compose -f 'experiments/A/docker-compose.yaml' up -d --build
+$ RT_VERSION=0.9.0 docker compose -f 'experiments/docker-compose.yaml' up -d --build
 ```
 
 
-Para o experimento **B**
+</br>
+
+**Demonstração:** 
+
+<div align="center">
+  <img src="./assets/starting.gif" width="640">
+</div>
+
+</br>
+
+Para encerrar a execução dos contêineres, utilize o seguinte comando:
+
+</br>
 
 ```bash
-$ docker compose -f 'experiments/B/docker-compose.yaml' up -d --build
+$ RT_VERSION=0.9.0 docker compose -f 'experiments/docker-compose.yaml' down
 ```
 
 </br>
@@ -1250,30 +1311,21 @@ $ docker compose -f 'experiments/B/docker-compose.yaml' up -d --build
 **Demonstração:** 
 
 <div align="center">
-  <img src="./assets/mirak-app/iniciar_exp.gif" width="640">
+  <img src="./assets/ending.gif" width="640">
 </div>
 
 </br>
 
-
-### Extraindo as informações
+## Grype
 
 </br>
 
-Agora iniciaremos a etapa de extração de dados. Para isso, é necessário estabelecer a conexão com o terminal do contêiner que executa o ambiente da solução RPKI, utilizando o seguinte comando:
+Em seguida, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do software Grype, por meio do seguinte comando:
 
 
-Para o experimento **A**
-
-```bash
-$ docker exec -it a-extraction-1 bash
-```
-
-
-Para o experimento **B**
 
 ```bash
-$ docker exec -it b-extraction-1 bash
+$ docker exec -it grype bash
 ```
 
 </br>
@@ -1281,40 +1333,27 @@ $ docker exec -it b-extraction-1 bash
 **Demonstração:**
 
 <div align="center">
-  <img src="./assets/mirak-extractor/conect_experiment_cli.png" width="640">
+  <img src="./assets/enter_grype.gif" width="640">
 </div>
 
 </br>
 
 </br>
 
-Neste estágio, já estamos no ambiente da solução RPKI. Agora, é necessário proceder com a instalação do software ``Mirak-extractor`` por meio do seguinte comando:
+Neste estágio, já estamos no ambiente. Agora, é necessário executar o software ``grype`` por meio do seguinte comando:
 
 ```bash
-$ source ./scripts/install_ubuntu_debian.sh
+$ grype dir:/ --scope squashed --output table >> ./output/grype_report_rt.txt
 ```
-
-</br>
-
-Para garantir a instalação correta do artefato, selecione a opção "``1``".
 
 </br>
 
 **Demonstração:**
 
 <div align="center">
-  <img src="./assets/mirak-extractor/instalacao_automatica_total.gif" width="640">
+  <img src="./assets/execute_grype.gif" width="640">
 </div>
 
-</br>
-
-</br>
-
-Com o artefato devidamente instalado, sua execução pode ser realizada digitando "``mirak-extractor``" no terminal, conforme ilustrado abaixo:
-
-```bash
-$ mirak-extractor --output ./output/mirak.json
-```
 
 </br>
 
@@ -1322,50 +1361,24 @@ $ mirak-extractor --output ./output/mirak.json
 
 </br>
 
-**Demonstração:**
-
-<div align="center">
-  <img src="./assets/mirak-extractor/uso_total.gif" width="640">
-</div>
 
 </br>
 
-</br>
+O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automaticamente, copiado para a pasta ``experiment_data`` no host.
 
-O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automaticamente, copiado para a pasta ``mirak_data`` no host.
-
-
-Demonstração da saída para o experimento A:
-
-<div align="center">
-  <img src="./assets/mirak-extractor/saida_experiment_extractor_cli.png" width="280">
-</div>
+Para retornar ao host, execute o comando ``exit``.
 
 </br>
 
-Neste estágio, o uso deste contêiner está concluído. Para retornar ao host, execute o comando ``exit``.
+## Trivy
 
 </br>
 
-### Avaliando as informações
+Na sequência, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do software Trivy, por meio do seguinte comando:
 
-</br>
-
-Inicia-se agora a etapa de avaliação de dados. Para isso, é necessário estabelecer a conexão com o terminal do contêiner que contém o ambiente adequado para a execução da avaliação.
-
-
-Para o experimento **A**
 
 ```bash
-$ docker exec -it a-evaluation-1 bash
-```
-
-</br>
-
-Para o experimento **B**
-
-```bash
-$ docker exec -it b-evaluation-1 bash
+$ docker exec -it trivy bash
 ```
 
 </br>
@@ -1373,22 +1386,17 @@ $ docker exec -it b-evaluation-1 bash
 **Demonstração:**
 
 <div align="center">
-  <img src="./assets/mirak-app/conect_experiment_cli.png" width="640">
+  <img src="./assets/enter_trivy.gif" width="640">
 </div>
 
-
 </br>
 
 </br>
 
-Nesta etapa, será realizada a preparação para a construção e o empacotamento do **Mirak-app**, utilizando o seguinte comando:
-
-
-</br>
-
+Nesta etapa, com o acesso ao ambiente estabelecido, procede-se à execução do software ``trivy`` utilizando o comando a seguir:
 
 ```bash
-$ npm install --include=dev
+$ trivy fs / --scanners vuln --format table  > ./output/trivy_report.txt
 ```
 
 </br>
@@ -1396,56 +1404,34 @@ $ npm install --include=dev
 **Demonstração:**
 
 <div align="center">
-  <img src="./assets/mirak-app/instalar_dependencias_exp.gif" width="640">
+  <img src="./assets/execute_trivy.gif" width="640">
 </div>
 
-</br>
 
 </br>
 
-Neste estágio, será realizado o processo de construção do pacote para a instalação do artefato. Esse processo ocorre de forma automatizada por meio de dois scripts, conforme descrito a seguir:
-
-- Script build: Responsável pela transpilação do código TypeScript para JavaScript. Além disso, executa um conjunto de testes unitários para assegurar a confiabilidade e a integridade do artefato.
-
-    Comando a ser utilizado: 
-
-    ```bash
-    $ npm run build
-    ```
-
-- Script packaging.sh: Responsável pela criação do pacote para distribuições baseadas em Debian, como o Ubuntu. Essa etapa tem como objetivo facilitar o uso, a instalação e a remoção do artefato. Ao término do processo, o pacote de instalação será gerado no diretório ``dist``.
-
-    Comando a ser utilizado:
-
-    ```bash
-    $ source ./script/packaging.sh
-    ```
+> **💡 Dica** A opção "**``--help``**" pode ser utilizada para exibir uma descrição resumida do funcionamento da aplicação.
 
 </br>
 
-**Demonstração:**
-
-<div align="center">
-  <img src="./assets/mirak-app/instalar_dependencias_exp.gif" width="640">
-</div>
 
 </br>
 
+O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automaticamente, copiado para a pasta ``experiment_data`` no host.
+
+Para retornar ao host, execute o comando ``exit``.
+
 </br>
 
-Agora, será realizada a instalação e configuração do ``mirak-app``. Ao concluir o processo, o software estará disponível para execução por meio do comando **`mirak-app`** no terminal.
+## Vuls
 
-A seguir, são apresentados os comandos para atualização dos repositórios e dos pacotes do ambiente:
+</br>
+
+Para conectar-se ao terminal do contêiner que hospeda o ambiente do software Vuls, utilize o comando a seguir:
+
 
 ```bash
-$ apt update
-$ apt upgrade
-```
-
-Comando para instalar:
-
-```bash
-$ apt install ./dist/mirak-app.deb
+$ docker exec -it vuls bash
 ```
 
 </br>
@@ -1453,14 +1439,166 @@ $ apt install ./dist/mirak-app.deb
 **Demonstração:**
 
 <div align="center">
-  <img src="./assets/mirak-app/instalacao_total.gif" width="640">
+  <img src="./assets/enter_vuls.gif" width="640">
+</div>
+
+</br>
+
+Nesta etapa, com o ambiente acessado, torna-se necessário atualizar os dados de vulnerabilidades. Para isso, utilize o comando a seguir:
+
+</br>
+
+> **⚠️ Importante**Por se tratar de um processo demorado, recomenda-se executar o comando sem modificações. Isso se deve ao fato de que tanto o ambiente quanto o comando foram configurados para permitir a transferência dos dados para o sistema host, eliminando a necessidade de múltiplas execuções.
+ 
+
+</br>
+
+```bash
+$ go-cve-dictionary fetch nvd --dbpath "/var/lib/vuls/cve.sqlite3"
+```
+
+</br>
+
+```bash
+$ goval-dictionary fetch ubuntu "20.04" --dbpath "/var/lib/vuls/oval.sqlite3"
+```
+
+</br>
+
+**Demonstração:**
+
+<div align="center">
+  <img src="./assets/update_vuls.gif" width="640">
+</div>
+
+
+</br>
+
+ Agora, é necessário executar o escaneamento do software ``Vuls`` por meio do seguinte comando:
+
+```bash
+$ vuls scan \
+-config=/var/lib/vuls/config.toml \
+-results-dir=/workspaces/project/vuls/results \
+-cachedb-path=/workspaces/project/cache.db \
+-timeout=300 \
+-timeout-scan=7200
+```
+
+<\br>
+
+Por fim, a etapa de análise pelo ``Vuls`` deve ser realizada utilizando o seguinte comando:
+
+```bash
+vuls report \
+  -format-list \
+  -lang=en \
+  -config=/var/lib/vuls/config.toml \
+  -results-dir=/workspaces/project/vuls/results \
+  --confidence-over=0 \
+  > /workspaces/project/output/vuls_report_rt.txt
+```
+
+</br>
+
+**Demonstração:**
+
+<div align="center">
+  <img src="./assets/execute_vuls.gif" width="640">
+</div>
+
+
+</br>
+
+> **💡 Dica** A opção "**``--help``**" pode ser utilizada para exibir uma descrição resumida do funcionamento da aplicação.
+
+</br>
+
+
+</br>
+
+O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automaticamente, copiado para a pasta ``experiment_data`` no host.
+
+Para retornar ao host, execute o comando ``exit``.
+
+</br>
+
+## Mirak
+
+O projeto Mirak é organizado em duas etapas principais: extração de dados e avaliação desses dados. Para cada fase, um artefato específico é disponibilizado — respectivamente, o Mirak-extractor e o Mirak-app. A seguir, iniciaremos a descrição da etapa de extração.
+
+</br>
+
+A conexão ao terminal do contêiner que executa o ambiente do software mirak-extractor é realizada por meio do seguinte comando:
+
+
+```bash
+$ docker exec -it mirak-extractor bash
+```
+
+</br>
+
+**Demonstração:**
+
+<div align="center">
+  <img src="./assets/enter_mirak_extractor.gif" width="640">
 </div>
 
 </br>
 
 </br>
 
-Comando para configurar:
+A execução do software ``mirak-extractor`` é realizada por meio do comando a seguir:
+
+```bash
+$ mirak-extractor --output ./output/mirak.json
+```
+
+</br>
+
+**Demonstração:**
+
+<div align="center">
+  <img src="./assets/execute_mirak-extractor.gif" width="640">
+</div>
+
+
+</br>
+
+> **💡 Dica** A opção "**``--help``**" pode ser utilizada para exibir uma descrição resumida do funcionamento da aplicação.
+
+</br>
+
+
+</br>
+
+O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automaticamente, copiado para a pasta ``experiment_data`` no host.
+
+Para retornar ao host, execute o comando ``exit``.
+
+Inicia-se agora a etapa de avaliação de dados. Para isso, é necessário estabelecer a conexão com o terminal do contêiner que contém o ambiente com o software ``mirak-app`` para a execução da avaliação.
+
+
+
+
+```bash
+$ docker exec -it mirak-app bash
+```
+
+</br>
+
+
+**Demonstração:**
+
+<div align="center">
+  <img src="./assets/enter_mirak-app.gif" width="640">
+</div>
+
+
+</br>
+
+O primeiro passo é fazer a configuração da chave API por meio do seguinte comando:
+
 
 </br>
 
@@ -1477,7 +1615,7 @@ EOL
 
 </br>
 
-Por fim, a avaliação será iniciada utilizando o comando ``evaluate`` do Mirak-app. Para isso, execute os seguintes comandos:
+Por fim, a avaliação será iniciada utilizando o comando ``evaluate`` do Mirak-app. Para isso, execute o seguinte comando:
 
 ```bash
 $ mirak-app evaluate -v ./input/mirak.json ./output
@@ -1488,20 +1626,14 @@ $ mirak-app evaluate -v ./input/mirak.json ./output
 **Demonstração:**
 
 <div align="center">
-  <img src="./assets/mirak-app/uso_total.gif" width="640">
+  <img src="./assets/config_execute_mirak-app.gif" width="640">
 </div>
 
 </br>
 
 </br>
 
-A duração do processo pode variar, estimando-se aproximadamente 28 minutos. Ao término da execução, a saída esperada será semelhante à seguinte:
-
-<div align="center">
-  <img src="./assets/mirak-app/sainda_experiment_app_cli.png" width="280">
-</div>
-
-</br>
+A duração do processo do projeto Mirak pode variar, estimando-se aproximadamente 28 minutos. Para retornar ao host, execute o comando ``exit``.
 
 ---
 
