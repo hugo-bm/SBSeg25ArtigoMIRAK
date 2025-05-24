@@ -1,0 +1,94 @@
+# version: "3.8"
+
+# This configuration script defines and manages Docker applications composed of 
+# multiple containers. This way, you can build isolated and controlled environments
+# for running tests within the experiment parameters as stated
+# in the README.md file.
+
+services:
+  extraction:
+    build:
+      context: ../
+      dockerfile: ./experiments/dockerfile.extractor
+      args:
+        - RT_VERSION=${RT_VERSION}
+    container_name: mirak-extractor
+    volumes:
+      - ./experiment_data:/workspaces/project/output
+    command: ["/bin/bash", "-c", "source /start_extractor.sh"]
+    ports:
+      - "8081:80"
+      - "8323:8323"
+      - "3323:3323"
+    networks:
+      - isolated_network
+  vuls:
+    build:
+      context: ../
+      dockerfile: ./experiments/dockerfile.vuls
+      args:
+        - RT_VERSION=${RT_VERSION}
+    container_name: vuls
+    volumes:
+      - ./experiment_data:/workspaces/project/output
+      - ./vuls:/workspaces/project/
+    command: ["/bin/bash", "-c", "source /start_extractor.sh"] #["tail", "-f", "/dev/null"] 
+    ports:
+      - "8082:80"
+      - "8324:8323"
+      - "3324:3323"
+    # network_mode: host
+    networks:
+      - isolated_network
+  trivy:
+    build:
+      context: ../
+      dockerfile: ./experiments/dockerfile.trivy
+      args:
+        - RT_VERSION=${RT_VERSION}
+    container_name: trivy
+    volumes:
+      - ./experiment_data:/workspaces/project/output
+    command: ["/bin/bash", "-c", "source /start_extractor.sh"] #["tail", "-f", "/dev/null"] 
+    ports:
+      - "8083:80"
+      - "8325:8323"
+      - "3325:3323"
+    # network_mode: host
+    networks:
+      - isolated_network
+  grype:
+    build:
+      context: ../
+      dockerfile: ./experiments/dockerfile.grype
+      args:
+        - RT_VERSION=${RT_VERSION}
+    container_name: grype
+    volumes:
+      - ./experiment_data:/workspaces/project/output
+    command: ["/bin/bash", "-c", "source /start_extractor.sh"] #["tail", "-f", "/dev/null"] 
+    ports:
+      - "8084:80"
+      - "8326:8323"
+      - "3326:3323"
+    # network_mode: host
+    networks:
+      - isolated_network
+  evaluation:
+    build:
+      context: ../
+      dockerfile: ./experiments/dockerfile.app
+    container_name: mirak-app
+    volumes:
+      - ./experiment_data:/workspaces/project/input
+      - ./report_data:/workspaces/project/output
+    command: ["tail", "-f", "/dev/null"]
+    networks:
+      - isolated_network
+
+volumes:
+  shared_data:
+  evaluation_data:
+
+networks:
+  isolated_network:

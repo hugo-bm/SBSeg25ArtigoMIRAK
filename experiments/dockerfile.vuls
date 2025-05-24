@@ -4,17 +4,21 @@ FROM ubuntu:20.04
 RUN apt update && apt upgrade -y
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/usr/local/go/bin:/root/go/bin:$PATH"
 # Instalando dependecias necessárias para o processo de instalação
 RUN apt-get update && apt install -y --no-install-recommends \
-    curl gpg ca-certificates nginx build-essential make \
+    curl gpg ca-certificates nginx=1.18.0-0ubuntu1.7 build-essential make \
     libssl-dev \
     zlib1g-dev \
     libncurses5-dev \
     libnss3-dev \
     libsqlite3-dev \
     libreadline-dev \
-    libffi-dev \
-    libbz2-dev \
+    libffi-dev procps\
+    libbz2-dev iproute2 \
+    git unzip \
+    gcc sqlite3 lsof \
+    golang debian-goodies\
     wget
 
 RUN cd /usr/src \
@@ -28,6 +32,7 @@ RUN  ln -sf /usr/local/bin/python3.8 /usr/bin/python3.8 && \
 /usr/local/bin/python3.8 -m ensurepip --upgrade && \
 /usr/local/bin/python3.8 -m pip install --upgrade pip
 
+ARG RT_VERSION
 
 # Configurando e instalando o routinator 
 RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg && \
@@ -35,7 +40,7 @@ RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/
     $(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release)-proposed main" | tee /etc/apt/sources.list.d/nlnetlabs-proposed.list > /dev/null || echo "Falha ao obter a chave e adicionar o novo repositório"  && \
     apt update || echo "Falha ao aplicar atualização com o repositório do routinator aplicado" && \
     apt policy routinator || echo "As políticas para o Routinator não foram aplicadas" && \
-    apt install -y routinator=0.9.0~rc3-1$(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release ) && echo "Instalação não ocorreu com sucesso"
+    apt install -y routinator=${RT_VERSION}~rc1-1$(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release ) && echo "Instalação não ocorreu com sucesso"
 
 
 # Criar um arquivo HTML dentro do contêiner usando echo
@@ -57,8 +62,37 @@ RUN echo '<!DOCTYPE html> \
     </html>' > /var/www/html/index.html
 
 
-# Adicionar Routinator ao PATH
-ENV PATH="/root/.cargo/bin:${PATH}"
+# Adicionar Routinator e GO ao PATH
+ENV GOROOT=/usr/local/go \
+    GOPATH=/go \
+    PATH=/root/.cargo/bin:/go/bin:/usr/local/go/bin:${PATH}
+
+# Instala o Go 1.24
+
+RUN wget https://go.dev/dl/go1.24.0.linux-amd64.tar.gz && \
+    rm -rf /usr/local/go && \
+    tar -C /usr/local -xzf go1.24.0.linux-amd64.tar.gz && \
+    rm go1.24.0.linux-amd64.tar.gz
+
+# Diretórios para bases do Vuls
+RUN mkdir -p /var/lib/vuls /usr/local/bin
+
+
+# Instala o go-cve-dictionary
+RUN git clone https://github.com/kotakanbe/go-cve-dictionary.git /opt/go-cve-dictionary && \
+    cd /opt/go-cve-dictionary && GOTOOLCHAIN=local go install && \
+    cp "$GOPATH/bin/go-cve-dictionary" /usr/local/bin/
+
+# Instala o goval-dictionary
+RUN git clone https://github.com/kotakanbe/goval-dictionary.git /opt/goval-dictionary && \
+    cd /opt/goval-dictionary && go install && \
+    cp "$GOPATH/bin/goval-dictionary" /usr/local/bin/
+
+# Instala o Vuls
+RUN git clone https://github.com/future-architect/vuls.git /opt/vuls && \
+    cd /opt/vuls/cmd/vuls && go install && \
+    cp "$GOPATH/bin/vuls" /usr/local/bin/
+
 
 # Criar usuário para o teste
 RUN useradd -ms /bin/bash user_exemple
@@ -66,20 +100,27 @@ RUN useradd -ms /bin/bash user_exemple
 # Configurar diretório de trabalho
 WORKDIR /workspaces/project
 
-# copiar arquivos do projeto
-COPY ./mirak-extractor/app ./app
-
-COPY ./mirak-extractor/scripts ./scripts
-
-COPY ["./mirak-extractor/setup.py", "./README.md", "./mirak-extractor/start.py", "./"]
-
 # Declarar diretório de saída
 VOLUME /output /workspaces/project/output
+
+# Criar link simbolico para o python
+RUN ln -s /usr/local/bin/python3.8 /usr/bin/python3
+
+# configurar o vuls para o experimento 
+
+RUN echo '[servers.localhost] \n \
+host = "localhost"\n\
+port = "local"\n \
+user = "root"\n\
+scanMode = ["deep"]' >> /var/lib/vuls/config.toml
 
 # Expor as portas para o Routinator
 EXPOSE 8323 3323 80
 
-COPY ./experiments/A/start_extractor.sh /
+COPY ./research_new_competitors/test_1/start_extractor.sh /
+
+COPY ./research_new_competitors/test_1/update-bases-vuls.sh /update-bases-vuls.sh
+RUN chmod +x /update-bases-vuls.sh
 
 # Configurar o container para iniciar com o shell
 CMD ["/bin/bash", "-c", "source /start_extractor.sh"]

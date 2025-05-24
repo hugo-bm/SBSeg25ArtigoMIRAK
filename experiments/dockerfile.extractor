@@ -1,3 +1,24 @@
+FROM python:latest AS build_stage
+
+RUN apt update && apt upgrade -y
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Configurar diretório de trabalho
+WORKDIR /workspaces/project
+
+# copiar arquivos do projeto
+COPY ./mirak-extractor/app ./app
+
+COPY ./mirak-extractor/scripts ./scripts
+
+COPY ["./mirak-extractor/setup.py", "./mirak-extractor/README.md", "./mirak-extractor/start.py", "./"]
+
+RUN pip install setuptools && python /workspaces/project/setup.py sdist
+
+CMD ["tail", "-f", "/dev/null"] 
+
+
 FROM ubuntu:20.04
 
 # Atualizando o sistema operacional
@@ -6,7 +27,7 @@ RUN apt update && apt upgrade -y
 ENV DEBIAN_FRONTEND=noninteractive
 # Instalando dependecias necessárias para o processo de instalação
 RUN apt-get update && apt install -y --no-install-recommends \
-    curl gpg ca-certificates build-essential make \
+    curl gpg ca-certificates nginx=1.18.0-0ubuntu1.7 build-essential make \
     libssl-dev \
     zlib1g-dev \
     libncurses5-dev \
@@ -28,6 +49,7 @@ RUN  ln -sf /usr/local/bin/python3.8 /usr/bin/python3.8 && \
 /usr/local/bin/python3.8 -m ensurepip --upgrade && \
 /usr/local/bin/python3.8 -m pip install --upgrade pip
 
+ARG RT_VERSION
 
 # Configurando e instalando o routinator 
 RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg && \
@@ -35,17 +57,30 @@ RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/
     $(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release)-proposed main" | tee /etc/apt/sources.list.d/nlnetlabs-proposed.list > /dev/null || echo "Falha ao obter a chave e adicionar o novo repositório"  && \
     apt update || echo "Falha ao aplicar atualização com o repositório do routinator aplicado" && \
     apt policy routinator || echo "As políticas para o Routinator não foram aplicadas" && \
-    apt install -y routinator=0.14.0~rc3-1$(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release ) && echo "Instalação não ocorreu com sucesso"
+    apt install -y routinator=${RT_VERSION}~rc1-1$(grep -oP '^VERSION_CODENAME=\K.*' /etc/os-release ) && echo "Instalação não ocorreu com sucesso"
+
+
+# Criar um arquivo HTML dentro do contêiner usando echo
+RUN echo '<!DOCTYPE html> \
+    <html lang="en"> \
+    <head> \
+    <meta charset="UTF-8"> \
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> \
+    <title>Página Demonstrativa</title> \
+    <style> \
+    body { font-family: Arial, sans-serif; text-align: center; margin: 50px; } \
+    h1 { color: #333; } \
+    </style> \
+    </head> \
+    <body> \
+    <h1>Bem-vindo ao Nginx no Docker!</h1> \
+    <p>Esta é uma página gerada diretamente no Dockerfile.</p> \
+    </body> \
+    </html>' > /var/www/html/index.html
+
 
 # Adicionar Routinator ao PATH
 ENV PATH="/root/.cargo/bin:${PATH}"
-
-# Corrigir permissões e acesso
-
-RUN chmod 550 /etc/routinator/ && chmod 440 /etc/routinator/routinator.conf &&\ 
-chown routinator /etc/routinator/ && chgrp routinator /etc/routinator  &&\
-chown routinator /etc/routinator/routinator.conf && chgrp routinator /etc/routinator/routinator.conf
-
 
 # Criar usuário para o teste
 RUN useradd -ms /bin/bash user_exemple
@@ -53,20 +88,28 @@ RUN useradd -ms /bin/bash user_exemple
 # Configurar diretório de trabalho
 WORKDIR /workspaces/project
 
-# copiar arquivos do projeto
-COPY ./mirak-extractor/app ./app
+# # copiar arquivos do projeto
+# COPY ./mirak-extractor/app ./app
 
-COPY ./mirak-extractor/scripts ./scripts
+# COPY ./mirak-extractor/scripts ./scripts
 
-COPY ["./mirak-extractor/setup.py", "./README.md", "./mirak-extractor/start.py", "./"]
+# COPY ["./mirak-extractor/setup.py", "./mirak-extractor/README.md", "./mirak-extractor/start.py", "./"]
+
+# Copiar pacote Mirak-extractor da fase de construção
+
+COPY --from=build_stage /workspaces/project/dist/ .
+
+# Instalar o Mirak-extractor
+
+RUN /usr/local/bin/python3.8 -m pip install /workspaces/project/mirak_extractor-1.0.0.tar.gz && rm /workspaces/project/mirak_extractor-1.0.0.tar.gz
 
 # Declarar diretório de saída
 VOLUME /output /workspaces/project/output
 
 # Expor as portas para o Routinator
-EXPOSE 8323 3323
+EXPOSE 8323 3323 80
 
-COPY ./experiments/B/start_extractor.sh /
+COPY ./research_new_competitors/test_1/start_extractor.sh /
 
 # Configurar o container para iniciar com o shell
 CMD ["/bin/bash", "-c", "source /start_extractor.sh"]
