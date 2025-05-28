@@ -1,10 +1,10 @@
 # MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI
 
-Este repositório está vinculado ao artigo "MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI", de Melo, Y., Oliveira, F., Salles, R., Santos, A. e Moreno, H. O artigo foi enviado para revisão no Simpósio Brasileiro de Cibersegurança (SBSeg) 2025.
+Este repositório está vinculado ao artigo "MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI", de Melo, Y., Oliveira, F., Salles, R., Santos, A. e Moreno, H. O artigo foi enviado para revisão dos pares na trilha principal do Simpósio Brasileiro de Cibersegurança (SBSeg) 2025.
 
 # Resumo
 
-O RPKI vem sendo discutido na literatura como principal forma de robustecimento do roteamento BGP. No entanto, alguns trabalhos evidenciaram oportunidades de ataques ao próprio sistema de validação de rotas, justificando o esforço na resiliência desse ambiente. Este artigo apresenta o artefato MIRAK, que realiza de forma automatizada a identificação de vulnerabilidades conhecidas, contribuindo para reduzir o risco de ataques. Os resultados mostraram números animadores, motivando o investimento para aprimorar a sua eficiência.
+A validação de rotas através do Routinator e o protocolo RPKI vem sendo discutidos na literatura como a principal combinação para o robustecimento do roteamento BGP. No entanto, alguns trabalhos evidenciaram oportunidades de ataques ao próprio sistema validador de rotas, justificando o esforço no aumento da resiliência dessa solução. Este artigo apresenta a aplicação MIRAK, desenvolvida com técnicas próprias para baixo consumo de recursos e rapidez, que realiza de forma automatizada a identificação de vulnerabilidades no Routinator, contribuindo para reduzir o risco de ataques. Os resultados iniciais se mostraram animadores, motivando o estudo para aprimorar a sua eficiência e amplitude.
 
 
 # Estrutura do Repositório
@@ -12,10 +12,8 @@ O RPKI vem sendo discutido na literatura como principal forma de robustecimento 
 - [MIRAK: Um Artefato para Robustecimento do Ambiente Relying Party RPKI](#mirak-um-artefato-para-robustecimento-do-ambiente-relying-party-rpki)
 - [Resumo](#resumo)
 - [Estrutura do Repositório](#estrutura-do-repositório)
-- [Selos Considerados](#selos-considerados)
 - [Informações básicas](#informações-básicas)
   - [Mirak-extractor](#mirak-extractor)
-    - [Funcionalidades](#funcionalidades)
     - [Tecnologias utilizadas](#tecnologias-utilizadas)
       - [**Linguagens e Runtime**](#linguagens-e-runtime)
       - [**Frameworks e Bibliotecas**](#frameworks-e-bibliotecas)
@@ -24,7 +22,6 @@ O RPKI vem sendo discutido na literatura como principal forma de robustecimento 
       - [**Gerenciamento e Empacotamento**](#gerenciamento-e-empacotamento)
     - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software)
   - [Mirak-app](#mirak-app)
-    - [Funcionalidades](#funcionalidades-1)
     - [Tecnologias utilizadas](#tecnologias-utilizadas-1)
       - [**Linguagens e Runtime**](#linguagens-e-runtime-1)
       - [**Frameworks e Bibliotecas**](#frameworks-e-bibliotecas-1)
@@ -87,34 +84,21 @@ O RPKI vem sendo discutido na literatura como principal forma de robustecimento 
 
 </br>
 
-# Selos Considerados
-
-Para a avaliação do artefato, os autores adotam os seguintes critérios, representados por selos específicos no processo de análise: Selo D – Artefatos Disponíveis; Selo F – Artefatos Funcionais; Selo S - Artefatos Sustentáveis e Selo R – Experimentos Reprodutíveis.
-
-</br>
-
 ---
 # Informações básicas
 
-Esse repositório contém o artefato MIRAK, que inclui duas aplicações – Mirak-extractor e Mirak-app – além de um script automatizado para a criação de ambientes virtuais, visando a facilitar a reprodução dos experimentos. Adicionalmente, o repositório detalha os requisitos mínimos necessários para a execução de cada aplicação, bem como os requisitos exigidos para a realização dos experimentos.
+Esse repositório contém o artefato MIRAK, que inclui duas aplicações – Mirak-extractor e Mirak-app – além de um script automatizado para a criação de ambientes virtuais, visando a facilitar a reprodução dos experimentos. Adicionalmente, o repositório detalha os requisitos mínimos necessários para a execução das aplicações, bem como os requisitos exigidos para a realização do experimento.
 
 </br>
 
 ---
 ## Mirak-extractor
 
-O Mirak-extractor é uma ferramenta que diagnostica as características do ambiente hospedeiro Relying Party RPKI. É um sistema automatizado, identificando as aplicações instaladas e detalhes operacionais do ambiente em pouco tempo, gerando o arquivo MIRAK, que permite análises por outras aplicações, como o Mirak-app. Foi desenvolvido em Python com o uso do padrão Singleton, com baixo impacto em requisitos para instalação e execução. O arquivo MIRAK contém ao final da execução do Mirak-extractor todas as características do ambiente hospedeiro necessárias para a pesquisa de CVEs correspondentes. Em sua versão atual, oferece suporte aos principais sistemas operacionais utilizados pelo Routinator, como versões Ubuntu 16.04, Debian 10 e Red Hat Enterprise Linux 9.5, ou superiores.
-
-</br>
-
-### Funcionalidades
-
-**Extração de informações**: De forma geral, o usuário fornece um caminho e o nome do arquivo, a partir do qual as informações do sistema operacional são extraídas de arquivos do sistema ou do usuário. Em seguida, inicia-se a identificação dos aplicativos instalados, armazenando suas principais características e identificadores. O processo também inclui a obtenção de informações sobre portas de rede, seguido pela exportação dos dados. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção do algoritmo adequado para a identificação das aplicações. Para esse procedimento, são utilizados os seguintes arquivos, sendo necessário apenas um deles:
+O Mirak-extractor é uma ferramenta que diagnostica as características do ambiente hospedeiro Relying Party RPKI. É um sistema automatizado, identificando as aplicações instaladas e detalhes operacionais do ambiente em pouco tempo, gerando o arquivo MIRAK, que permite análises por outras aplicações, como o Mirak-app. Foi desenvolvido em Python com o uso do padrão Singleton, com baixo impacto em requisitos para instalação e execução. O arquivo MIRAK contém ao final da execução do Mirak-extractor todas as características do ambiente hospedeiro necessárias para a pesquisa de CVEs correspondentes. Em sua versão atual, oferece suporte aos principais sistemas operacionais utilizados pelo Routinator, como versões Ubuntu 16.04, Debian 10 e Red Hat Enterprise Linux 9.5, ou superiores. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção adequada do algoritmo para a identificação das aplicações. Os arquivos a seguir podem ser utilizados nesse processo:
 
 - os-release;
 - lsb-release; e
 - issue.
-
 
 </br>
 
@@ -172,13 +156,7 @@ O Mirak-extractor utiliza as seguintes tecnologias e ferramentas:
 ---
 ## Mirak-app
 
-Este software integra o projeto MIRAK, e tem como objetivo auxiliar os profissionais de gestão de tecnologia da informação ou cibersegurança a identificar possíveis vulnerabilidades que possam ser exploradas por ameaças, causando impacto nas operações de soluções RPKI. O Mirak-app é uma ferramenta de processamento e análise que visa simplificar como os profissionais fazem a avaliação de segurança de sistemas computacionais com função de Relying Party RPKI, através de uma operação automatizada que pode avaliar uma série de vulnerabilidades e cenários de risco com rapidez. Esta solução utiliza para a busca de CVEs o arquivo MIRAK, gerado pelo software Mirak-extractor. Este arquivo contém os detalhes funcionais do ambiente de execução, permitindo uma busca direcionada por CVEs específicas para o ambiente Relying Party.
-
-</br>
-
-### Funcionalidades
-
-**Avaliação do ambiente de execução RPKI**: as informações contidas no arquivo MIRAK são utilizadas para analisar a segurança do ambiente onde o software validador RPKI está sendo executado. Inicialmente, realiza-se a verificação da integridade e correção dos identificadores CPE presentes no sistema. Em seguida, são identificadas vulnerabilidades conhecidas associadas ao software validador e ao sistema operacional. Com base nessa análise, avalia-se a aplicabilidade dessas vulnerabilidades ao ambiente identificado. Posteriormente, determina-se a relevância dos softwares detectados no contexto do RPKI, verificando também configurações de rede, como a presença de portas abertas. Por fim, os resultados da avaliação são exibidos e, caso vulnerabilidades sejam detectadas, um relatório detalhado é gerado para documentação e futuras ações corretivas.
+O Mirak-app é uma aplicação de processamento e análise que utiliza para a busca de CVEs o arquivo MIRAK, já com os identificadores CPE estruturados, permitindo assim uma busca direcionada por CVEs na NVD. Inicialmente, realiza-se a verificação da integridade e correção dos identificadores CPE presentes no sistema. Em seguida, são identificadas vulnerabilidades conhecidas associadas ao software validador e ao sistema operacional. A partir dessa análise, verifica-se se as vulnerabilidades são aplicáveis ao ambiente identificado. Em seguida, avalia-se a importância dos softwares detectados no contexto do RPKI, além de examinar configurações de rede, como a existência de portas abertas. Por fim, os resultados da avaliação são exibidos e, caso vulnerabilidades sejam detectadas, um relatório CSV detalhado é gerado para documentação e futuras ações corretivas.
 
 </br>
 
@@ -655,7 +633,7 @@ O processo de empacotamento deve ser executado por meio do script automatizado "
 $ source ./packaging.sh
 ```
 
-O pacote será gerado no diretório "dist".
+O pacote será gerado no diretório "``dist``".
 
 </br>
 
@@ -1171,7 +1149,7 @@ $ mirak-app evaluate -v ./input/mirak.json ./output
 
 </br>
 
-Por fim, para retornar ao host, utilize o comando "exit". O relatório em formato CSV estará disponível no diretório "output".
+Por fim, para retornar ao host, utilize o comando "exit". O relatório em formato CSV estará disponível no diretório "``output``".
 
 
 <div align="center">
@@ -1639,7 +1617,7 @@ A duração do processo do projeto Mirak pode variar, estimando-se aproximadamen
 
 # Reivindicações
 
-A principal reivindicação do artigo é a viabilidade do uso do artefato MIRAK para identificação de vulnerabilidades de forma automatizada, possibilitando a aplicação de correções. Assim, reduz-se a componente humana na fase de hardening do ambiente Relying Party, reduzindo assim o nível de risco de ataques ao BGP. A comparação entre os resultados dos experimentos A e B comprova isso, e estes testes podem ser reproduzidos seguindo as instruções contidas no GitHub do projeto MIRAK.
+A principal reivindicação do artigo é a viabilidade do uso do artefato MIRAK para reduzir as oportunidades de ataques ao BGP através do uso de vulnerabilidades no validador de rotas RPKI ou do sistema hospedeiro. De forma automatizada, o MIRAK identifica o Relying Party e seus componentes, busca as CVE pertinentes e identifica os módulos que precisam ser atualizados ou retirados. 
 
 </br>
 
