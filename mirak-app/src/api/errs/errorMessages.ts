@@ -1,3 +1,7 @@
+/* List of HTTP error messages. The standard messages established to guide users 
+in case of communication error with external APIs. Each message is linked to an 
+HTTP error code following the RFC 9110 standard link:
+https://httpwg.org/specs/rfc9110.html#overview.of.status.codes */
 export const httpErrorMessages: Record<number, string> = {
   400: 'This error indicates that the NVD database cannot or will not process the request due to an application error. Check if there are any of the symbols "+,/,?,=" in any of the CPE indicator fields in the given MIRAK file. \nSorry for the inconvenience!',
   401: 'This error indicates that valid authentication credentials were requested, but the current ones are either invalid or missing. \nSorry for the inconvenience!',

@@ -27,11 +27,32 @@ import {
 } from "./types/StrategicFiles";
 import path from "node:path";
 
+/**
+ * @singleton
+ * Central service responsible for coordinating the full evaluation process of the MIRAK file.
+ *
+ * This Singleton class manages the full evaluation process of the MIRAK file,
+ * including reading, extracting and fixing CPEs, searching for vulnerabilities,
+ * analyzing them, and finally validating the environment with a focus on RPKI.
+ *
+ * It handles key processes such as strategic file assessment and software vulnerability checks.
+ * Unhandled errors are escalated to upper layers, ensuring a resilient execution flow.
+ *
+ * @example
+ * const evaluator = EvaluationService.instance;
+ * const cli = CLI.instance;
+ * await evaluator.evaluateServices(inputPath, cli);
+ */
 export default class EvaluationService {
   static #instance: EvaluationService;
 
   private constructor() {}
 
+  /**
+   * Singleton accessor for EvaluationService.
+   *
+   * Ensures a single instance is used across the application.
+   */
   public static get instance(): EvaluationService {
     if (!this.#instance) {
       this.#instance = new EvaluationService();
@@ -39,6 +60,19 @@ export default class EvaluationService {
     return this.#instance;
   }
 
+  /**
+   * Executes the core application workflow.
+   *
+   * This method reads and parses the MIRAK file, corrects CPEs, searches for vulnerabilities,
+   * evaluates vulnerability presence, and analyzes RPKI-related strategic files.
+   *
+   * It only returns software entries that have at least one vulnerability.
+   * RPKI compliance evaluation is performed only on vulnerable software.
+   *
+   * @param path - The path to the MIRAK JSON file.
+   * @param cli - The CLI instance for user feedback and logging.
+   * @returns A list of evaluatedSoftware entries with detected vulnerabilities and related insights.
+   */
   public async evaluateServices(
     path: string,
     cli: CLI
@@ -111,7 +145,7 @@ export default class EvaluationService {
         cli.startProgressBar(item.CVEList.length);
         item.CVEList.forEach((cve, index) => {
           cli.updateProgressBar(index + 1);
-          const resultEvaluate = cve.afectedCPE.map((block) => {
+          const resultEvaluate = cve.affectedCPE.map((block) => {
             return evaluation.isCpeVulnerable(item.cpeTarget, block);
           });
           // There is at least one "true" value
@@ -337,9 +371,18 @@ export default class EvaluationService {
     return evaluationResult;
   }
 
+  /**
+   * Displays status notes about strategic file evaluations in the console.
+   *
+   * Conforms to UX patterns using green for success and red for inconsistencies.
+   *
+   * @param data - List of status entries from the analysis.
+   * @param cli - CLI instance used for console output.
+   */
   private writeNotesOnConsole(data: status[], cli: CLI): void {
     const success: string[] = [];
     const fail: string[] = [];
+    // Separating the results that are positive and the failures/inconsistencies
     for (const item of data) {
       if (item.status) {
         success.push(item.note);
@@ -347,14 +390,23 @@ export default class EvaluationService {
         fail.push(item.note);
       }
     }
-    if (success.length > 0){
+    if (success.length > 0) {
       cli.writeSuccess(success.join("\n"));
     }
-    if (fail.length > 0){
+    if (fail.length > 0) {
       cli.writeError(fail.join("\n"));
     }
   }
 
+  /**
+   * Analyzes RPKI-relevant strategic files for compliance.
+   *
+   * Evaluates ownership, permissions, and configuration file analysis (for Routinator).
+   * Each file is mapped to a result object summarizing its status.
+   *
+   * @param data - List of strategic files to evaluate.
+   * @returns An array of resultStrategicFile with evaluation details.
+   */
   private strategicFilesAnalysis(data: strategicfile[]): resultStrategicFile[] {
     const index = new Map<string, number>();
     const routinatorStrategicFileOrDirectories: rpkiFilesForAnalysis[] =
@@ -436,6 +488,14 @@ export default class EvaluationService {
     return result;
   }
 
+  /**
+   * Parses and summarizes the configuration file analysis of the Routinator.
+   *
+   * Builds a user-readable report from the extractor's findings, with appropriate status.
+   *
+   * @param data - The strategic file representing the Routinator configuration.
+   * @returns Status and explanatory notes about the configuration health.
+   */
   private analysisRoutinatorConfig(data: strategicfile): {
     status: boolean;
     notes: string;
@@ -452,6 +512,16 @@ export default class EvaluationService {
     };
   }
 
+  /**
+   * Compares expected and actual owner and group names of a file or directory.
+   *
+   * Generates a human-readable note and returns analysis status.
+   *
+   * @param expected - The expected ownership values.
+   * @param observed - The observed ownership data.
+   * @param name - File or directory name for reference.
+   * @returns An object with the analysis status and notes.
+   */
   private compareOwnerAndGroup(
     expected: rpkiFilesForAnalysis,
     observed: strategicfile,
@@ -493,6 +563,16 @@ export default class EvaluationService {
     };
   }
 
+  /**
+   * Compares expected and actual Unix-style permissions for a file or directory.
+   *
+   * Generates a detailed result note indicating mismatches or conformity.
+   *
+   * @param expected - Expected permission values.
+   * @param observed - Observed permission values.
+   * @param name - Name of the file or directory.
+   * @returns An object containing the result and notes.
+   */
   private comperePermissions(
     expected: rpkiFilesForAnalysis,
     observed: strategicfile,
@@ -514,21 +594,36 @@ export default class EvaluationService {
         ? `Upon evaluation of the permissions of the ${observed.type} "${name}", it was found that the permission settings fully comply with the recommended standards.`
         : `During the evaluation of the permissions of the ${observed.type} "${name}", discrepancies were identified in the permission settings compared to the recommended standards, as detailed below:`;
 
-    //return comparisonReport.length > 0 ? comparisonReport : [];
     return {
       status: divergences > 0 ? false : true,
       notes: `${header}\n${notes.join("\n")}`,
     };
   }
 
+  /**
+   * Converts numeric Unix-style permissions to symbolic representation.
+   *
+   * @param permission - An object containing user, group, and others permissions in octal.
+   * @returns A symbolic string like "rwxr-xr--".
+   */
   private mountFullPermission(permission: Permission): string {
     return (
       octalForText(permission.owner) +
       octalForText(permission.group) +
-      octalForText(permission.owner)
+      octalForText(permission.others)
     );
   }
 
+  /**
+   * Reads and parses the input MIRAK file from disk.
+   *
+   * This method handles internal parsing errors. If parsing fails, the method logs the error
+   * and returns undefined, allowing the main flow to abort gracefully.
+   *
+   * @param path - Path to the input MIRAK file.
+   * @param cli - CLI instance for logging errors.
+   * @returns A parsed object of type MirakFile or undefined on failure.
+   */
   private async MirakFile(
     path: string,
     cli: CLI
@@ -544,6 +639,16 @@ export default class EvaluationService {
     }
   }
 
+  /**
+   * Retrieves vulnerability data from an external source (e.g., NVD).
+   *
+   * This method delegates to the SearchService and returns a structured
+   * list of vulnerabilities grouped by CPE identifier.
+   *
+   * @param cpeList - List of CPE strings to query.
+   * @param cli - CLI instance used for progress indication or logging.
+   * @returns A list of CVEsByCPE, only for CPEs with vulnerabilities.
+   */
   private async searchForVulnerabiliies(
     cpeList: string[],
     cli: CLI

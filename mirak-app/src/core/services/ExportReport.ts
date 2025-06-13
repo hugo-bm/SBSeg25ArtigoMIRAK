@@ -3,9 +3,42 @@ import { evaluatedSoftware, finalReportObject, typeOfSoftwareFull } from "./type
 import CLI from "../../cli/CLI";
 import { getDateNowNumbersOnly } from "../../shared/GenericTools";
 
+/**
+ * Provides services for exporting structured reports to disk.
+ *
+ * This class is responsible for organizing and generating final output reports
+ * based on pre-evaluated and structured data. It receives data from external
+ * analysis processes and formats it into an exportable report, which is then
+ * written to the specified output folder.
+ *
+ * @remarks
+ * This class assumes that the destination folder already exists.
+ * It is designed to support data processing pipelines and ETL best practices.
+ */
 export default class ExportReport{
 
-
+  /**
+   * Exports the given structured evaluation data into a CSV file.
+   *
+   * The method processes the provided software evaluation results and transforms
+   * them into a flat, structured CSV file that can be used for reporting or further
+   * analysis. It saves the final file in the specified output path.
+   *
+   * The exported report adheres to ETL principles, ensuring that the data is normalized,
+   * relevant, and consistently formatted for downstream consumers.
+   *
+   * @param data - An array of `evaluatedSoftware` items representing software evaluation results.
+   * @param path - Absolute or relative path to the folder where the CSV report will be saved.
+   * @param cli - An instance of the `CLI` class used for terminal output and logging.
+   *
+   * @returns A `Promise<void>` that resolves once the report has been written to disk.
+   *
+   * @throws Will throw an error if writing to the file system fails.
+   *
+   * @example
+   * const exporter = new ExportReport();
+   * await exporter.exportToCSV(results, "./output", cli);
+   */
     public async exportToCSV(data: evaluatedSoftware[], path: string, cli: CLI)
     {
         cli.writeTitle("📝 File Export is starting!")
