@@ -2,9 +2,42 @@ import { Configuration, cpeMatch, Node } from "../entities/types/Scenarios";
 import ExtractTools from "../../shared/ExtractTools";
 import IScenarios from "./IScenarios";
 
+/**
+ * Handles the evaluation of software vulnerabilities based on scenario configurations.
+ *
+ * This class is responsible for determining whether a given software environment
+ * matches any known vulnerability scenario.
+ *
+ * A scenario is defined using a set of criteria (e.g., CPEs, logical operators, and version bounds)
+ * that describe when a system or application is considered vulnerable. These criteria
+ * are typically extracted from sources like the NVD (National Vulnerability Database).
+ *
+ * The evaluation also takes into account execution context characteristics
+ * such as operating system identifiers and discovered software components.
+ *
+ * ### Usage
+ * Use this class to assess whether a system is affected by a known vulnerability,
+ * given its current software configuration and CPE identifiers.
+ *
+ * @example
+ * const scenarios = new Scenarios("cpe:2.3:o:canonical:ubuntu_linux:22.04:*:*:*:*:*:*:*");
+ * const isVulnerable = scenarios.isCpeVulnerable(cpe, configuration);
+ * console.log(isVulnerable); // true or false
+ *
+ * @see Configuration
+ * @see CPE
+ */
 export default class Scenarios implements IScenarios {
   private osCPEString: string;
-
+/**
+   * Initializes a new instance of the Scenarios class.
+   *
+   * @param osCPE - A string containing the OS CPE identifier.
+   * This value defines the environment context for the analysis (e.g., distro and version).
+   *
+   * @example
+   * const scenario = new Scenarios('cpe:/o:canonical:ubuntu_linux:22.04');
+   */
   constructor(osCPE: string) {
     if (
       new RegExp(
