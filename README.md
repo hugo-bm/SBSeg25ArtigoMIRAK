@@ -18,14 +18,14 @@ A validação de rotas através do Routinator e o protocolo RPKI vem sendo discu
       - [**Linguagens e Runtime**](#linguagens-e-runtime)
       - [**Frameworks e Bibliotecas**](#frameworks-e-bibliotecas)
       - [**Testes e Cobertura**](#testes-e-cobertura)
-      - [**Ferramentas de Qualidade e Formatação**](#ferramentas-de-qualidade-e-formatação)
+      - [**Ferramentas de Qualidade e Produtividade**](#ferramentas-de-qualidade-e-produtividade)
       - [**Gerenciamento e Empacotamento**](#gerenciamento-e-empacotamento)
     - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software)
   - [Mirak-app](#mirak-app)
     - [Tecnologias utilizadas](#tecnologias-utilizadas-1)
       - [**Linguagens e Runtime**](#linguagens-e-runtime-1)
       - [**Frameworks e Bibliotecas**](#frameworks-e-bibliotecas-1)
-      - [**Ferramentas de Qualidade e Produtividade**](#ferramentas-de-qualidade-e-produtividade)
+      - [**Ferramentas de Qualidade e Produtividade**](#ferramentas-de-qualidade-e-produtividade-1)
       - [**Ferramentas de Desenvolvimento**](#ferramentas-de-desenvolvimento)
       - [**Manipulação de Dados**](#manipulação-de-dados)
       - [**Interface de Linha de Comando (CLI)**](#interface-de-linha-de-comando-cli)
@@ -33,17 +33,17 @@ A validação de rotas através do Routinator e o protocolo RPKI vem sendo discu
       - [**Gerenciamento de Pacotes**](#gerenciamento-de-pacotes)
       - [**Ambiente virtualizado por contêiner**](#ambiente-virtualizado-por-contêiner)
     - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software-1)
-    - [Descrição dos campos do relatório CSV:](#descrição-dos-campos-do-relatório-csv)
-    - [Acessar o código-fonte  ](#acessar-o-código-fonte-)
+    - [Descrição dos campos do relatório CSV](#descrição-dos-campos-do-relatório-csv)
+- [Acesso ao código-fonte  ](#acesso-ao-código-fonte-)
 - [Dependências](#dependências)
   - [Mirak-extractor](#mirak-extractor-1)
     - [Dependências gerais](#dependências-gerais)
-    - [Dependências de desenvolvimento e construção:](#dependências-de-desenvolvimento-e-construção)
-    - [Dependências de produção:](#dependências-de-produção)
+    - [Dependências de desenvolvimento e construção](#dependências-de-desenvolvimento-e-construção)
+    - [Dependências de produção](#dependências-de-produção)
   - [Mirak-app](#mirak-app-1)
     - [Dependências gerais](#dependências-gerais-1)
-    - [Dependências para produção:](#dependências-para-produção)
     - [Dependências de desenvolvimento e construção](#dependências-de-desenvolvimento-e-construção-1)
+    - [Dependências para produção](#dependências-para-produção)
 - [Preocupações com segurança](#preocupações-com-segurança)
 - [Instalação](#instalação)
   - [Mirak-extractor](#mirak-extractor-2)
@@ -66,14 +66,13 @@ A validação de rotas através do Routinator e o protocolo RPKI vem sendo discu
     - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados)
   - [Mirak-app](#mirak-app-3)
   - [Testando com Docker](#testando-com-docker-1)
-    - [Verificações iniciais](#verificações-iniciais-1)
     - [Usando o Mirak-app no Docker](#usando-o-mirak-app-no-docker)
     - [Remover imagem e contêiner gerados](#remover-imagem-e-contêiner-gerados-1)
 - [Experimentos](#experimentos)
   - [Requisitos mínimos para executar o experimento](#requisitos-mínimos-para-executar-o-experimento)
   - [Descrição](#descrição)
     - [Versões dos Softwares utilizados no experimento](#versões-dos-softwares-utilizados-no-experimento)
-    - [Versões do routinator suportadas pelo ambiente virtual](#versões-do-routinator-suportadas-pelo-ambiente-virtual)
+    - [Versões do routinator suportadas atualmente pelo ambiente virtual](#versões-do-routinator-suportadas-atualmente-pelo-ambiente-virtual)
   - [Iniciando e finalizando o ambiente virtual](#iniciando-e-finalizando-o-ambiente-virtual)
   - [Grype](#grype)
   - [Trivy](#trivy)
@@ -87,18 +86,14 @@ A validação de rotas através do Routinator e o protocolo RPKI vem sendo discu
 ---
 # Informações básicas
 
-Esse repositório contém o artefato MIRAK, que inclui duas aplicações – Mirak-extractor e Mirak-app – além de um script automatizado para a criação de ambientes virtuais, visando a facilitar a reprodução dos experimentos. Adicionalmente, o repositório detalha os requisitos mínimos necessários para a execução das aplicações, bem como os requisitos exigidos para a realização do experimento.
+Esse repositório contém o artefato MIRAK, que inclui duas aplicações – Mirak-extractor e Mirak-app – além de um script automatizado para a criação de ambientes virtuais, visando a facilitar a reprodução dos experimentos. Adicionalmente, o repositório detalha os requisitos mínimos necessários para a execução das aplicações.
 
 </br>
 
 ---
 ## Mirak-extractor
 
-O Mirak-extractor é uma ferramenta que diagnostica as características do ambiente hospedeiro Relying Party RPKI. É um sistema automatizado, identificando as aplicações instaladas e detalhes operacionais do ambiente em pouco tempo, gerando o arquivo MIRAK, que permite análises por outras aplicações, como o Mirak-app. Foi desenvolvido em Python com o uso do padrão Singleton, com baixo impacto em requisitos para instalação e execução. O arquivo MIRAK contém ao final da execução do Mirak-extractor todas as características do ambiente hospedeiro necessárias para a pesquisa de CVEs correspondentes. Em sua versão atual, oferece suporte aos principais sistemas operacionais utilizados pelo Routinator, como versões Ubuntu 16.04, Debian 10 e Red Hat Enterprise Linux 9.5, ou superiores. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção adequada do algoritmo para a identificação das aplicações. Os arquivos a seguir podem ser utilizados nesse processo:
-
-- os-release;
-- lsb-release; e
-- issue.
+O Mirak-extractor é uma ferramenta que diagnostica as características do ambiente hospedeiro Relying Party RPKI. É um sistema automatizado, identificando as aplicações instaladas e detalhes operacionais do ambiente em pouco tempo, gerando o arquivo MIRAK, que permite análises por outras aplicações, como o Mirak-app. Foi desenvolvido em Python com o uso do padrão Singleton, com baixo impacto em requisitos para instalação e execução. O arquivo MIRAK contém ao final da execução do Mirak-extractor todas as características do ambiente hospedeiro necessárias para a pesquisa de CVEs correspondentes. Em sua versão atual, oferece suporte aos principais sistemas operacionais utilizados pelo Routinator, como versões Ubuntu 16.04, Debian 10 e Red Hat Enterprise Linux 9.5, ou superiores. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção adequada do algoritmo para a identificação das aplicações.
 
 </br>
 
@@ -125,7 +120,7 @@ O Mirak-extractor utiliza as seguintes tecnologias e ferramentas:
 
 - **Mock** – Ferramenta para a criação de mocks em testes, permitindo a simulação de objetos e comportamentos.
 
-#### **Ferramentas de Qualidade e Formatação**
+#### **Ferramentas de Qualidade e Produtividade**
 
 - **Flake8** – Ferramenta de análise estática para código Python que integra verificações de conformidade com a PEP 8, detecção de erros por meio do Pyflakes e avaliação da complexidade do código utilizando McCabe.
 
@@ -226,18 +221,18 @@ O Mirak-app utiliza as seguintes tecnologias e ferramentas:
   - Ubuntu 20.04 ou superior
 - Processador: 1 núcleo;
 - Memória: 140 MB;
-- Rede: conexão de 10 Mbps; e
-- Armazenamento: 15 MB.
+- Armazenamento: 15 MB; e
+- Conexão estável com a internet.
 
 </br>
 
-### Descrição dos campos do relatório CSV:
+### Descrição dos campos do relatório CSV
 
-- **product** -> Define a nomenclatura atribuída ao software vulnerável conforme registrado na NVD (National Vulnerability Database);
+- **product** -> Nomenclatura atribuída ao software vulnerável conforme registrado na NVD (National Vulnerability Database);
 
 - **vendor** -> Identifica o fabricante ou distribuidor responsável pelo software vulnerável;
 
-- **type** -> Especifica se o software vulnerável corresponde a uma aplicação instalada ou a um componente integrante do sistema operacional;
+- **type** -> Especifica se o software vulnerável corresponde a uma aplicação instalada ou a um componente nativo do sistema operacional;
 
 - **version** -> Indica a versão específica do software que apresenta vulnerabilidades conhecidas;
 
@@ -247,7 +242,7 @@ O Mirak-app utiliza as seguintes tecnologias e ferramentas:
 
 - **base_score** -> Valor numérico de 0 a 10 que representa a severidade da vulnerabilidade, conforme os critérios estabelecidos pelo padrão CVSS 3.1;
 
-- **base_severity** -> Classificação textual correspondente ao base_score, conforme a seguinte tabela:
+- **base_severity** -> Classificação textual correspondente ao base_score, conforme a seguir:
 
 </br>
 
@@ -267,17 +262,17 @@ Fonte: [NVD - CVSS](https://nvd.nist.gov/vuln-metrics/cvss)
 
 </br>
 
-- **software_required**  ->  Indica se o software vulnerável é considerado essencial para o funcionamento do validador RPKI, excluindo o sistema operacional;
+- **software_required**  ->  Indica se o software vulnerável é necessário para o funcionamento do validador RPKI, excluindo o sistema operacional;
 
-- **related_port** -> Identifica se uma porta de rede em estado de escuta está associada ao software vulnerável;
+- **related_port** -> Identifica se uma porta de rede em estado de "*listening*" está associada ao software vulnerável;
 
 - **port_required** -> Especifica se funcionamento da solução RPKI depende da existência de portas de rede relacionadas ao software;
 
-- **notes** -> Fornece informações adicionais sobre as portas de rede e seu possível impacto no desempenho e na segurança do validador RPKI.
+- **notes** -> Fornece informações técnicas adicionaissobre portas de rede, seu impacto na execução do validador RPKI e os resultados da avaliação das configurações.
 
 </br>
 
-### Acessar o código-fonte  
+# Acesso ao código-fonte  
 
 </br>
 
@@ -307,7 +302,7 @@ As dependências de produção são incorporadas durante o processo de empacotam
 
 </br>
 
-### Dependências de desenvolvimento e construção:
+### Dependências de desenvolvimento e construção
 
 ```bash
 pytest >= 8.3.4
@@ -324,15 +319,7 @@ setuptools >= 45.2.0
 
 </br>
 
-O comando necessário para a instalação dessas dependências está apresentado a seguir.
-
-```bash
-$ pip install -r ./app/requirements_dev.txt
-```
-
-</br>
-
-### Dependências de produção:
+### Dependências de produção
 
 ```bash
 typer >= 0.15.1
@@ -340,9 +327,19 @@ psutil >= 5.9.5
 tqdm >= 4.67.1
 ```
 
+
+
 </br>
 
-Para realizar a instalação, utilize o seguinte comando.
+O comando necessário para a instalação dessas dependências está apresentado a seguir.
+
+- Dependências de desenvolvimento:
+```bash
+$ pip install -r ./app/requirements_dev.txt
+```
+
+
+- Dependências de produção:
 
 ```bash
 $ pip install -r ./app/requirements_prod.txt
@@ -359,31 +356,6 @@ $ pip install -r ./app/requirements_prod.txt
 
 A instalação dessas dependências está detalhada na documentação oficial do Node.js, disponível no seguinte link: [Node.js — Download Node.js®](https://nodejs.org/pt/download)
 
-</br>
-
-### Dependências para produção:
-
-```json
-{
-  "ajv": "^8.17.1",
-  "ajv-formats": "^3.0.1",
-  "axios": "^1.7.7",
-  "cli-progress": "^3.12.0",
-  "commander": "^12.1.0",
-  "csv-writer": "^1.6.0",
-  "dotenv": "^16.4.7",
-  "jsonstream": "^1.0.3",
-  "kleur": "^4.1.5"
-}
-```
-
-</br>
-
-A instalação pode ser efetuada utilizando o seguinte comando:
-
-```bash
-$ npm i --omit=dev
-```
 
 </br>
 
@@ -416,10 +388,35 @@ $ npm i --omit=dev
 
 </br>
 
-A instalação pode ser efetuada utilizando o seguinte comando:
+### Dependências para produção
 
+```json
+{
+  "ajv": "^8.17.1",
+  "ajv-formats": "^3.0.1",
+  "axios": "^1.7.7",
+  "cli-progress": "^3.12.0",
+  "commander": "^12.1.0",
+  "csv-writer": "^1.6.0",
+  "dotenv": "^16.4.7",
+  "jsonstream": "^1.0.3",
+  "kleur": "^4.1.5"
+}
+```
+
+</br>
+
+Os comandos necessários para a intalação dessas dependências está apresentado a seguir:
+
+- Dependências de desenvolvimento:
 ```bash
 $ npm install --include=dev
+```
+
+
+- Depdências de produção:
+```bash
+$ npm i --omit=dev
 ```
 
 </br>
@@ -429,6 +426,8 @@ $ npm install --include=dev
 
 O artefato MIRAK foi desenvolvido com o objetivo de ser minimamente invasivo, limitando-se à extração e processamento de informações sem realizar qualquer modificação nos arquivos do sistema. Dessa forma, sua utilização não representa riscos para os usuários que o analisarem.
 
+Para otimizar o desempenho das requisições HTTP feitas à (NVD) pelo Mirak-app necessita de uma Chave de API da NVD para a realização do processo. Seu uso possibilita um aumento no número de consultas por acesso, reduzindo, assim, o tempo de execução. Por razões de segurança, a chave não foi adicionada ao repositório. Durante a instalação, é necessário inseri-la manualmente. Os usuários podem solicitar gratuitamente uma Chave de API da NVD por meio do site oficial da (NVD), acessível pelo link: [NVD - API Key Request](https://nvd.nist.gov/developers/request-an-api-key).
+
 </br>
 
 ---
@@ -436,9 +435,7 @@ O artefato MIRAK foi desenvolvido com o objetivo de ser minimamente invasivo, li
 
 ## Mirak-extractor
 
-O processo de instalação consiste em três etapas principais: download do repositório, construção do pacote e instalação do pacote gerado. Para facilitar esse procedimento, a pasta scripts contém códigos automatizados que executam a instalação das dependências, a construção do pacote e sua subsequente instalação.
-
-Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-extractor, execute o comando a seguir.
+O processo de instalação consiste em três etapas sucintas: download do repositório, construção do pacote e instalação do pacote gerado. Para facilitar esse procedimento, a pasta scripts contém códigos automatizados que executam a instalação das dependências, a construção do pacote e sua subsequente instalação. O diretório que abriga o código, os scripts e o exemplo `dockerfile.example` destinado ao Mirak-extractor, encontra-se na pasta `mirak-extractor`.
 
 ```bash
 cd mirak-extractor
@@ -452,13 +449,13 @@ cd mirak-extractor
 
 </br>
 
-O processo de construção foi realizado utilizando "``setuptools``" para gerar um pacote no formato "``tar.gz``", destinado ao gerenciamento pelo "``PIP``". O PIP foi escolhido por ser o gerenciador de pacotes mais amplamente adotado e o padrão oficial para Python. A seguir, apresenta-se o comando utilizado para a criação do pacote:
+O processo de construção foi realizado utilizando "``setuptools``" para gerar um pacote no formato "``tar.gz``", destinado ao gerenciamento pelo "``PIP``". A seguir, apresenta-se o comando utilizado para a criação do pacote:
 
 ```bash
 $ python3 raiz_do_projeto/setup.py sdist
 ```
 
-O pacote final será criado na diretório "``dist``".
+O pacote final será criado no diretório "``dist``".
 
 </br>
 
@@ -474,7 +471,7 @@ O pacote final será criado na diretório "``dist``".
 
 </br>
 
-Para instalar o Mirak-extractor, é essencial que uma versão compatível do Python esteja previamente instalada. O procedimento de instalação é descrito a seguir:
+Para instalar o Mirak-extractor, é essencial que uma versão compatível do Python esteja instalada. Caso as dependências gerais não tenham sido previamente instaladas, a instalação do Python deve ser realizada conforme as instruções disponíveis neste [tutorial](https://python.org.br/instalacao-linux/).
 
 </br>
 
@@ -498,7 +495,6 @@ $ apt-get upgrade
 $ python3.8 -m pip install ./dist/mirak-extractor-1.0.0.tar.gz
 ```
 
-- Caso as dependências gerais não tenham sido previamente instaladas, a instalação do Python deve ser realizada conforme as instruções disponíveis neste [tutorial](https://python.org.br/instalacao-linux/)
 
 </br>
 
@@ -538,7 +534,7 @@ $ ./scripts/install_rhel.sh
 
 </br>
 
-Os scripts executam uma verificação das versões do **Python** instaladas no sistema e exibem as opções compatíveis. O usuário deverá selecionar a versão que será utilizada para o restante do processo. Caso nenhuma versão compatível seja encontrada, será solicitada a confirmação para a instalação do **Python 3.8**, considerado pelos autores o mais adequado para garantir a compatibilidade.
+Os scripts executam uma verificação das versões do **Python** instaladas no sistema e exibem as opções compatíveis com o artefato. O usuário deverá selecionar a versão que será utilizada para o restante do processo de instalação. Caso nenhuma versão compatível seja encontrada, será solicitada a confirmação para a instalação do **Python 3.8**, considerado pelos autores o mais adequado para garantir a compatibilidade.
 
 Desta forma, o usuário pode executar automaticamente os passos descritos nos itens **Construção do pacote** e **Instalação do pacote**.
 
@@ -562,7 +558,7 @@ Para remover o software, execute o seguinte comando:
 $ pip uninstall mirak-extractor
 ```
 
-Por fim, deve inserir o caractere "**Y**" para confirmar a exclusão.
+
 
 Para remover a dependência ``Python``, caso tenha sido instalada juntamente com o software, utilize o comando de remoção apropriado para sua plataforma.
 
@@ -579,7 +575,7 @@ Para remover a dependência ``Python``, caso tenha sido instalada juntamente com
 ## Mirak-app
 
 
-Para acessar o diretório que abriga o código, os scripts e o exemplo destinado ao Mirak-app, execute o comando a seguir.
+Para acessar o diretório que abriga o código, os scripts e o exemplo `Dockerfile` destinado ao Mirak-app, execute o comando a seguir.
 
 ```bash
 cd mirak-app
@@ -595,7 +591,7 @@ cd mirak-app
 
 </br>
 
-Antes de iniciar, é necessário garantir que todas as dependências de desenvolvimento estejam instaladas. Para isso, utilize o seguinte comando, caso ainda não tenha realizado a instalação:
+O primeiro passo na construção do pacote consiste em garantir a instalação de todas as dependências de desenvolvimento. Para isso, utilize o seguinte comando, caso ainda não tenha realizado a instalação:
 
 ```bash
 $ npm install --include=dev
@@ -649,11 +645,7 @@ O pacote será gerado no diretório "``dist``".
 
 </br>
 
-Atualmente, a solução foi portada exclusivamente para distribuições baseadas em Debian, como o Ubuntu. Para prosseguir, é indispensável uma conexão com a internet. O procedimento está detalhado a seguir:
-
-</br>
-
-> **⚠️ Importante:** O procedimento foi feito usando o Ubuntu.
+Em sua versão atual, a solução foi portada exclusivamente para distribuições baseadas em Debian, como o Ubuntu, sendo esta utilizada nesse tutorial.
 
 </br>
 
@@ -675,7 +667,7 @@ $ apt install ./dist/mirak-app.deb
 
 ```
 
- - Caso as dependências não tenham sido previamente instaladas, será solicitada a confirmação para proceder com a instalação. Para confirmar, insira "**Y**".
+ - Este comando utiliza o gerenciador de pacotes `APT` que avalia se as dependencias de prdoução e gerais foram cumpridas. Caso alguma dependência esteja em falta insira "**Y**" para realizar a instalação de forma automática.
 
  </br>
 
@@ -701,7 +693,7 @@ $ mirak-app -V
 
 </br>
 
->  **❗ Aviso:** Para otimizar o desempenho das requisições HTTP feitas à (NVD) pelo Mirak-app, os autores disponibilizam no apêndice uma Chave de API da NVD para a realização dos testes. Seu uso possibilita um aumento no número de consultas por acesso, reduzindo, assim, o tempo de execução. Por razões de segurança, a chave não foi adicionada ao repositório. Durante a instalação, é necessário inseri-la manualmente. Os usuários podem solicitar gratuitamente uma Chave de API da NVD por meio do site oficial da (NVD), acessível pelo link: [NVD - API Key Request](https://nvd.nist.gov/developers/request-an-api-key).
+>  **❗ Aviso:** As informações de obtenção da chave se encontram em [Preocupações com segurança](#preocupações-com-segurança).
 
 </br>
 
@@ -725,13 +717,11 @@ EOL
 
 </br>
 
-Para realizar a remoção, basta executar os comandos a seguir:
+Para realizar a remoção, execute o seguinte comando:
 
 ```bash
 $ apt remove mirak-app
 ```
-
-Por fim, deve inserir o caractere "**Y**" para confirmar a exclusão.
 
 </br>
 
@@ -755,27 +745,27 @@ Por fim, deve inserir o caractere "**Y**" para confirmar a exclusão.
 
 </br>
 
-> **⚠️ Importante:** O comando "`apt autoremove`" desinstala qualquer dependência órfãs. No entanto, caso uma dependência esteja em uso por outra aplicação, ela não será desinstalada.
+> **⚠️ Importante:** O comando "`apt autoremove`" desinstala qualquer dependência órfã. No entanto, caso uma dependência esteja em uso por outra aplicação, ela não será desinstalada.
 
 </br>
 
 ---
 # Teste mínimo
 
-A execução de um teste mínimo permite que os revisores avaliem as funcionalidades do artefato e confirmem seu correto funcionamento. Esse procedimento é essencial para identificar possíveis falhas no processo de instalação, assegurando que o artefato tenha sido instalado corretamente. Para verificar se o Mirak-app foi instalado corretamente e se seu binário está operando adequadamente, utilize o seguinte comando:
+A execução de um teste mínimo permite que os revisores avaliem as funcionalidades do artefato e confirmem seu correto funcionamento. Esse procedimento é essencial para identificar possíveis falhas no processo de instalação, assegurando que o artefato tenha sido instalado corretamente. Para verificar se o Mirak-extractor foi instalado corretamente e se seu binário está operando adequadamente, utilize o seguinte comando:
 
 ```bash
-$ mirak-app --help
+$ mirak-extractor --help
 ```
 
 A opção "``--help``" exibe uma descrição sucinta sobre o funcionamento das aplicações.
 
 </br>
 
-Da mesma forma, para verificar a instalação e o funcionamento do Mirak-extractor, execute o seguinte comando:
+Da mesma forma, para verificar a instalação e o funcionamento do Mirak-app, execute o seguinte comando:
 
 ```bash
-$ mirak-extractor --help
+$ mirak-app --help
 ```
 
 </br>
@@ -787,12 +777,10 @@ $ mirak-extractor --help
 
 </br>
 
-Após a instalação, a aplicação pode ser executada digitando "``mirak-extractor``". 
-
-Como a aplicação possui um único propósito, não há suporte para comandos CLI adicionais. Para utilizá-la, é necessário especificar a opção "--output", indicando o caminho relativo para o destino do arquivo, incluindo seu nome e a extensão “.json”, conforme ilustrado no exemplo abaixo:
+Após o processo de instalação, manual ou através sos scripts atumatizados, a aplicação pode ser executada digitando "``mirak-extractor``". É necessário especificar a opção "--output", indicando o caminho relativo para o destino do arquivo, incluindo seu nome e a extensão “.json”, conforme ilustrado no exemplo abaixo:
 
 ```bash
-$ mirak-extractor --output caminho_arquivo_mira/nome_do_arquivo.json
+$ mirak-extractor --output caminho_arquivo_mirak/nome_do_arquivo.json
 ```
 
 </br>
@@ -818,11 +806,7 @@ Se nenhuma opção for especificada, o arquivo será exportado para o diretório
 
 </br>
 
-O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua utilização sem a necessidade de instalação direta no sistema. Essa abordagem facilita a configuração de um ambiente isolado de maneira eficiente, garantindo que todos os requisitos sejam atendidos.
-
-</br>
-
-> **⚠️ Importante:** Os exemplos apresentados a seguir foram elaborados com base no Ubuntu. No entanto, podem ser necessárias pequenas adaptações para outras distribuições compatíveis.
+O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua utilização sem a necessidade de instalação direta no sistema. Essa abordagem facilita a configuração de um ambiente isolado de maneira eficiente, garantindo que todos os requisitos de hardware e instalação sejam atendidos. Este ambiente segue como um exemplo ilustrativo de como o software funcionaria em um ambiente real sendo destinado a testes fim-a-fim e vizualização por parte dos desenvolvedores.
 
 </br>
 
@@ -830,7 +814,7 @@ O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua u
 
 </br>
 
-> **❗ Aviso:** Os comandos a seguir fazem o uso de permissões privilegiadas. Certifique-se de rodar esses comandos como **superusuário** para evitar problemas de permissão.
+> **❗ Aviso:** Os comandos a seguir fazem o uso de permissões privilegiadas. Certifique-se de executar como **superusuário**.
 
 </br>
 
@@ -887,7 +871,7 @@ $ docker build -f 'dockerfile.example' -t mirak-extractor-image .
 
 </br>
 
-Nesta etapa, será realizada a construção e a execução de um contêiner contendo o ambiente de execução necessário para este exemplo.
+Posteriormente, será realizada a construção e a execução de um contêiner contendo o ambiente de execução necessário para este exemplo ilustrativo.
 
 ```bash
 $ docker run -dit --name mirak-extractor-container -v $(pwd)/output:/workspaces/project/output  mirak-extractor-image
@@ -903,7 +887,7 @@ $ docker exec -it mirak-extractor-container bash
 
 </br>
 
-Neste momento, a conexão com o terminal do contêiner deve estar estabelecida. O próximo passo consiste na execução dos seguintes comandos para inicializar o **Routinator**:
+Neste momento, a conexão com o terminal do contêiner deve estar estabelecida. O próximo passo consiste na execução dos seguintes comandos para inicialização padrão do **Routinator**:
 
 ```bash
 $ routinator init --accept-arin-rpa -f 
@@ -913,7 +897,7 @@ $ routinator server --http 0.0.0.0:8323 --rtr 0.0.0.0:3323 --http 0.0.0.0:9556 -
 
 </br>
 
-Na próxima etapa, serão aplicados os procedimentos descritos em **Construção do Pacote** e **Instalação do Pacote** para concluir o processo de instalação. Neste exemplo, será demonstrado o uso do script para a instalação automatizada das dependências e do Mirak-extractor. Para isso, execute o seguinte script:
+Na próxima etapa, serão aplicados os procedimentos descritos em **Construção do Pacote** e **Instalação do Pacote** para concluir o processo de instalação. Neste exemplo, será demonstrado o uso do script para a instalação automatizada das dependências e do próprio Mirak-extractor. Para isso, execute o seguinte script:
 
 ```bash
 $ source ./scripts/install_ubuntu_debian.sh
@@ -921,11 +905,11 @@ $ source ./scripts/install_ubuntu_debian.sh
 
 </br>
 
-Neste caso, o Python não está previamente instalado, então será necessário confirmar a instalação. Para isso, digite o caractere "``y``" no console, garantindo que esteja em minúsculo. Após a instalação, será solicitado que você escolha a versão do software para a construção e instalação do aplicativo.
+Neste exemplo ilustrativo, o Python não foi previamente instalado, então será necessário confirmar a instalação. Para isso, digite o caractere "``y``" no console, garantindo que esteja em minúsculo. Após a instalação, será solicitado que você escolha a versão do software para a construção e instalação do mirak-extractor.
 
 </br>
 
-Após a conclusão do processo, o aplicativo estará disponível para uso ao executar “mirak-extractor” no console. Por fim, será necessário executar o comando especificando o caminho para o diretório ``output``. Esse diretório é essencial, pois está "espelhado" com a pasta output no host. Dessa forma, o arquivo gerado no contêiner será automaticamente copiado para o diretório correspondente no host, permitindo seu uso posterior. Para prosseguir, execute o seguinte comando no console:
+Após a conclusão do processo, o software estará disponível para uso ao executar “mirak-extractor” no console. Por fim, será necessário executar o comando especificando o caminho para o diretório ``output``. Esse diretório é essencial, pois está "espelhado" com a pasta output no host. Dessa forma, o arquivo gerado no contêiner será automaticamente copiado para o diretório correspondente no host, permitindo seu uso posterior. Para prosseguir, execute o seguinte comando no console:
 
 ```bash
 $ mirak-extractor --output output/mirak.json
@@ -979,15 +963,8 @@ $ docker image rm mirak-extractor-image
 
 </br>
 
-Após a instalação, o aplicativo pode ser executado digitando “mirak-app” no console.  A aplicação dispõe de dois comandos principais: "``evaluate``" e "``help``". O comando "``help``" exibe uma descrição detalhada sobre o funcionamento da aplicação.
+Após a instalação, o mesmo pode ser executado atrávesdo comando "`mirak-app`" no console. A aplicação dispõe de dois argumentos pirncipais: "`help`", responsável por exibir um descrição sucinta da aplicação e "`evaluate`" que executa a funcionalidade principal da aplicação o uso da opção "-v" apresenta detalhes sobre a execução. A seguir, um exemplo de utilização:
 
-```bash
-$ mirak-app help
-```
-
-</br>
-
-O comando ``evaluate`` executa a funcionalidade principal da aplicação e pode ser utilizado com ou sem exibição de informações na tela. Recomenda-se fortemente o uso da opção "**-v**", permitindo que o processo apresente detalhes sobre sua execução. A seguir, é apresentado um exemplo de utilização:
 
 ```bash
 $ mirak-app evaluate -v ./caminho_até_o_arquivo_mirak/mirak.json ./pasta_de_saída
@@ -1007,52 +984,7 @@ $ mirak-app evaluate -v ./caminho_até_o_arquivo_mirak/mirak.json ./pasta_de_sa�
 
 </br>
 
-O `Mirak-app` pode ser executado em um ambiente Docker, eliminando a necessidade de instalação direta no sistema. Essa abordagem possibilita a configuração rápida de um ambiente isolado, assegurando o cumprimento de todos os requisitos necessários.
-
-</br>
-
-> **⚠️ Importante:** Os exemplos apresentados a seguir foram elaborados com base no Ubuntu. No entanto, podem ser necessárias pequenas adaptações para outras distribuições compatíveis.
-
-</br>
-
-### Verificações iniciais
-
-</br>
-
-> **❗ Aviso:** Os comandos a seguir fazem o uso de permissões privilegiadas. Certifique-se de rodar esses comandos como **superusuário** para evitar problemas de permissão.
-
-</br>
-
-Antes de iniciar, é necessário garantir que o **Docker daemon** esteja em execução. Para verificar seu status, utilize o seguinte comando:
-
-```bash
-$ sudo service docker status
-```
-
-ou
-
-```bash
-$ sudo systemctl status docker
-```
-
-</br>
-
-Se o serviço estiver desativado, utilize os seguintes comandos para iniciá-lo:
-
-```bash
-$ sudo service docker start
-```
-
-ou
-
-```bash
-$ sudo systemctl enable docker.service
-$ sudo systemctl enable containerd.service
-```
-
-</br>
-
-Para obter mais informações, consulte a documentação oficial no seguinte link: [Documentação oficial do Docker](https://docs.docker.com/engine/install/)
+O `Mirak-app` pode ser executado em um ambiente Docker, eliminando a necessidade de instalação direta no sistema. Essa abordagem possibilita a configuração rápida de um ambiente isolado, assegurando o cumprimento de todos os requisitos necessários. Este ambiente segue como um exemplo de como o software funcionaria em um ambiente real sendo destinado a testes fim-a-fim e vizualização por parte dos desenvolvedores.
 
 </br>
 
@@ -1093,7 +1025,7 @@ $ docker build -t mirak-app-image .
 
 </br>
 
-Nesta etapa, será realizada a construção e a execução de um contêiner contendo o ambiente de execução necessário para este exemplo.
+Nesta etapa, será realizada a construção e a execução de um contêiner contendo o ambiente de execução necessário para este exemplo ilustrativo.
 
 ```bash
 $ docker run -dit \
@@ -1162,7 +1094,7 @@ Por fim, para retornar ao host, utilize o comando "exit". O relatório em format
 
 </br>
 
-Caso seja necessário remover a imagem e o contêiner **Docker** criados neste exemplo, execute os seguintes comandos:
+Caso seja necessário remover a imagem e o contêiner **Docker** criados, execute os seguintes comandos:
 
 ```bash
 # Parar a execução do contêiner
@@ -1198,7 +1130,7 @@ $ docker image rm mirak-app-image
 
 ## Descrição
 
-Para a avaliação do MIRAK, foram construídas imagens Docker simulando diferentes versões do Routinator, executadas em um ambiente Ubuntu 20.04 típico. Nessas imagens, foram executadas as aplicações MIRAK, Vuls, Trivy e Grype. Para viabilizar esse processo, foi desenvolvida uma infraestrutura automatizada para a criação de máquinas virtuais (VMs), contendo os seguintes componentes:
+Para a avaliação do MIRAK, foram construídas imagens Docker simulando diferentes versões do Routinator, executadas em um ambiente Ubuntu 20.04 típico. Nessas imagens, foram executadas as aplicações MIRAK, Grype, Trivy e Vuls. Para viabilizar esse processo, foi desenvolvida uma infraestrutura automatizada para a criação de máquinas virtuais (VMs), contendo os seguintes componentes:
 
 - Routinator na versão especificada pelo usuário;
 - Conjunto de softwares nativos do sistema operacional; e
@@ -1218,7 +1150,7 @@ A execução dos comandos será apresentada conforme o software a ser analisado,
 - mirak-extractor 1.0.0.
 
 
-### Versões do routinator suportadas pelo ambiente virtual
+### Versões do routinator suportadas atualmente pelo ambiente virtual
 
 </br>
 
@@ -1251,7 +1183,7 @@ A execução dos comandos será apresentada conforme o software a ser analisado,
 
 </br>
 
-O procedimento inicial consiste na execução do comando responsável por iniciar o Docker Compose, juntamente com a especificação da versão do Routinator a ser utilizada, conforme ilustrado a seguir:
+Inicie o Docker Compose juntamente com a especificação da versão do Routinator a ser utilizada, conforme ilustrado a seguir:
 
 </br>
 
@@ -1298,7 +1230,7 @@ $ RT_VERSION=0.9.0 docker compose -f 'experiments/docker-compose.yaml' down
 
 </br>
 
-Em seguida, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do software Grype, por meio do seguinte comando:
+A primeira comparação ocorre com o software Grype. Portanto, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do software Grype, por meio do seguinte comando:
 
 
 
@@ -1318,7 +1250,7 @@ $ docker exec -it grype bash
 
 </br>
 
-Neste estágio, já estamos no ambiente. Agora, é necessário executar o software ``grype`` por meio do seguinte comando:
+Neste estágio, já estamos no ambiente. Agora, é necessário executar o software ``grype``:
 
 ```bash
 $ grype dir:/ --scope squashed --output table >> ./output/grype_report_rt.txt
@@ -1465,7 +1397,7 @@ $ vuls scan \
 
 <\br>
 
-Por fim, a etapa de análise pelo ``Vuls`` deve ser realizada utilizando o seguinte comando:
+Por fim, a etapa de análise dos resultado do escaneamento pelo ``Vuls`` deve ser realizada utilizando o seguinte comando:
 
 ```bash
 vuls report \
@@ -1519,7 +1451,7 @@ $ docker exec -it mirak-extractor bash
 **Demonstração:**
 
 <div align="center">
-  <img src="./assets/enter_mirak_extractor.gif" width="640">
+  <img src="./assets/enter_mirak-extractor.gif" width="640">
 </div>
 
 </br>
