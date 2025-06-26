@@ -34,7 +34,7 @@ A validação de rotas através do Routinator e o protocolo RPKI vem sendo discu
       - [**Ambiente virtualizado por contêiner**](#ambiente-virtualizado-por-contêiner)
     - [Requisitos mínimos de Hardware e Software](#requisitos-mínimos-de-hardware-e-software-1)
     - [Descrição dos campos do relatório CSV](#descrição-dos-campos-do-relatório-csv)
-- [Acesso ao código-fonte  ](#acesso-ao-código-fonte-)
+- [Acesso ao código-fonte](#acesso-ao-código-fonte)
 - [Dependências](#dependências)
   - [Mirak-extractor](#mirak-extractor-1)
     - [Dependências gerais](#dependências-gerais)
@@ -86,14 +86,14 @@ A validação de rotas através do Routinator e o protocolo RPKI vem sendo discu
 ---
 # Informações básicas
 
-Esse repositório contém o artefato MIRAK, que inclui duas aplicações – Mirak-extractor e Mirak-app – além de um script automatizado para a criação de ambientes virtuais, visando a facilitar a reprodução dos experimentos. Adicionalmente, o repositório detalha os requisitos mínimos necessários para a execução das aplicações.
+Esse repositório contém o artefato MIRAK, que inclui duas aplicações – Mirak-extractor e Mirak-app – além de um *script* automatizado para a criação de ambientes virtuais, visando a facilitar a reprodução dos experimentos. Adicionalmente, o repositório detalha os requisitos mínimos necessários para a execução das aplicações.
 
 </br>
 
 ---
 ## Mirak-extractor
 
-O Mirak-extractor é uma ferramenta que diagnostica as características do ambiente hospedeiro Relying Party RPKI. É um sistema automatizado, identificando as aplicações instaladas e detalhes operacionais do ambiente em pouco tempo, gerando o arquivo MIRAK, que permite análises por outras aplicações, como o Mirak-app. Foi desenvolvido em Python com o uso do padrão Singleton, com baixo impacto em requisitos para instalação e execução. O arquivo MIRAK contém ao final da execução do Mirak-extractor todas as características do ambiente hospedeiro necessárias para a pesquisa de CVEs correspondentes. Em sua versão atual, oferece suporte aos principais sistemas operacionais utilizados pelo Routinator, como versões Ubuntu 16.04, Debian 10 e Red Hat Enterprise Linux 9.5, ou superiores. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção adequada do algoritmo para a identificação das aplicações.
+O Mirak-extractor é uma ferramenta que diagnostica as características do ambiente hospedeiro *Relying Party RPKI*. É um sistema automatizado, identificando as aplicações instaladas e detalhes operacionais do ambiente em pouco tempo, gerando o arquivo MIRAK, que permite análises por outras aplicações, como o Mirak-app. Foi desenvolvido em Python com o uso do padrão Singleton, com baixo impacto em requisitos para instalação e execução. O arquivo MIRAK contém, ao final da execução do Mirak-extractor todas as características do ambiente hospedeiro necessárias para a pesquisa de CVEs correspondentes. Em sua versão atual, oferece suporte aos principais sistemas operacionais utilizados pelo Routinator, como versões Ubuntu 16.04, Debian 10 e Red Hat Enterprise Linux 9.5, ou superiores. A extração é baseada nas informações que caracterizam o sistema operacional, permitindo a seleção adequada do algoritmo para a identificação das aplicações.
 
 </br>
 
@@ -108,7 +108,7 @@ O Mirak-extractor utiliza as seguintes tecnologias e ferramentas:
 
 #### **Frameworks e Bibliotecas**
 
-- **Typer** – Framework para desenvolvimento de interfaces de linha de comando (CLI) em Python, baseado em Type Hints.
+- **Typer** – Framework para desenvolvimento de interfaces de linha de comando (CLI) em Python, baseado em *Type Hints*.
 
 - **TQDM** – Biblioteca para exibição de barras de progresso em loops e processos iterativos.
 
@@ -116,9 +116,9 @@ O Mirak-extractor utiliza as seguintes tecnologias e ferramentas:
 
 #### **Testes e Cobertura**
 
-- **Pytest** – Framework de testes para Python, que simplifica a criação de testes unitários e funcionais.
+- **Pytest** – *Framework* de testes para Python, que simplifica a criação de testes unitários e funcionais.
 
-- **Mock** – Ferramenta para a criação de mocks em testes, permitindo a simulação de objetos e comportamentos.
+- **Mock** – Ferramenta para a criação de *mocks* em testes, permitindo a simulação de objetos e comportamentos.
 
 #### **Ferramentas de Qualidade e Produtividade**
 
@@ -151,7 +151,7 @@ O Mirak-extractor utiliza as seguintes tecnologias e ferramentas:
 ---
 ## Mirak-app
 
-O Mirak-app é uma aplicação de processamento e análise que utiliza para a busca de CVEs o arquivo MIRAK, já com os identificadores CPE estruturados, permitindo assim uma busca direcionada por CVEs na NVD. Inicialmente, realiza-se a verificação da integridade e correção dos identificadores CPE presentes no sistema. Em seguida, são identificadas vulnerabilidades conhecidas associadas ao software validador e ao sistema operacional. A partir dessa análise, verifica-se se as vulnerabilidades são aplicáveis ao ambiente identificado. Em seguida, avalia-se a importância dos softwares detectados no contexto do RPKI, além de examinar configurações de rede, como a existência de portas abertas. Por fim, os resultados da avaliação são exibidos e, caso vulnerabilidades sejam detectadas, um relatório CSV detalhado é gerado para documentação e futuras ações corretivas.
+O Mirak-app é uma aplicação de processamento e análise que utiliza para a busca de CVEs o arquivo MIRAK, já com os identificadores CPE estruturados, permitindo assim uma busca direcionada por CVEs na NVD. Inicialmente, realiza-se a verificação da integridade e correção dos identificadores CPE presentes no sistema. Em seguida, são identificadas vulnerabilidades conhecidas associadas ao *software* validador e ao sistema operacional. A partir dessa análise, verifica-se se as vulnerabilidades são aplicáveis ao ambiente identificado. Em seguida, avalia-se a importância dos *softwares* detectados no contexto do RPKI, além de examinar configurações de rede, como a existência de portas abertas. Por fim, os resultados da avaliação são exibidos e, caso vulnerabilidades sejam detectadas, um relatório CSV detalhado é gerado para documentação e futuras ações corretivas.
 
 </br>
 
@@ -177,9 +177,9 @@ O Mirak-app utiliza as seguintes tecnologias e ferramentas:
 
 - **Prettier**: (versão 3.3.3) – Formatador de código opinativo para JavaScript e outras linguagens, promovendo um estilo consistente e padronizado.
 
-- **Husky**: (versão 9.1.6) – Ferramenta para gerenciamento de hooks do Git, permitindo a execução automática de verificações e validações antes da realização de commits e push.
+- **Husky**: (versão 9.1.6) – Ferramenta para gerenciamento de *hooks* do Git, permitindo a execução automática de verificações e validações antes da realização de *commits* e *push*.
 
-- **Lint-staged**: (versão 15.2.10) – Executa verificações de código exclusivamente nos arquivos modificados no commit, otimizando o processo de linting e formatação.
+- **Lint-staged**: (versão 15.2.10) – Executa verificações de código exclusivamente nos arquivos modificados no *commit*, otimizando o processo de *linting* e formatação.
 
 #### **Ferramentas de Desenvolvimento**
 
@@ -201,13 +201,13 @@ O Mirak-app utiliza as seguintes tecnologias e ferramentas:
 
 #### **Testes e Cobertura**
 
-- **Jest**: (versão 29.7.0 ou superior) – Framework de testes para JavaScript, oferecendo suporte a mocks, spies e snapshots, permitindo a criação de testes automatizados eficientes e abrangentes.
+- **Jest**: (versão 29.7.0 ou superior) – Framework de testes para JavaScript, oferecendo suporte a *mocks*, *spies* e *snapshots*, permitindo a criação de testes automatizados eficientes e abrangentes.
 
 - **Coverage**: (versão 6.1.1) – Ferramenta para análise da cobertura de código em testes, identificando quais trechos foram executados e auxiliando na validação da qualidade dos testes.
 
 #### **Gerenciamento de Pacotes**
 
-- **npm**: (versão 10.7.0 ou superior) – Gerenciador de pacotes oficial do Node.js, responsável pelo controle de dependências e automação de scripts de desenvolvimento.
+- **npm**: (versão 10.7.0 ou superior) – Gerenciador de pacotes oficial do Node.js, responsável pelo controle de dependências e automação de *scripts* de desenvolvimento.
 
 #### **Ambiente virtualizado por contêiner**
 
@@ -228,13 +228,13 @@ O Mirak-app utiliza as seguintes tecnologias e ferramentas:
 
 ### Descrição dos campos do relatório CSV
 
-- **product** -> Nomenclatura atribuída ao software vulnerável conforme registrado na NVD (National Vulnerability Database);
+- **product** -> Nomenclatura atribuída ao *software* vulnerável conforme registrado na NVD (National Vulnerability Database);
 
-- **vendor** -> Identifica o fabricante ou distribuidor responsável pelo software vulnerável;
+- **vendor** -> Identifica o fabricante ou distribuidor responsável pelo *software* vulnerável;
 
 - **type** -> Especifica se o software vulnerável corresponde a uma aplicação instalada ou a um componente nativo do sistema operacional;
 
-- **version** -> Indica a versão específica do software que apresenta vulnerabilidades conhecidas;
+- **version** -> Indica a versão específica do *software* que apresenta vulnerabilidades conhecidas;
 
 - **cve_id** -> Código identificador da vulnerabilidade atribuído pela Mitre, servindo como referência oficial em sites, manuais e documentos técnicos;
 
@@ -262,17 +262,17 @@ Fonte: [NVD - CVSS](https://nvd.nist.gov/vuln-metrics/cvss)
 
 </br>
 
-- **software_required**  ->  Indica se o software vulnerável é necessário para o funcionamento do validador RPKI, excluindo o sistema operacional;
+- **software_required**  ->  Indica se o *software* vulnerável é necessário para o funcionamento do validador RPKI, excluindo o sistema operacional;
 
-- **related_port** -> Identifica se uma porta de rede em estado de "*listening*" está associada ao software vulnerável;
+- **related_port** -> Identifica se uma porta de rede em estado de "*listening*" está associada ao *software* vulnerável;
 
-- **port_required** -> Especifica se funcionamento da solução RPKI depende da existência de portas de rede relacionadas ao software;
+- **port_required** -> Especifica se o funcionamento da solução RPKI depende da existência de portas de rede relacionadas ao *software*;
 
-- **notes** -> Fornece informações técnicas adicionaissobre portas de rede, seu impacto na execução do validador RPKI e os resultados da avaliação das configurações.
+- **notes** -> Fornece informações técnicas adicionais sobre portas de rede, seu impacto na execução do validador RPKI e os resultados da avaliação das configurações.
 
 </br>
 
-# Acesso ao código-fonte  
+# Acesso ao código-fonte
 
 </br>
 
@@ -294,7 +294,7 @@ Neste projeto, as dependências são classificadas em três categorias principai
 
 ## Mirak-extractor
 
-As dependências de produção são incorporadas durante o processo de empacotamento, eliminando a necessidade de instalação manual. Já as dependências de desenvolvimento são configuradas automaticamente por meio do script de instalação. Mais informações podem ser encontradas em [Processo automatizado de construção e instalação](#processo-automatizado-de-construção-e-instalação).
+As dependências de produção são incorporadas durante o processo de empacotamento, eliminando a necessidade de instalação manual. Já as dependências de desenvolvimento são configuradas automaticamente por meio do *script* de instalação. Mais informações podem ser encontradas em [Processo automatizado de construção e instalação](#processo-automatizado-de-construção-e-instalação).
 
 ### Dependências gerais
 
@@ -435,7 +435,7 @@ Para otimizar o desempenho das requisições HTTP feitas à (NVD) pelo Mirak-app
 
 ## Mirak-extractor
 
-O processo de instalação consiste em três etapas sucintas: download do repositório, construção do pacote e instalação do pacote gerado. Para facilitar esse procedimento, a pasta scripts contém códigos automatizados que executam a instalação das dependências, a construção do pacote e sua subsequente instalação. O diretório que abriga o código, os scripts e o exemplo `dockerfile.example` destinado ao Mirak-extractor, encontra-se na pasta `mirak-extractor`.
+O processo de instalação consiste em três etapas sucintas: download do repositório, construção do pacote e instalação do pacote gerado. Para facilitar esse procedimento, a pasta *scripts* contém códigos automatizados que executam a instalação das dependências, a construção do pacote e sua subsequente instalação. O diretório que abriga o código, os *scripts* e o exemplo `dockerfile.example` destinado ao Mirak-extractor, encontra-se na pasta `mirak-extractor`.
 
 ```bash
 cd mirak-extractor
@@ -518,7 +518,7 @@ $ mirak-extractor --help
 
 </br>
 
-A pasta “``scripts``” contém códigos automatizados destinados à execução dos processos de instalação. Na versão atual, o repositório disponibiliza códigos específicos para cada sistema operacional compatível com o artefato, garantindo a adequação do processo de instalação às particularidades de cada ambiente.
+A pasta “``*scripts*``” contém códigos automatizados destinados à execução dos processos de instalação. Na versão atual, o repositório disponibiliza códigos específicos para cada sistema operacional compatível com o artefato, garantindo a adequação do processo de instalação às particularidades de cada ambiente.
 
 Para Debian ou Ubuntu:
 
@@ -534,7 +534,7 @@ $ ./scripts/install_rhel.sh
 
 </br>
 
-Os scripts executam uma verificação das versões do **Python** instaladas no sistema e exibem as opções compatíveis com o artefato. O usuário deverá selecionar a versão que será utilizada para o restante do processo de instalação. Caso nenhuma versão compatível seja encontrada, será solicitada a confirmação para a instalação do **Python 3.8**, considerado pelos autores o mais adequado para garantir a compatibilidade.
+Os *scripts* executam uma verificação das versões do **Python** instaladas no sistema e exibem as opções compatíveis com o artefato. O usuário deverá selecionar a versão que será utilizada para o restante do processo de instalação. Caso nenhuma versão compatível seja encontrada, será solicitada a confirmação para a instalação do **Python 3.8**, considerado pelos autores o mais adequado para garantir a compatibilidade.
 
 Desta forma, o usuário pode executar automaticamente os passos descritos nos itens **Construção do pacote** e **Instalação do pacote**.
 
@@ -552,7 +552,7 @@ Desta forma, o usuário pode executar automaticamente os passos descritos nos it
 
 </br>
 
-Para remover o software, execute o seguinte comando:
+Para remover o *software*, execute o seguinte comando:
 
 ```bash
 $ pip uninstall mirak-extractor
@@ -560,7 +560,7 @@ $ pip uninstall mirak-extractor
 
 
 
-Para remover a dependência ``Python``, caso tenha sido instalada juntamente com o software, utilize o comando de remoção apropriado para sua plataforma.
+Para remover a dependência ``Python``, caso tenha sido instalada juntamente com o *software*, utilize o comando de remoção apropriado para sua plataforma.
 
 </br>
 
@@ -575,7 +575,7 @@ Para remover a dependência ``Python``, caso tenha sido instalada juntamente com
 ## Mirak-app
 
 
-Para acessar o diretório que abriga o código, os scripts e o exemplo `Dockerfile` destinado ao Mirak-app, execute o comando a seguir.
+Para acessar o diretório que abriga o código, os *scripts* e o exemplo `Dockerfile` destinado ao Mirak-app, execute o comando a seguir.
 
 ```bash
 cd mirak-app
@@ -605,7 +605,7 @@ O processo de construção é composto por duas etapas principais: transpilaçã
 
 </br>
 
-Executar o processo de transpilação por meio do script automatizado denominado ``build``.
+Executar o processo de transpilação por meio do *script* automatizado denominado ``build``.
 
 Exemplo: 
 
@@ -623,7 +623,7 @@ Uma pasta denominada "``build``" será gerada, contendo o código preparado para
 
 </br>
 
-O processo de empacotamento deve ser executado por meio do script automatizado "``packaging.sh``", localizado no diretório "``script``".
+O processo de empacotamento deve ser executado por meio do *script* automatizado "``packaging.sh``", localizado no diretório "``*script*``".
 
 ```bash
 $ source ./packaging.sh
@@ -777,7 +777,7 @@ $ mirak-app --help
 
 </br>
 
-Após o processo de instalação, manual ou através sos scripts atumatizados, a aplicação pode ser executada digitando "``mirak-extractor``". É necessário especificar a opção "--output", indicando o caminho relativo para o destino do arquivo, incluindo seu nome e a extensão “.json”, conforme ilustrado no exemplo abaixo:
+Após o processo de instalação, manual ou através dos *scripts* atumatizados, a aplicação pode ser executada digitando "``mirak-extractor``". É necessário especificar a opção "--output", indicando o caminho relativo para o destino do arquivo, incluindo seu nome e a extensão “.json”, conforme ilustrado no exemplo abaixo:
 
 ```bash
 $ mirak-extractor --output caminho_arquivo_mirak/nome_do_arquivo.json
@@ -806,7 +806,7 @@ Se nenhuma opção for especificada, o arquivo será exportado para o diretório
 
 </br>
 
-O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua utilização sem a necessidade de instalação direta no sistema. Essa abordagem facilita a configuração de um ambiente isolado de maneira eficiente, garantindo que todos os requisitos de hardware e instalação sejam atendidos. Este ambiente segue como um exemplo ilustrativo de como o software funcionaria em um ambiente real sendo destinado a testes fim-a-fim e vizualização por parte dos desenvolvedores.
+O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua utilização sem a necessidade de instalação direta no sistema. Essa abordagem facilita a configuração de um ambiente isolado de maneira eficiente, garantindo que todos os requisitos de hardware e instalação sejam atendidos. Este ambiente segue como um exemplo ilustrativo de como o *software* funcionaria em um ambiente real, sendo destinado a testes fim-a-fim e visualização por parte dos desenvolvedores.
 
 </br>
 
@@ -818,7 +818,7 @@ O ``mirak-extractor`` pode ser executado em um ambiente Docker, permitindo sua u
 
 </br>
 
-Antes de iniciar, é necessário garantir que o **Docker daemon** esteja em execução. Para verificar seu status, utilize o seguinte comando:
+Antes de iniciar, é necessário garantir que o **Docker daemon** esteja em execução. Para verificar seu *status*, utilize o seguinte comando:
 
 ```bash
 $ sudo service docker status
@@ -897,7 +897,7 @@ $ routinator server --http 0.0.0.0:8323 --rtr 0.0.0.0:3323 --http 0.0.0.0:9556 -
 
 </br>
 
-Na próxima etapa, serão aplicados os procedimentos descritos em **Construção do Pacote** e **Instalação do Pacote** para concluir o processo de instalação. Neste exemplo, será demonstrado o uso do script para a instalação automatizada das dependências e do próprio Mirak-extractor. Para isso, execute o seguinte script:
+Na próxima etapa, serão aplicados os procedimentos descritos em **Construção do Pacote** e **Instalação do Pacote** para concluir o processo de instalação. Neste exemplo, será demonstrado o uso do *script* para a instalação automatizada das dependências e do próprio Mirak-extractor. Para isso, execute o seguinte *script*:
 
 ```bash
 $ source ./scripts/install_ubuntu_debian.sh
@@ -905,11 +905,11 @@ $ source ./scripts/install_ubuntu_debian.sh
 
 </br>
 
-Neste exemplo ilustrativo, o Python não foi previamente instalado, então será necessário confirmar a instalação. Para isso, digite o caractere "``y``" no console, garantindo que esteja em minúsculo. Após a instalação, será solicitado que você escolha a versão do software para a construção e instalação do mirak-extractor.
+Neste exemplo ilustrativo, o Python não foi previamente instalado, então será necessário confirmar a instalação. Para isso, digite o caractere "``y``" no console, garantindo que esteja em minúsculo. Após a instalação, será solicitado que você escolha a versão do *software* para a construção e instalação do mirak-extractor.
 
 </br>
 
-Após a conclusão do processo, o software estará disponível para uso ao executar “mirak-extractor” no console. Por fim, será necessário executar o comando especificando o caminho para o diretório ``output``. Esse diretório é essencial, pois está "espelhado" com a pasta output no host. Dessa forma, o arquivo gerado no contêiner será automaticamente copiado para o diretório correspondente no host, permitindo seu uso posterior. Para prosseguir, execute o seguinte comando no console:
+Após a conclusão do processo, o *software* estará disponível para uso ao executar “mirak-extractor” no console. Por fim, será necessário executar o comando especificando o caminho para o diretório ``output``. Esse diretório é essencial, por estar "espelhado" com a pasta output no host. Dessa forma, o arquivo gerado no contêiner será automaticamente copiado para o diretório correspondente no host, permitindo seu uso posterior. Para prosseguir, execute o seguinte comando no console:
 
 ```bash
 $ mirak-extractor --output output/mirak.json
@@ -963,7 +963,7 @@ $ docker image rm mirak-extractor-image
 
 </br>
 
-Após a instalação, o mesmo pode ser executado atrávesdo comando "`mirak-app`" no console. A aplicação dispõe de dois argumentos pirncipais: "`help`", responsável por exibir um descrição sucinta da aplicação e "`evaluate`" que executa a funcionalidade principal da aplicação o uso da opção "-v" apresenta detalhes sobre a execução. A seguir, um exemplo de utilização:
+Após a instalação, o mesmo pode ser executado atráves do comando "`mirak-app`" no console. A aplicação dispõe de dois argumentos principais: "`help`", responsável por exibir uma descrição sucinta da aplicação e "`evaluate`" que executa a funcionalidade principal da aplicação, o uso da opção "-v" apresenta detalhes sobre a execução. A seguir, um exemplo de utilização:
 
 
 ```bash
@@ -984,7 +984,7 @@ $ mirak-app evaluate -v ./caminho_até_o_arquivo_mirak/mirak.json ./pasta_de_sa�
 
 </br>
 
-O `Mirak-app` pode ser executado em um ambiente Docker, eliminando a necessidade de instalação direta no sistema. Essa abordagem possibilita a configuração rápida de um ambiente isolado, assegurando o cumprimento de todos os requisitos necessários. Este ambiente segue como um exemplo de como o software funcionaria em um ambiente real sendo destinado a testes fim-a-fim e vizualização por parte dos desenvolvedores.
+O `Mirak-app` pode ser executado em um ambiente Docker, eliminando a necessidade de instalação direta no sistema. Essa abordagem possibilita a configuração rápida de um ambiente isolado, assegurando o cumprimento de todos os requisitos necessários. Este ambiente segue como um exemplo de como o *software* funcionaria em um ambiente real, sendo destinado a testes fim-a-fim e visualização por parte dos desenvolvedores.
 
 </br>
 
@@ -1049,7 +1049,7 @@ Agora, com o console conectado ao contêiner, prossiga com as etapas a seguir pa
 
 </br>
 
-> **❗ Aviso:** As informações para obter a Chave API da NVD pode ser encontrada na seção [Instalação do pacote](#instalação-do-pacote-1)
+> **❗ Aviso:** As informações para obter a Chave API da NVD podem ser encontradas na seção [Preocupações com segurança](#preocupações-com-segurança)
 
 </br>
 
@@ -1133,12 +1133,12 @@ $ docker image rm mirak-app-image
 Para a avaliação do MIRAK, foram construídas imagens Docker simulando diferentes versões do Routinator, executadas em um ambiente Ubuntu 20.04 típico. Nessas imagens, foram executadas as aplicações MIRAK, Grype, Trivy e Vuls. Para viabilizar esse processo, foi desenvolvida uma infraestrutura automatizada para a criação de máquinas virtuais (VMs), contendo os seguintes componentes:
 
 - Routinator na versão especificada pelo usuário;
-- Conjunto de softwares nativos do sistema operacional; e
+- Conjunto de *softwares* nativos do sistema operacional; e
 - Conectividade com a internet estabelecida via rede Docker;
 
-Os resultados gerados por cada máquina virtual (VM) são armazenados em diretórios isolados, o que possibilita a extração dos artefatos do ambiente virtualizado para o sistema host. Essa abordagem assegura uma execução segura e controlada, além de favorecer a eficiência na análise dos dados e na consolidação dos resultados obtidos.
+Os resultados gerados por cada máquina virtual (VM) são armazenados em diretórios isolados, possibilitando a extração dos artefatos do ambiente virtualizado para o sistema host. Essa abordagem assegura uma execução segura e controlada, além de favorecer a eficiência na análise dos dados e na consolidação dos resultados obtidos.
 
-A execução dos comandos será apresentada conforme o software a ser analisado, com exceção das instruções referentes à inicialização e finalização dos contêineres, que são comuns e realizadas por meio do Docker Compose.
+A execução dos comandos será apresentada conforme o *software* a ser analisado, com exceção das instruções referentes à inicialização e finalização dos contêineres, que são comuns e realizadas por meio do Docker Compose.
 
 
 ### Versões dos Softwares utilizados no experimento
@@ -1179,7 +1179,7 @@ A execução dos comandos será apresentada conforme o software a ser analisado,
 
 </br>
 
-> **💡Dica** Algumas versões mais antigas do Docker Compose apresentam o inicio do comando utilizando hífen no lugar de espaço em branco ("``docker-compose``").
+> **💡Dica** Algumas versões mais antigas do Docker Compose apresentam o início do comando utilizando hífen no lugar de espaço em branco ("``docker-compose``").
 
 </br>
 
@@ -1189,7 +1189,7 @@ Inicie o Docker Compose juntamente com a especificação da versão do Routinato
 
 </br>
 
-> **⚠️ Importante** A versão do routinator deve ser especificada no formato numérico e separados pelo caractere ".".
+> **⚠️ Importante** A versão do routinator deve ser especificada no formato numérico e separada pelo caractere ".".
 
 </br>
 
@@ -1230,7 +1230,7 @@ $ RT_VERSION=0.9.0 docker compose -f 'experiments/docker-compose.yaml' down
 
 </br>
 
-A primeira comparação ocorre com o software Grype. Portanto, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do software Grype, por meio do seguinte comando:
+A primeira comparação ocorre com o *software* Grype. Portanto, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do *software* Grype, por meio do seguinte comando:
 
 
 
@@ -1250,7 +1250,7 @@ $ docker exec -it grype bash
 
 </br>
 
-Neste estágio, já estamos no ambiente. Agora, é necessário executar o software ``grype``:
+Neste estágio, já estamos no ambiente. Agora, é necessário executar o *software* ``grype``:
 
 ```bash
 $ grype dir:/ --scope squashed --output table >> ./output/grype_report_rt.txt
@@ -1274,7 +1274,7 @@ $ grype dir:/ --scope squashed --output table >> ./output/grype_report_rt.txt
 
 </br>
 
-O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automaticamente, copiado para a pasta ``experiment_data`` no host.
+O resultado foi armazenado no diretório ``output`` no ambiente e, automaticamente, copiado para a pasta ``experiment_data`` no host.
 
 Para retornar ao host, execute o comando ``exit``.
 
@@ -1284,7 +1284,7 @@ Para retornar ao host, execute o comando ``exit``.
 
 </br>
 
-Na sequência, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do software Trivy, por meio do seguinte comando:
+Na sequência, estabelece-se a conexão com o terminal do contêiner responsável pela execução do ambiente do *software* Trivy, por meio do seguinte comando:
 
 
 ```bash
@@ -1303,7 +1303,7 @@ $ docker exec -it trivy bash
 
 </br>
 
-Nesta etapa, com o acesso ao ambiente estabelecido, procede-se à execução do software ``trivy`` utilizando o comando a seguir:
+Nesta etapa, com o acesso ao ambiente estabelecido, procede-se à execução do *software* ``trivy`` utilizando o comando a seguir:
 
 ```bash
 $ trivy fs / --scanners vuln --format table  > ./output/trivy_report.txt
@@ -1337,7 +1337,7 @@ Para retornar ao host, execute o comando ``exit``.
 
 </br>
 
-Para conectar-se ao terminal do contêiner que hospeda o ambiente do software Vuls, utilize o comando a seguir:
+Para conectar-se ao terminal do contêiner que hospeda o ambiente do *software* Vuls, utilize o comando a seguir:
 
 
 ```bash
@@ -1384,7 +1384,7 @@ $ goval-dictionary fetch ubuntu "20.04" --dbpath "/var/lib/vuls/oval.sqlite3"
 
 </br>
 
- Agora, é necessário executar o escaneamento do software ``Vuls`` por meio do seguinte comando:
+ Agora, é necessário executar o escaneamento do *software* ``Vuls`` por meio do seguinte comando:
 
 ```bash
 $ vuls scan \
@@ -1439,7 +1439,7 @@ O projeto Mirak é organizado em duas etapas principais: extração de dados e a
 
 </br>
 
-A conexão ao terminal do contêiner que executa o ambiente do software mirak-extractor é realizada por meio do seguinte comando:
+A conexão ao terminal do contêiner que executa o ambiente do *software* mirak-extractor é realizada por meio do seguinte comando:
 
 
 ```bash
@@ -1458,7 +1458,7 @@ $ docker exec -it mirak-extractor bash
 
 </br>
 
-A execução do software ``mirak-extractor`` é realizada por meio do comando a seguir:
+A execução do *software* ``mirak-extractor`` é realizada por meio do comando a seguir:
 
 ```bash
 $ mirak-extractor --output ./output/mirak.json
@@ -1486,7 +1486,7 @@ O resultado foi armazenado no diretório ``output`` dentro do ambiente e, automa
 
 Para retornar ao host, execute o comando ``exit``.
 
-Inicia-se agora a etapa de avaliação de dados. Para isso, é necessário estabelecer a conexão com o terminal do contêiner que contém o ambiente com o software ``mirak-app`` para a execução da avaliação.
+Inicia-se agora a etapa de avaliação de dados. Para isso, é necessário estabelecer a conexão com o terminal do contêiner que contém o ambiente com o *software* ``mirak-app`` para a execução da avaliação.
 
 
 
@@ -1512,7 +1512,7 @@ O primeiro passo é fazer a configuração da chave API por meio do seguinte com
 
 </br>
 
-> **❗ Aviso:** As informações para obter a Chave API da NVD pode ser encontrada na seção [Instalação do pacote](#instalação-do-pacote-1)
+> **❗ Aviso:** As informações para obter a Chave API da NVD podem ser encontradas na seção [Preocupações com segurança](#preocupações-com-segurança)
 
 
 </br>
@@ -1549,7 +1549,7 @@ A duração do processo do projeto Mirak pode variar, estimando-se aproximadamen
 
 # Reivindicações
 
-A principal reivindicação do artigo é a viabilidade do uso do artefato MIRAK para reduzir as oportunidades de ataques ao BGP através do uso de vulnerabilidades no validador de rotas RPKI ou do sistema hospedeiro. De forma automatizada, o MIRAK identifica o Relying Party e seus componentes, busca as CVE pertinentes e identifica os módulos que precisam ser atualizados ou retirados. 
+A principal reivindicação do artigo é a viabilidade do uso do artefato MIRAK para reduzir as oportunidades de ataques ao BGP através do uso de vulnerabilidades no validador de rotas RPKI ou do sistema hospedeiro. De forma automatizada, o MIRAK identifica o *Relying Party* e seus componentes, busca as CVE pertinentes e identifica os módulos que precisam ser atualizados ou retirados. 
 
 </br>
 
