@@ -406,7 +406,7 @@ A instalação dessas dependências está detalhada na documentação oficial do
 
 </br>
 
-Os comandos necessários para a intalação dessas dependências está apresentado a seguir:
+Os comandos necessários para a instalação dessas dependências está apresentado a seguir:
 
 - Dependências de desenvolvimento:
 ```bash
@@ -414,7 +414,7 @@ $ npm install --include=dev
 ```
 
 
-- Depdências de produção:
+- Dependências de produção:
 ```bash
 $ npm i --omit=dev
 ```
@@ -667,7 +667,7 @@ $ apt install ./dist/mirak-app.deb
 
 ```
 
- - Este comando utiliza o gerenciador de pacotes `APT` que avalia se as dependencias de prdoução e gerais foram cumpridas. Caso alguma dependência esteja em falta insira "**Y**" para realizar a instalação de forma automática.
+ - Este comando utiliza o gerenciador de pacotes `APT` que avalia se as dependências de produção e gerais foram cumpridas. Caso alguma dependência esteja em falta, insira "**Y**" para realizar a instalação de forma automática.
 
  </br>
 
@@ -777,7 +777,7 @@ $ mirak-app --help
 
 </br>
 
-Após o processo de instalação, manual ou através dos *scripts* atumatizados, a aplicação pode ser executada digitando "``mirak-extractor``". É necessário especificar a opção "--output", indicando o caminho relativo para o destino do arquivo, incluindo seu nome e a extensão “.json”, conforme ilustrado no exemplo abaixo:
+Após o processo de instalação, manual ou através dos *scripts* automatizados, a aplicação pode ser executada digitando "``mirak-extractor``". É necessário especificar a opção "--output", indicando o caminho relativo para o destino do arquivo, incluindo seu nome e a extensão “.json”, conforme ilustrado no exemplo abaixo:
 
 ```bash
 $ mirak-extractor --output caminho_arquivo_mirak/nome_do_arquivo.json
@@ -963,7 +963,7 @@ $ docker image rm mirak-extractor-image
 
 </br>
 
-Após a instalação, o mesmo pode ser executado atráves do comando "`mirak-app`" no console. A aplicação dispõe de dois argumentos principais: "`help`", responsável por exibir uma descrição sucinta da aplicação e "`evaluate`" que executa a funcionalidade principal da aplicação, o uso da opção "-v" apresenta detalhes sobre a execução. A seguir, um exemplo de utilização:
+Após a instalação, o mesmo pode ser executado através do comando "`mirak-app`" no console. A aplicação dispõe de dois argumentos principais: "`help`", responsável por exibir uma descrição sucinta da aplicação e "`evaluate`" que executa a funcionalidade principal da aplicação, o uso da opção "-v" apresenta detalhes sobre a execução. A seguir, um exemplo de utilização:
 
 
 ```bash
@@ -1012,7 +1012,7 @@ Em seguida, será realizada a construção do pacote contendo o Mirak-app. Para 
 
 ```bash
 $ npm run build # Para realizar a transpilação
-$ source ./packaging.sh # Para realizar  o processo de empacotamento
+$ source ./packaging.sh # Para realizar o processo de empacotamento
 ```
 
 </br>
@@ -1397,7 +1397,7 @@ $ vuls scan \
 
 <\br>
 
-Por fim, a etapa de análise dos resultado do escaneamento pelo ``Vuls`` deve ser realizada utilizando o seguinte comando:
+Por fim, a etapa de análise dos resultados do escaneamento pelo ``Vuls`` deve ser realizada utilizando o seguinte comando:
 
 ```bash
 vuls report \
