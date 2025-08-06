@@ -12,7 +12,7 @@ COPY ./mirak-extractor/app ./app
 
 COPY ./mirak-extractor/scripts ./scripts
 
-COPY ["./mirak-extractor/setup.py", "./mirak-extractor/README.md", "./mirak-extractor/start.py", "./"]
+COPY ["./mirak-extractor/setup.py", "./README.md", "./mirak-extractor/start.py", "./"]
 
 RUN pip install setuptools && python /workspaces/project/setup.py sdist
 
