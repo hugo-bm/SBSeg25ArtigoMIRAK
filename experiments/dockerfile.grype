@@ -80,7 +80,7 @@ VOLUME /output /workspaces/project/output
 # Expor as portas para o Routinator
 EXPOSE 8323 3323 80
 
-COPY ./research_new_competitors/test_1/start_extractor.sh /
+COPY ./experiments/start_extractor.sh /
 
 
 

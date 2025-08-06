@@ -117,10 +117,7 @@ scanMode = ["deep"]' >> /var/lib/vuls/config.toml
 # Expor as portas para o Routinator
 EXPOSE 8323 3323 80
 
-COPY ./research_new_competitors/test_1/start_extractor.sh /
-
-COPY ./research_new_competitors/test_1/update-bases-vuls.sh /update-bases-vuls.sh
-RUN chmod +x /update-bases-vuls.sh
+COPY ./experiments/start_extractor.sh /
 
 # Configurar o container para iniciar com o shell
 CMD ["/bin/bash", "-c", "source /start_extractor.sh"]
