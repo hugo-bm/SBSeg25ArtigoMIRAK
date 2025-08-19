@@ -31,7 +31,7 @@ RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/
 
     COPY ./scripts ./scripts
 
-    COPY ["./setup.py", "./README.md", "./start.py", "./"]
+    COPY ["./setup.py", "../README.md", "./start.py", "./"]
 
     # Declarar diretório de saída
     VOLUME /output /workspaces/project/output

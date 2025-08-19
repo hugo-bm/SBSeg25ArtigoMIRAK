@@ -21,6 +21,7 @@
 """
 
 
+import socket
 import psutil
 
 
@@ -50,9 +51,20 @@ class ExtractRedeInfo:
         return tuple([open_ports, ports_by_porcess_name])
 
     def extract_ip(self) -> str:
-        """The method in question selects the IP in the IPv4 version
-        of the NIC "ETH0" and returns it."""
-        nic = psutil.net_if_addrs().get("eth0")
-        if nic is not None:
-            return nic[0].address
-        return ""
+        """
+        Returns the first valid IPv4 address of the host machine.
+        Works with both legacy (eth0) and modern (enp0s3, ens33, etc.)
+        network interface naming conventions.
+        """
+        nics = psutil.net_if_addrs()
+        for nic_name, addrs in nics.items():
+            # Skip loopback interface
+            if nic_name == "lo":
+                continue
+            for addr in addrs:
+                if addr.family == socket.AF_INET:  # Only IPv4
+                    ip = addr.address
+                    if ip and not ip.startswith("127."): # Ignore IP address "127.0.0.1"
+                        return ip
+
+        return ""  # No valid IPv4 found
