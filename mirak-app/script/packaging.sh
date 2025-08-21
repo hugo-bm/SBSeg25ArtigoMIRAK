@@ -7,6 +7,10 @@ VERSION="1.0.0"
 # Input and output directory 
 OUTPUT_DIR="dist"
 BUILD_DIR="packaging"
+PROJECT_FILES_DIR="build"
+
+# List of required files/subfolders in the build. Checked only at the first level.
+REQUIRED_ITEMS=("app.js" "app.js.map" "api" "cli" "config" "core" "database" "shared")
 
 # Clean up previous directories
 rm -rf "$OUTPUT_DIR" "$BUILD_DIR"
@@ -19,9 +23,58 @@ BIN_DIR="$BUILD_DIR/$PACKAGE_NAME/usr/local/bin"
 
 mkdir -p "$DEBIAN_DIR" "$OPT_DIR" "$BIN_DIR"
 
+# Function to check existence and organization after transpilation
+check_build() {
+  if [ ! -d "$PROJECT_FILES_DIR/" ]; then
+    echo "Build directory does not exist."
+    echo "Make sure you are in the root directory of the Mirak-app software."
+    return 1
+  fi
+
+  # Check if the "build" directory is not empty
+  if [ -z "$(ls -A "$PROJECT_FILES_DIR/")" ]; then
+    echo "Build directory is empty."
+    return 1
+  fi
+
+  # Checks required files/folders
+  for item in "${REQUIRED_ITEMS[@]}"; do
+    if [ ! -e "$PROJECT_FILES_DIR/$item" ]; then
+      echo "Required item missing in build: $item"
+      return 1
+    fi
+  done
+
+  return 0
+}
+
+# Function to check for corrupted files (e.g. zero size)
+check_integrity() {
+  local corrupted=0
+  for file in "$PROJECT_FILES_DIR"/*; do
+    if [ -f "$file" ] && [ ! -s "$file" ]; then
+      echo "Corrupted file (empty): $file"
+      corrupted=1
+    fi
+  done
+
+  return $corrupted
+}
+
+# Run the checks
+if ! check_build; then
+  echo "Build is invalid. Try to build project with 'npm run build'"
+  exit 1
+fi
+
+if ! check_integrity; then
+  echo "Build has corrupted files. Try to rebuild."
+  exit 1
+fi
+
 # Copy the project files
-if ! cp -r build/* "$OPT_DIR"; then
-  echo "Try to build project with 'npm run build' "
+if ! cp -r "$PROJECT_FILES_DIR"/* "$OPT_DIR"; then
+  echo "Failed to copy build to $OPT_DIR"
   exit 1
 fi
 
@@ -97,19 +150,19 @@ chmod +x "$DEBIAN_DIR/prerm"
 dpkg-deb --build "$BUILD_DIR/$PACKAGE_NAME" "$OUTPUT_DIR/$PACKAGE_NAME.deb"
 
 # Creating the .rpm package (using fpm)
-if command -v fpm &> /dev/null; then
-  fpm -s dir -t rpm \
-      -n "$PACKAGE_NAME" \
-      -v "$VERSION" \
-      --after-install "$DEBIAN_DIR/postinst" \
-      --description "This component aims to assess the existence of vulnerabilities in the execution environment based on information contained in the MIRAK file" \
-      --depends "nodejs" \
-      --depends "npm" \
-      -C "$BUILD_DIR/$PACKAGE_NAME" . \
-      -p "$OUTPUT_DIR/$PACKAGE_NAME.rpm"
-else
-  echo "FPM not found. Install with 'gem install fpm' to generate .rpm packages."
-fi
+# if command -v fpm &> /dev/null; then
+#   fpm -s dir -t rpm \
+#       -n "$PACKAGE_NAME" \
+#       -v "$VERSION" \
+#       --after-install "$DEBIAN_DIR/postinst" \
+#       --description "This component aims to assess the existence of vulnerabilities in the execution environment based on information contained in the MIRAK file" \
+#       --depends "nodejs" \
+#       --depends "npm" \
+#       -C "$BUILD_DIR/$PACKAGE_NAME" . \
+#       -p "$OUTPUT_DIR/$PACKAGE_NAME.rpm"
+# else
+#   echo "FPM not found. Install with 'gem install fpm' to generate .rpm packages."
+#fi
 
 # Closing message
-echo "Packages generated in: $OUTPUT_DIR"
+echo "Package generated in: $OUTPUT_DIR"
